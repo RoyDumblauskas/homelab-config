@@ -1,15 +1,43 @@
 {
-  description = "A very basic flake";
+  description = "Server Config Controller";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixvim.url = "github:nix-community/nixvim";
+    home-manager = {
+      url = "github:nix-community/home-manager/release-24.11";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs }: {
-
-    packages.x86_64-linux.hello = nixpkgs.legacyPackages.x86_64-linux.hello;
-
-    packages.x86_64-linux.default = self.packages.x86_64-linux.hello;
-
+  outputs = { self, nixpkgs, nixvim, home-manager, disko }@inputs: 
+  let 
+    nodes = [
+      "nixos-homelab-00"
+    ];
+  in {
+    nixosConfigurations = builtins.listToAttrs (map (name: {
+      name = name;
+      value = nixpkgs.lib.nixosSystem {
+        specialArgs = {
+          meta = { hostname = name; };
+        };
+        system = "x86_64-linux";
+        modules = [
+        ./configuration.nix
+        ./hardware-configuration.nix
+        disko.nixosModules.disko
+        home-manager.nixosModules.home-manager {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.sysAdmin = ./home.nix;
+        }
+        ];
+      };
+    }) nodes);
   };
 }
