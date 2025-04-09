@@ -1,10 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [ ];
 
   # Use the systemd-boot EFI boot loader.
   # boot.loader.systemd-boot.enable = true;
@@ -21,58 +18,7 @@
     ];
   };
 
-  # zfs File System Declaration  
-
-  fileSystems."/" = {
-    device = "zpool/root";
-    fsType = "zfs";
-  };
-
-  fileSystems."/nix" = {
-    device = "zpool/nix";
-    fsType = "zfs";
-  };
-
-  fileSystems."/var" = {
-    device = "zpool/var";
-    fsType = "zfs";
-  };
-
-  fileSystems."/home" = {
-    device = "zpool/home";
-    fsType = "zfs";
-  };
-
-  fileSystems."/boot" ={
-    device = "/dev/disk/by-uuid/8D3A-0C41";
-    fsType = "vfat";
-  };
-
-  swapDevices = [ ];
-
-  networking.hostName = "nixos";
-  networking.hostId = "4cb9fc76";
-
-  networking.wireless = {
-    enable = true;
-    networks."flooper".pskRaw = "3ac6f88df2b7de61e98a0c6f95c34f7ca5f96593065a98e1200a3931219801b3";
-    networks."NU-Guest" = {
-      priority = -1;
-    };
-    networks.eduroam = {
-      priority = -2;
-      auth = ''
-        key_mgmt=WPA-EAP
-        eap=PEAP
-        identity="rdumblauskas2@unl.edu"
-        password="******"
-      '';
-    };
-    extraConfig = "ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=wheel";
-  };
-
-  networking.wireless.userControlled.enable = true; # Enable user to edit wpa_supplicant.
-  networking.networkmanager.enable = false;  # Easiest to use and most distros use this by default.
+  networking.hostName = meta.hostname;
 
   # Set your time zone.
   time.timeZone = "America/Chicago";
@@ -107,38 +53,28 @@
   #   pulse.enable = true;
   # };
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  services.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.roy = {
+  users.users.sysAdmin = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
-  };
-
-  users.users.net = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ];
-    packages = with pkgs; [
-      tree
-      git
+    extraGroups = [ "wheel" "networkManager" ];
+    # created with mkpasswd
+    hashedPassword = "$6$8KRJ44z15XsQALM.$J4geTLaph7ynaLimlYXMGafqPOP6DONLSlTbRowH7JF7WJ4cWyMSTYQQB4OwsAgPpLCTYDzpqn6a/pfIizWFA.";
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICNkZ5Xr75thR/tEgsASzYAtaA/kbsv2PKI8ux9rgpTe roydumblauskas@gmail.com"
     ];
   };
-
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  
   nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    gimp
-    kitty
-    rose-pine-hyprcursor
-    vim
+    curl
+    neovim
     wget
   ];
 
-  fonts.packages = with pkgs; [ nerdfonts ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -149,27 +85,6 @@
   # };
 
   # List services that you want to enable:
-  programs.hyprland = {
-   enable = true;
-   xwayland.enable = true;
-  };
-
-  programs.waybar.enable = true;
-
-  programs.firefox = {
-    enable = true;
-    policies = {
-      ExtensionSettings = {
-        "*".installation_mode = "blocked";
-        "uBlock0@raymondhill.net" = {
-          install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
-          installation_mode = "force_installed";
-        };
-      };
-    };
-  };
-  environment.sessionVariables.NIXOS_OZONE_WL = "1";
-
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
@@ -177,7 +92,7 @@
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  networking.firewall.enable = false;
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
@@ -188,4 +103,3 @@
   system.stateVersion = "24.11";
 
 }
-
