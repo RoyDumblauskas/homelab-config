@@ -30,6 +30,7 @@
         modules = [
         ./configuration.nix
         ./hardware-configuration.nix
+        ./disk-config.nix
         disko.nixosModules.disko
         home-manager.nixosModules.home-manager {
           home-manager.useGlobalPkgs = true;
