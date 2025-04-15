@@ -1,6 +1,6 @@
 # Server Steps
 
-1. Set up declarative disk partitioning
+1. Set up declarative disk partitioning (ephemeral)
 2. Implement SOPS for secret management
 3. Lock down machine IP addresses, passed in through flake as param
 4. Create a k8s cluster on server
