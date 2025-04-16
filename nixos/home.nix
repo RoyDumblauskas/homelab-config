@@ -7,7 +7,7 @@
 
   # Secret Management
   sops = {
-    age.keyFile = "/home/sysAdmin/.config/sops/age/keys.txt"; # No password!
+    age.keyFile = "./age/keys.txt"; # Make sure to gitignore, contains private key.
 
     defaultSopsFile = ./secrets/build.json;
     defaultSymlinkPath = "/run/user/1000/secrets";
