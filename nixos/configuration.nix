@@ -6,6 +6,16 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nixpkgs.config.allowUnfree = true;
 
+  # Secret Management
+  sops = {
+    age.keyFile = "./age/keys.txt"; # Make sure to gitignore, contains private key.
+
+    defaultSopsFile = ./secrets/build.json;
+    defaultSopsFormat = "json";
+
+    secrets."nixos-homelab-00" = { };
+  };
+
   systemd.user.services.mbsync.unitConfig.After = [ "sops-nix.service" ];
 
   # Use the systemd-boot EFI boot loader.
@@ -24,6 +34,15 @@
   };
 
   networking.hostName = meta.hostname;
+
+  networking.interfaces.eth0.ipv4.addresses = [
+    {
+      address = "${
+        config.sops.secrets."nixos-homelab-00".path
+      }";
+      prefixLength = 24;
+    }
+  ];
 
   # Set your time zone.
   time.timeZone = "America/Chicago";
