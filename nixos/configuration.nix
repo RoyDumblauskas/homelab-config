@@ -1,6 +1,9 @@
 { config, lib, pkgs, meta, ... }:
 
-{
+
+let
+  addresses = import (toString ./ip-addresses.nix);
+in {
   imports = [ ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -18,7 +21,7 @@
 
   systemd.user.services.mbsync.unitConfig.After = [ "sops-nix.service" ];
   
-  environment.variable = {
+  environment.variables = {
     SECRETKEY = "${config.sops.secrets."clusterPassword".path}";
   };
   
@@ -33,17 +36,14 @@
     ];
   };
 
-  networking.hostname = meta.hostname;
+  networking.hostName = meta.hostname;
 
-  let
-    addresses = import ./ip-addresses.nix;
-  in {
-    networking.interfaces.eth0.ipv4.addresses = [
-      {
-        address = addresses.${meta.hostname};
-        prefixLength = 24;
-      }
-    ];
+  networking.interfaces.eth0.ipv4.addresses = [
+    {
+      address = addresses.${meta.hostname};
+      prefixLength = 24;
+    }
+  ];
 
   # Set your time zone.
   time.timeZone = "America/Chicago";
