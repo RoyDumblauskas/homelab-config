@@ -33,16 +33,17 @@
     ];
   };
 
-  networking.hostName = meta.hostname;
+  networking.hostname = meta.hostname;
 
-  networking.interfaces.eth0.ipv4.addresses = [
-    {
-      address = "${
-        config.sops.secrets."nixos-homelab-00".path
-      }";
-      prefixLength = 24;
-    }
-  ];
+  let
+    addresses = import ./ip-addresses.nix;
+  in {
+    networking.interfaces.eth0.ipv4.addresses = [
+      {
+        address = addresses.${meta.hostname};
+        prefixLength = 24;
+      }
+    ];
 
   # Set your time zone.
   time.timeZone = "America/Chicago";
