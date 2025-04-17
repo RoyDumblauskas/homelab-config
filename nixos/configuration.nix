@@ -13,11 +13,15 @@
     defaultSopsFile = ./secrets/build.json;
     defaultSopsFormat = "json";
 
-    secrets."nixos-homelab-00" = { };
+    secrets."clusterPassword" = { };
   };
 
   systemd.user.services.mbsync.unitConfig.After = [ "sops-nix.service" ];
-
+  
+  environment.variable = {
+    SECRETKEY = "${config.sops.secrets."clusterPassword".path}";
+  };
+  
   # Grub Boot Loader Setup
   boot.loader.grub = {
     enable = true;
