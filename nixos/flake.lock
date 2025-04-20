@@ -185,11 +185,11 @@
     },
     "quasiSecrets": {
       "locked": {
-        "lastModified": 1745112157,
-        "narHash": "sha256-0rbCAsvYUi0v93mswU2r0bGC/1VtpBPdvpx/gVj6qvU=",
+        "lastModified": 1745120256,
+        "narHash": "sha256-aN18/9Kq0xgCCLzOt5SmtiQBU3GdaTMzkYDf5x6ms/8=",
         "ref": "refs/heads/main",
-        "rev": "715906b0486d8d13fafdd07f421df4c4c1e25460",
-        "revCount": 3,
+        "rev": "3f8f66a5a07d669ab530a7110913a50bf2a3394c",
+        "revCount": 9,
         "type": "git",
         "url": "ssh://git@github.com/RoyDumblauskas/server-semi-secrets"
       },

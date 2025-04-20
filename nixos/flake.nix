@@ -18,7 +18,6 @@
     };
     quasiSecrets = {
       url = "git+ssh://git@github.com/RoyDumblauskas/server-semi-secrets";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
