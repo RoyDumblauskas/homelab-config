@@ -183,12 +183,28 @@
         "type": "github"
       }
     },
+    "quasiSecrets": {
+      "locked": {
+        "lastModified": 1745112157,
+        "narHash": "sha256-0rbCAsvYUi0v93mswU2r0bGC/1VtpBPdvpx/gVj6qvU=",
+        "ref": "refs/heads/main",
+        "rev": "715906b0486d8d13fafdd07f421df4c4c1e25460",
+        "revCount": 3,
+        "type": "git",
+        "url": "ssh://git@github.com/RoyDumblauskas/server-semi-secrets"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/RoyDumblauskas/server-semi-secrets"
+      }
+    },
     "root": {
       "inputs": {
         "disko": "disko",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
         "nixvim": "nixvim",
+        "quasiSecrets": "quasiSecrets",
         "sops-nix": "sops-nix"
       }
     },

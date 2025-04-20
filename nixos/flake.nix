@@ -22,7 +22,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixvim, home-manager, disko, sops-nix }@inputs: 
+  outputs = { self, nixpkgs, nixvim, home-manager, disko, sops-nix, quasiSecrets }@inputs: 
   let 
     nodes = [
       "nixos-homelab-00"
