@@ -1,4 +1,4 @@
-{ config, lib, pkgs, meta, ipAddrs, ... }:
+{ config, lib, pkgs, meta, ... }:
 
 {
   imports = [ ];
@@ -37,7 +37,7 @@
 
   networking.interfaces.eth0.ipv4.addresses = [
     {
-      address = ipAddrs.${meta.hostname};
+      address = config.ipAddrs.${meta.hostname};
       prefixLength = 24;
     }
   ];
