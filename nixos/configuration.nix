@@ -1,9 +1,6 @@
-{ config, lib, pkgs, meta, ... }:
+{ config, lib, pkgs, meta, ipAddrs, ... }:
 
-
-let
-  addresses = import (toString ./ip-addresses.nix);
-in {
+{
   imports = [ ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -40,10 +37,21 @@ in {
 
   networking.interfaces.eth0.ipv4.addresses = [
     {
-      address = addresses.${meta.hostname};
+      address = ipAddrs.${meta.hostname};
       prefixLength = 24;
     }
   ];
+
+  networking.defaultGateway = "192.168.1.1";
+  networking.nameservers = [ "1.1.1.1" "1.0.0.1" ];
+
+  # Open ports in the firewall.
+  # networking.firewall.allowedTCPPorts = [ ... ];
+  # networking.firewall.allowedUDPPorts = [ ... ];
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [ 22 80 443 ];
+  };
 
   # Set your time zone.
   time.timeZone = "America/Chicago";
@@ -89,6 +97,13 @@ in {
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICNkZ5Xr75thR/tEgsASzYAtaA/kbsv2PKI8ux9rgpTe roydumblauskas@gmail.com"
     ];
   };
+  
+  users.users.root = {
+    hashedPassword = "$y$j9T$IjaP0KIfdpEvlLtOn.u0T/$0MJDaFEdSu6zSJ04CF1dtorD6IVgbN3vmDiiwGwwqr5";
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICNkZ5Xr75thR/tEgsASzYAtaA/kbsv2PKI8ux9rgpTe roydumblauskas@gmail.com" 
+    ];
+  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -110,16 +125,6 @@ in {
   # List services that you want to enable:
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
-  networking.firewall = {
-    enable = true;
-    allowedTCPPorts = [ 22 80 443 ];
-  };
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you

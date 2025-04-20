@@ -16,6 +16,10 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    quasiSecrets = {
+      url = "git+ssh://git@github.com/RoyDumblauskas/server-semi-secrets";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, nixvim, home-manager, disko, sops-nix }@inputs: 
@@ -37,6 +41,7 @@
           ./disk-config.nix
           disko.nixosModules.disko
           sops-nix.nixosModules.sops
+          quasiSecrets.nixosModules.ipAddrs
           home-manager.nixosModules.home-manager {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;

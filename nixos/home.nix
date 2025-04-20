@@ -8,6 +8,7 @@
   home.packages = with pkgs; [
     git
     tree
+    unixtools.ping
   ];
 
   home.stateVersion = "24.11";
