@@ -45,7 +45,7 @@
             home-manager.users.sysAdmin = ./home.nix;
           }
         ];
-      };
+      };      
     }) nodes);
   };
 }
