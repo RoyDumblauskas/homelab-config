@@ -4,7 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
     nixvim.url = "github:nix-community/nixvim";
-    quasiSecrets.url = "git+ssh://git@gitub.com/RoyDumblauskas/server-semi-secrets";
+    quasiSecrets.url = "git+ssh://git@github.com/RoyDumblauskas/server-semi-secrets";
     home-manager = {
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
