@@ -9,17 +9,48 @@
   # Secret Management
   sops = {
     age.keyFile = "./age/keys.txt"; # Make sure to gitignore, contains private key.
-
-    defaultSopsFile = ./secrets/build.json;
     defaultSopsFormat = "json";
 
-    secrets."clusterPassword" = { };
+    secrets = {
+      "clusterPassword" = {
+        sopsFile = ./secrets/build.json;
+      };
+      "cloudflare-credentials" = {
+        sopsFile = ./secrets/cloudflare.json;
+      };
+    };
   };
 
   systemd.user.services.mbsync.unitConfig.After = [ "sops-nix.service" ];
   
   environment.variables = {
     SECRETKEY = "${config.sops.secrets."clusterPassword".path}";
+  };
+
+  # set up DNS with nginx
+  security.acme = {
+    acceptTerms = true;
+    defaults = {
+      email = "roydumblauskas@gmail.com";
+      dnsProvider = "cloudflare";
+      credentialsFile = config.sops.secrets."cloudflare-credentials".path;
+    };
+  };
+
+  services.nginx = {
+    enable = true;
+    virtualHosts = {
+      "roypository.com" = {
+        forceSSL = true;
+        enableACME = true;
+        addSSL = true;
+      };
+      "*.roypository.com" = {
+        forceSSL = true;
+        enableACME = true;
+        addSSL = true;
+      };
+    };
   };
   
   # Grub Boot Loader Setup
