@@ -52,7 +52,24 @@
       };
     };
   };
-  
+ 
+  services.nginx.virtualHosts."test.roypository.com" = {
+    forceSSL = true;
+    enableACME = true;
+    addSSL = true;
+
+    locations."/" = {
+      proxyPass = "http://localhost:3000";
+      proxyWebsockets = true; # optional: if using websockets
+      extraConfig = ''
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+      '';
+    };
+  };
+
   # Grub Boot Loader Setup
   boot.loader.grub = {
     enable = true;
