@@ -19,7 +19,7 @@ in
 
   # Secret Management
   sops = {
-    age.keyFile = "./age/keys.txt"; # Make sure to gitignore, contains private key.
+    age.keyFile = "/etc/sops/age/keys.txt";
     defaultSopsFormat = "json";
 
     secrets = {
@@ -51,8 +51,8 @@ in
       email = "roydumblauskas@gmail.com";
       dnsProvider = "cloudflare";
       credentialFiles = {
-        CF_API_EMAIL = config.sops.secrets."cloudflare-api-email".path;
-        CF_API_KEY = config.sops.secrets."cloudflare-api-key".path;
+        CF_API_EMAIL_FILE = config.sops.secrets."cloudflare-api-email".path;
+        CF_API_KEY_FILE = config.sops.secrets."cloudflare-api-key".path;
       };
     };
   };
@@ -61,7 +61,6 @@ in
 
   services.nginx.virtualHosts."roypository.com" = {
     forceSSL = true;
-    addSSL = true;
     enableACME = true; 
     acmeRoot = null;
   };
@@ -69,7 +68,6 @@ in
 
   services.nginx.virtualHosts."test.roypository.com" = {
     forceSSL = true;
-    addSSL = true;
     enableACME = true;
     acmeRoot = null;
     root = "${testSiteIndex}";
