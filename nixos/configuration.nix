@@ -33,7 +33,7 @@
     defaults = {
       email = "roydumblauskas@gmail.com";
       dnsProvider = "cloudflare";
-      credentialsFile = config.sops.secrets."cloudflare-credentials".path;
+      environmentFile = config.sops.secrets."cloudflare-credentials".path;
     };
   };
 
@@ -43,11 +43,13 @@
       "roypository.com" = {
         forceSSL = true;
         enableACME = true;
+        acmeRoot = false;
         addSSL = true;
       };
       "*.roypository.com" = {
         forceSSL = true;
         enableACME = true;
+        acmeRoot = false;
         addSSL = true;
       };
     };
@@ -57,6 +59,7 @@
     forceSSL = true;
     enableACME = true;
     addSSL = true;
+    acmeRoot = false;
 
     locations."/" = {
       proxyPass = "http://localhost:3000";
