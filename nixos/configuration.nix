@@ -1,5 +1,16 @@
 { config, lib, pkgs, meta, ... }:
 
+let
+  testSiteIndex = pkgs.writeText "index.html" ''
+    <html>
+      <head><title>Hello</title></head>
+      <body>
+        <h1>Hello from test.roypository.com 🎉</h1>
+        <p>This content is defined in configuration.nix</p>
+      </body>
+    </html>
+  '';
+in
 {
   imports = [ ];
 
@@ -15,8 +26,14 @@
       "clusterPassword" = {
         sopsFile = ./secrets/build.json;
       };
-      "cloudflare-credentials" = {
+      "cloudflare-api-email" = {
         sopsFile = ./secrets/cloudflare.json;
+        key = "CF_API_EMAIL";
+      };
+
+      "cloudflare-api-key" = {
+        sopsFile = ./secrets/cloudflare.json;
+        key = "CF_API_KEY";
       };
     };
   };
@@ -33,42 +50,32 @@
     defaults = {
       email = "roydumblauskas@gmail.com";
       dnsProvider = "cloudflare";
-      environmentFile = config.sops.secrets."cloudflare-credentials".path;
+      credentialFiles = {
+        CF_API_EMAIL = config.sops.secrets."cloudflare-api-email".path;
+        CF_API_KEY = config.sops.secrets."cloudflare-api-key".path;
+      };
     };
+  };
+  
+  services.nginx.enable = true;
+
+  services.nginx.virtualHosts."roypository.com" = {
+    forceSSL = true;
+    addSSL = true;
+    enableACME = true; 
+    acmeRoot = null;
   };
 
-  services.nginx = {
-    enable = true;
-    virtualHosts = {
-      "roypository.com" = {
-        forceSSL = true;
-        enableACME = true;
-        acmeRoot = false;
-        addSSL = true;
-      };
-      "*.roypository.com" = {
-        forceSSL = true;
-        enableACME = true;
-        acmeRoot = false;
-        addSSL = true;
-      };
-    };
-  };
- 
+
   services.nginx.virtualHosts."test.roypository.com" = {
     forceSSL = true;
-    enableACME = true;
     addSSL = true;
-    acmeRoot = false;
-
+    enableACME = true;
+    acmeRoot = null;
+    root = "${testSiteIndex}";
     locations."/" = {
-      proxyPass = "http://localhost:3000";
-      proxyWebsockets = true; # optional: if using websockets
       extraConfig = ''
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
+        index index.html;
       '';
     };
   };
