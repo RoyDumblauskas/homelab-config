@@ -38,7 +38,8 @@
           compression = "zstd";
           "com.sun:auto-snapshot" = "false";
         };
-        postCreateHook = "zfs list -t snapshot -H -o name | grep -E '^zroot@blank$' || zfs snapshot zroot@blank";
+        # what should I be making a snapshot of here?!!!!
+        postCreateHook = "zfs list -t snapshot -H -o name | grep -E '^zpool/local/zroot@blank$' || zfs snapshot zpool/local/zroot@blank";
 
         datasets = {
           "root" = {

@@ -38,15 +38,6 @@ in
     };
   };
 
-  # make sure that the transfered sops key is moved to correct directory
-  system.activationScripts.installSopsKey = {
-    text = ''
-      mkdir -p /etc/sops/age
-      mv /tmp/keys.txt /etc/sops/age/keys.txt
-      chmod 600 /etc/sops/age/keys.txt
-    '';
-  };
-
   systemd.user.services.mbsync.unitConfig.After = [ "sops-nix.service" ];
   
   environment.variables = {
