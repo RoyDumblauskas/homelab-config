@@ -22,14 +22,20 @@
   outputs = { self, nixpkgs, nixvim, home-manager, disko, sops-nix, quasiSecrets }@inputs: 
   let 
     nodes = [
-      "nixos-homelab-00"
+      { 
+        name = "nixos-homelab-00";
+        hostId = "3884D2F1";
+      }
     ];
   in {
-    nixosConfigurations = builtins.listToAttrs (map (name: {
-      name = name;
+    nixosConfigurations = builtins.listToAttrs (map (node: {
+      name = node.name;
       value = nixpkgs.lib.nixosSystem {
         specialArgs = {
-          meta = { hostname = name; };
+          meta = {
+            hostname = node.name;
+            hostId = node.hostId;
+          };
         };
         system = "x86_64-linux";
         modules = [

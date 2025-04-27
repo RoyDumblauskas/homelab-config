@@ -99,6 +99,7 @@ in
   };
 
   networking.hostName = meta.hostname;
+  networking.hostId = meta.hostId;
 
   networking.interfaces.eth0.ipv4.addresses = [
     {

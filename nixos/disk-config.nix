@@ -1,23 +1,21 @@
-{ disks ? [ "/dev/nvme0n1" ], ... }:
 {
   disko.devices = {
     disk = {
       x = {
-        device = builtins.elemAt disks 0;
+        device = "/dev/nvme0n1";
         type = "disk";
         content = {
-          type = "table";
-          format = "gpt";
+          type = "gpt";
           partitions = {
             # boot
             ESP = {
-              start = "1MiB";
-              end = "500MiB";
-              bootable = true;
+              size = "64M";
+              type = "EF00";
               content = {
                 type = "filesystem";
                 format = "vfat";
                 mountpoint = "/boot";
+                mountOptions = [ "umask=0077" ];
               };
             };
             # root
@@ -35,7 +33,6 @@
     zpool = {
       zroot = {
         type = "zpool";
-        mode = "mirror";
         options.cachefile = "none";
         rootFsOptions = {
           compression = "zstd";
