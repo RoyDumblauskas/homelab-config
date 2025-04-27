@@ -1,53 +1,64 @@
+{ disks ? [ "/dev/nvme0n1" ], ... }:
 {
   disko.devices = {
     disk = {
-      vdb = {
+      x = {
+        device = builtins.elemAt disks 0;
         type = "disk";
-        device = "/dev/nvme0n1";
         content = {
-          type = "gpt";
+          type = "table";
+          format = "gpt";
           partitions = {
+            # boot
             ESP = {
-              priority = 1;
-              name = "ESP";
-              start = "1M";
-              end = "128M";
-              type = "EF00";
+              start = "1MiB";
+              end = "500MiB";
+              bootable = true;
               content = {
                 type = "filesystem";
                 format = "vfat";
                 mountpoint = "/boot";
               };
             };
-            root = {
+            # root
+            zfs = {
               size = "100%";
               content = {
-                type = "btrfs";
-                extraArgs = [ "-f" ]; # Override existing partition
-                # Subvolumes must set a mountpoint in order to be mounted,
-                # unless their parent is mounted
-                subvolumes = {
-                  # Subvolume name is different from mountpoint
-                  "/rootfs" = {
-                    mountpoint = "/";
-                  };
-                  # Subvolume name is the same as the mountpoint
-                  "/home" = {
-                    mountOptions = [ "compress=zstd" ];
-                    mountpoint = "/home";
-                  };
-                  # Sub(sub)volume doesn't need a mountpoint as its parent is mounted
-                  "/home/elliott" = { };
-                  # Parent is not mounted so the mountpoint must be set
-                  "/nix" = {
-                    mountOptions = [ "compress=zstd" "noatime" ];
-                    mountpoint = "/nix";
-                  };
-                };
-
-                mountpoint = "/partition-root";
+                type = "zfs";
+                pool = "zroot";
               };
             };
+          };
+        };
+      };
+    };
+    zpool = {
+      zroot = {
+        type = "zpool";
+        mode = "mirror";
+        options.cachefile = "none";
+        rootFsOptions = {
+          compression = "zstd";
+          "com.sun:auto-snapshot" = "false";
+        };
+        moutpoint = "/";
+        postCreateHook = "zfs list -t snapshot -H -o name | grep -E '^zroot@blank$' || zfs snapshot zroot@blank";
+
+        datasets = {
+          "nix" = {
+            type = "zfs_fs";
+            options.mountpoint = "/local/nix";
+            mountpoint = "/local/nix";
+          };
+          "home" = {
+            type = "zfs_fs";
+            options.mountpoint = "/safe/home";
+            mountpoint = "/safe/home";
+          };
+          "persist" = {
+            type = "zfs_fs";
+            options.mountpoint = "/safe/persist";
+            mountpoint = "/safe/persist";
           };
         };
       };
