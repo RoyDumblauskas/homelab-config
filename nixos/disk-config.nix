@@ -39,28 +39,28 @@
           "com.sun:auto-snapshot" = "false";
         };
         # what should I be making a snapshot of here?!!!!
-        postCreateHook = "zfs list -t snapshot -H -o name | grep -E '^zpool/local/zroot@blank$' || zfs snapshot zpool/local/zroot@blank";
 
         datasets = {
-          "root" = {
+          "local/root" = {
             type = "zfs_fs";
             options.mountpoint = "/";
             mountpoint = "/";
+            postCreateHook = "zfs list -t snapshot -H -o name | grep -E '^zroot/local/root@blank$' || zfs snapshot zroot/local/root@blank";
           };
-          "nix" = {
+          "local/nix" = {
             type = "zfs_fs";
-            options.mountpoint = "/local/nix";
-            mountpoint = "/local/nix";
+            options.mountpoint = "/nix";
+            mountpoint = "/nix";
           };
-          "home" = {
+          "safe/home" = {
             type = "zfs_fs";
-            options.mountpoint = "/safe/home";
-            mountpoint = "/safe/home";
+            options.mountpoint = "/home";
+            mountpoint = "/home";
           };
-          "persist" = {
+          "safe/persist" = {
             type = "zfs_fs";
-            options.mountpoint = "/safe/persist";
-            mountpoint = "/safe/persist";
+            options.mountpoint = "/persist";
+            mountpoint = "/persist";
           };
         };
       };

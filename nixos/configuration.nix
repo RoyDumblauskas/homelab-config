@@ -89,6 +89,11 @@ in
     ];
   };
 
+  # Rollback root on reboot
+  boot.initrd.postDeviceCommands = lib.mkAfter ''
+    zfs rollback -r zpool/local/root@blank
+  '';
+
   networking.hostName = meta.hostname;
   networking.hostId = meta.hostId;
 
