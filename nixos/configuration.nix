@@ -91,7 +91,7 @@ in
 
   # Rollback root on reboot
   boot.initrd.postDeviceCommands = lib.mkAfter ''
-    zfs rollback -r zpool/local/root@blank
+    zfs rollback -r zroot/root@blank
   '';
 
   networking.hostName = meta.hostname;
@@ -108,8 +108,6 @@ in
   networking.nameservers = [ "1.1.1.1" "1.0.0.1" ];
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
   networking.firewall = {
     enable = true;
     allowedTCPPorts = [ 22 80 443 ];
@@ -171,6 +169,7 @@ in
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     curl
+    kitty
     vim
     wget
   ];

@@ -33,31 +33,30 @@
     zpool = {
       zroot = {
         type = "zpool";
-        options.cachefile = "none";
+        # options.cachefile = "none";
         rootFsOptions = {
           compression = "zstd";
           "com.sun:auto-snapshot" = "false";
         };
-        # what should I be making a snapshot of here?!!!!
 
         datasets = {
-          "local/root" = {
+          "root" = {
             type = "zfs_fs";
             options.mountpoint = "/";
             mountpoint = "/";
-            postCreateHook = "zfs list -t snapshot -H -o name | grep -E '^zroot/local/root@blank$' || zfs snapshot zroot/local/root@blank";
+            postCreateHook = "zfs list -t snapshot -H -o name | grep -E '^zroot/root@blank$' || zfs snapshot zroot/root@blank";
           };
-          "local/nix" = {
+          "nix" = {
             type = "zfs_fs";
             options.mountpoint = "/nix";
             mountpoint = "/nix";
           };
-          "safe/home" = {
+          "home" = {
             type = "zfs_fs";
             options.mountpoint = "/home";
             mountpoint = "/home";
           };
-          "safe/persist" = {
+          "persist" = {
             type = "zfs_fs";
             options.mountpoint = "/persist";
             mountpoint = "/persist";
