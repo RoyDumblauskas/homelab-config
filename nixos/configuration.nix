@@ -90,7 +90,7 @@ in
   };
 
   # Rollback root on reboot
-  boot.initrd.postDeviceCommands = lib.mkAfter ''
+  boot.initrd.postMountCommands = lib.mkAfter ''
     zfs rollback -r zroot/root@blank
   '';
 
@@ -185,7 +185,20 @@ in
 
   # List services that you want to enable:
   # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+    hostKeys = [
+      {
+        type = "ed25519";
+        path = "/persist/etc/ssh/ssh_host_ed25519_key";
+      }
+      {
+        type = "rsa";
+        bits = 4096;
+        path = "/persist/etc/ssh/ssh_host_rsa_key";
+      }
+    ];
+  };
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
