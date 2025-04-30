@@ -29,6 +29,7 @@ in
     # I prefer to use json format for the secrets
     defaultSopsFormat = "json";
 
+    # Define file and key for each secret
     secrets = {
       "clusterPassword" = {
         sopsFile = ./secrets/build.json;
@@ -45,12 +46,12 @@ in
     };
   };
 
-  systemd.user.services.mbsync.unitConfig.After = [ "sops-nix.service" ];
-  
   environment.variables = {
-    SECRETKEY = "${config.sops.secrets."clusterPassword".path}";
+    LEAKYKEY = builtins.readFile config.sops.secrets."clusterPassword".path;
   };
 
+  systemd.user.services.mbsync.unitConfig.After = [ "sops-nix.service" ];
+ 
   # set up DNS with nginx
   security.acme = {
     acceptTerms = true;
