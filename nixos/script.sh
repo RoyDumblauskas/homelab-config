@@ -5,7 +5,6 @@ target_hostname=""
 target_destination=""
 target_user=${BOOTSTRAP_USER-root} # Set BOOTSTRAP_ defaults in your shell.nix
 ssh_port=${BOOTSTRAP_SSH_PORT-22}
-ssh_key=${BOOTSTRAP_SSH_KEY-}
 
 # ---HELPER FUNCTIONS START---
 SOPS_FILE=".sops.yaml"
@@ -72,14 +71,11 @@ function help_and_exit() {
 	echo
 	echo "Remotely installs NixOS on a target machine using this nix-config."
 	echo
-	echo "USAGE: $0 -n <target_hostname> -d <target_destination> -k <ssh_key> [OPTIONS]"
+	echo "USAGE: $0 -n <target_hostname> -d <target_destination> [OPTIONS]"
 	echo
 	echo "ARGS:"
 	echo "  -n <target_hostname>                    specify target_hostname of the target host to deploy the nixos config on."
 	echo "  -d <target_destination>                 specify ip or domain to the target host."
-	echo "  -k <ssh_key>                            specify the full path to the ssh_key you'll use for remote access to the"
-	echo "                                          target during install process."
-	echo "                                          Example: -k /home/${target_user}/.ssh/my_ssh_key"
 	echo
 	echo "OPTIONS:"
 	echo "  -u <target_user>                        specify target_user with sudo access. nix-config will be cloned to their home."
@@ -105,10 +101,6 @@ while [[ $# -gt 0 ]]; do
 		shift
 		target_user=$1
 		;;
-	-k)
-		shift
-		ssh_key=$1
-		;;
 	--port)
 		shift
 		ssh_port=$1
@@ -125,7 +117,7 @@ while [[ $# -gt 0 ]]; do
 	shift
 done
 
-if [ -z "$target_hostname" ] || [ -z "$target_destination" ] || [ -z "$ssh_key" ]; then
+if [ -z "$target_hostname" ] || [ -z "$target_destination" ]; then
 	echo "ERROR: -n, -d, and -k are all required"
 	echo
 	help_and_exit
