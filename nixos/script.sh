@@ -124,7 +124,7 @@ if [ -z "$target_hostname" ] || [ -z "$target_destination" ]; then
 fi
 
 # Create the directory where sshd expects to find the host keys
-install -d -m755 "$tempSSH/persist/etc/ssh"
+install -d -m755 "$temp/persist/etc/ssh"
 
 # Generate private key and copy it to the temporary directory
 ssh-keygen -t ed25519 -f "$temp/$persist_dir/etc/ssh/ssh_host_ed25519_key" -C "$target_user"@"$target_hostname" -N ""
