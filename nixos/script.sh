@@ -38,7 +38,7 @@ function sops_generate_host_age_key() {
 
 	# Get the SSH key
 	target_key="$1"
-
+  echo "$target_key"
 	host_age_key=$(echo "$target_key" | ssh-to-age)
 
 	if grep -qv '^age1' <<<"$host_age_key"; then
@@ -54,9 +54,6 @@ function sops_generate_host_age_key() {
 }
 
 # ---HELPER FUNCTIONS END---
-
-
-
 
 # Create a temporary directory
 temp=$(mktemp -d)
@@ -123,6 +120,9 @@ if [ -z "$target_hostname" ] || [ -z "$target_destination" ]; then
 	help_and_exit
 fi
 
+# delete known hosts
+sed -i "/$target_hostname/d; /$target_destination/d" ~/.ssh/known_hosts
+
 # Create the directory where sshd expects to find the host keys
 install -d -m755 "$temp/persist/etc/ssh"
 
@@ -133,7 +133,8 @@ ssh-keygen -t ed25519 -f "$temp/persist/etc/ssh/ssh_host_ed25519_key" -C "$targe
 chmod 600 "$temp/persist/etc/ssh/ssh_host_ed25519_key"
 
 # update sops with new host ssh key | age key
-target_key=$(cut -d' ' -f2 "$temp/persist/etc/ssh/ssh_host_ed25519_key.pub")
+target_key=$(cut -f1- -d" " "$temp/persist/etc/ssh/ssh_host_ed25519_key.pub")
+echo "$target_key"
 sops_generate_host_age_key "$target_key"
 
 # Install NixOS to the host system with our secrets
