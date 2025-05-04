@@ -7,6 +7,58 @@ target_user=${BOOTSTRAP_USER-root} # Set BOOTSTRAP_ defaults in your shell.nix
 ssh_port=${BOOTSTRAP_SSH_PORT-22}
 ssh_key=${BOOTSTRAP_SSH_KEY-}
 
+# ---HELPER FUNCTIONS START---
+SOPS_FILE=".sops.yaml"
+
+# Updates the .sops.yaml file with a new host age key.
+function sops_update_age_key() {
+	keyname="$1"
+	key="$2"
+
+	if [[ -n $(yq ".keys.hosts[] | select(anchor == \"$keyname\")" "${SOPS_FILE}") ]]; then
+		echo "Updating existing ${keyname} key"
+		yq -i "(.keys.hosts[] | select(anchor == \"$keyname\")) = \"$key\"" "$SOPS_FILE"
+	else
+		echo "Adding new ${keyname} key"
+		yq -i ".keys.hosts += [\"$key\"] | .keys.hosts[-1] anchor = \"$keyname\"" "$SOPS_FILE"
+	fi
+}
+
+# Update key groups to have new host's sops key
+function sops_add_host_to_key_groups() {
+	h="\"$1\""                    # quoted hostname for yaml
+
+  yq -i ".creation_rules.key_groups[].age += [ $h ]" "$SOPS_FILE"
+  yq -i ".creation_rules.key_groups[].age[-1] alias = $h" "$SOPS_FILE"
+}
+
+# Use generated ssh key generate age key, and update sops
+# args: target_key
+function sops_generate_host_age_key() {
+	green "Generating an age key based on the new ssh_host_ed25519_key"
+
+	# Get the SSH key
+	target_key="$1"
+
+	host_age_key=$(echo "$target_key" | ssh-to-age)
+
+	if grep -qv '^age1' <<<"$host_age_key"; then
+		echo "The result from generated age key does not match the expected format."
+		echo "Result: $host_age_key"
+		echo "Expected format: age10000000000000000000000000000000000000000000000000000000000"
+		exit 1
+	fi
+
+	echo "Updating nix-secrets/.sops.yaml"
+	sops_update_age_key "$target_hostname" "$host_age_key"
+  sops_add_host_to_key_groups "$target_hostname"
+}
+
+# ---HELPER FUNCTIONS END---
+
+
+
+
 # Create a temporary directory
 temp=$(mktemp -d)
 
@@ -61,16 +113,12 @@ while [[ $# -gt 0 ]]; do
 		shift
 		ssh_port=$1
 		;;
-	--temp-override)
-		shift
-		temp=$1
-		;;
 	--debug)
 		set -x
 		;;
 	-h | --help) help_and_exit ;;
 	*)
-		red "ERROR: Invalid option detected."
+		echo "ERROR: Invalid option detected."
 		help_and_exit
 		;;
 	esac
@@ -78,7 +126,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 if [ -z "$target_hostname" ] || [ -z "$target_destination" ] || [ -z "$ssh_key" ]; then
-	red "ERROR: -n, -d, and -k are all required"
+	echo "ERROR: -n, -d, and -k are all required"
 	echo
 	help_and_exit
 fi
@@ -92,6 +140,11 @@ ssh-keygen -t ed25519 -f "$temp/$persist_dir/etc/ssh/ssh_host_ed25519_key" -C "$
 # Set the correct permissions so sshd will accept the key
 chmod 600 "$temp/persist/etc/ssh/ssh_host_ed25519_key"
 
+# update sops with new host ssh key | age key
+target_key=$(cut -d' ' -f2 "$temp/persist/etc/ssh/ssh_host_ed25519_key.pub")
+sops_generate_host_age_key "$target_key"
+
 # Install NixOS to the host system with our secrets
 nix run github:nix-community/nixos-anywhere --extra-experimental-features "nix-command flakes" -- --ssh-port "$ssh_port" --post-kexec-ssh-port "$ssh_port" --extra-files "$temp" --generate-hardware-config nixos-generate-config ./hardware-configuration.nix --disko-mode disko --build-on local --flake .#"$target_hostname" --target-host "$target_user"@"$target_destination"
 
+echo "Success"
