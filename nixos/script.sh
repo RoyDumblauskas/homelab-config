@@ -127,7 +127,7 @@ fi
 install -d -m755 "$temp/persist/etc/ssh"
 
 # Generate private key and copy it to the temporary directory
-ssh-keygen -t ed25519 -f "$temp/$persist_dir/etc/ssh/ssh_host_ed25519_key" -C "$target_user"@"$target_hostname" -N ""
+ssh-keygen -t ed25519 -f "$temp/persist/etc/ssh/ssh_host_ed25519_key" -C "$target_user"@"$target_hostname" -N ""
 
 # Set the correct permissions so sshd will accept the key
 chmod 600 "$temp/persist/etc/ssh/ssh_host_ed25519_key"
