@@ -5,7 +5,7 @@ let
     <html>
       <head><title>Hello</title></head>
       <body>
-        <h1>Hello from test.roypository.com 🎉</h1>
+        <h1>Hello from test.roypository.com</h1>
         <p>This content is defined in configuration.nix</p>
       </body>
     </html>
@@ -47,11 +47,14 @@ in
   };
 
   environment.variables = {
-    LEAKYKEY = builtins.readFile config.sops.secrets."clusterPassword".path;
+    CP = config.sops.secrets."clusterPassword".path;
+    CAE = config.sops.secrets."cloudflare-api-email".path;
+    CAK = config.sops.secrets."cloudflare-api-key".path;
   };
 
   systemd.user.services.mbsync.unitConfig.After = [ "sops-nix.service" ];
- 
+  fileSystems."/persist".neededForBoot = true;
+
   # set up DNS with nginx
   security.acme = {
     acceptTerms = true;
