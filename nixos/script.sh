@@ -35,7 +35,7 @@ function sops_add_host_to_key_groups() {
 # Use generated ssh key generate age key, and update sops
 # args: target_key
 function sops_generate_host_age_key() {
-	green "Generating an age key based on the new ssh_host_ed25519_key"
+	echo "Generating an age key based on the new ssh_host_ed25519_key"
 
 	# Get the SSH key
 	target_key="$1"
