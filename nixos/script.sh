@@ -26,9 +26,10 @@ function sops_update_age_key() {
 # Update key groups to have new host's sops key
 function sops_add_host_to_key_groups() {
 	h="\"$1\""                    # quoted hostname for yaml
-
-  yq -i ".creation_rules.key_groups[].age += [ $h ]" "$SOPS_FILE"
-  yq -i ".creation_rules.key_groups[].age[-1] alias = $h" "$SOPS_FILE"
+  
+  echo "Adding key to key group"
+  yq -i ".creation_rules[].key_groups[].age += [ $h ]" "$SOPS_FILE"
+  yq -i ".creation_rules[].key_groups[].age[-1] alias = $h" "$SOPS_FILE"
 }
 
 # Use generated ssh key generate age key, and update sops
@@ -38,7 +39,6 @@ function sops_generate_host_age_key() {
 
 	# Get the SSH key
 	target_key="$1"
-  echo "$target_key"
 	host_age_key=$(echo "$target_key" | ssh-to-age)
 
 	if grep -qv '^age1' <<<"$host_age_key"; then
@@ -51,6 +51,7 @@ function sops_generate_host_age_key() {
 	echo "Updating nix-secrets/.sops.yaml"
 	sops_update_age_key "$target_hostname" "$host_age_key"
   sops_add_host_to_key_groups "$target_hostname"
+  sops updatekeys secrets/*
 }
 
 # ---HELPER FUNCTIONS END---
@@ -134,7 +135,6 @@ chmod 600 "$temp/persist/etc/ssh/ssh_host_ed25519_key"
 
 # update sops with new host ssh key | age key
 target_key=$(cut -f1- -d" " "$temp/persist/etc/ssh/ssh_host_ed25519_key.pub")
-echo "$target_key"
 sops_generate_host_age_key "$target_key"
 
 # Install NixOS to the host system with our secrets
