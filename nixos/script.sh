@@ -14,7 +14,7 @@ function sops_update_age_key() {
 	keyname="$1"
 	key="$2"
 
-	if [[ -n $(yq ".keys.hosts[] | select(anchor == \"$keyname\")" "${SOPS_FILE}") ]]; then
+  if [[ -n $(yq ".keys.hosts[] | select(anchor == \"$keyname\")" "${SOPS_FILE}") ]]; then
 		echo "Updating existing ${keyname} key"
 		yq -i "(.keys.hosts[] | select(anchor == \"$keyname\")) = \"$key\"" "$SOPS_FILE"
 	else
@@ -27,9 +27,13 @@ function sops_update_age_key() {
 function sops_add_host_to_key_groups() {
 	h="\"$1\""                    # quoted hostname for yaml
   
-  echo "Adding key to key group"
-  yq -i ".creation_rules[].key_groups[].age += [ $h ]" "$SOPS_FILE"
-  yq -i ".creation_rules[].key_groups[].age[-1] alias = $h" "$SOPS_FILE"
+  if [[  -z $(yq "select(.creation_rules[].key_groups[].age[] == $h)" "$SOPS_FILE") ]]; then
+    echo "Adding key to key group"
+    yq -i ".creation_rules[].key_groups[].age += [ $h ]" "$SOPS_FILE"
+    yq -i ".creation_rules[].key_groups[].age[-1] alias = $h" "$SOPS_FILE"
+  else
+    echo "Reference already exists in key group"
+  fi
 }
 
 # Use generated ssh key generate age key, and update sops
