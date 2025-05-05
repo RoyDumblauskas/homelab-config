@@ -45,10 +45,6 @@ function sops_generate_host_age_key() {
 	target_key="$1"
 	host_age_key=$(echo "$target_key" | ssh-to-age)
   
-  # temporary logging
-  echo "$target_key" >> log.txt
-  echo "$host_age_key" >> log.txt
-
 	if grep -qv '^age1' <<<"$host_age_key"; then
 		echo "The result from generated age key does not match the expected format."
 		echo "Result: $host_age_key"
