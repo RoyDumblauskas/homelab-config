@@ -8,7 +8,8 @@
 ### Setup Steps
 1. Flash NixOS onto the server hardware
 2. Create a sudo password for root ```sudo passwd```
-3. Run the bash script ```homelab-config/nixos/script.sh```
+3. Get ip address with ```ip addr```
+4. Run the bash script ```homelab-config/nixos/script.sh``` using that ip addr
 
 ### Random
 - Any time the quasiSecret repository is updated, run ```nix flake lock --update-input quasiSecrets``` to ensure you're using the most recent pushed commit
