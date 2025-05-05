@@ -7,10 +7,10 @@
 
 ### Setup Steps
 1. Flash NixOS onto the server hardware
-2. Create a sudo password for root
+2. Create a sudo password for root ```sudo passwd```
 3. Run the bash script ```homelab-config/nixos/script.sh```
 
 ### Random
-- Any time the quasiSecret Reop is updated, run ```nix flake lock --update-input quasiSecrets``` to ensure you're using the most recent pushed commit
+- Any time the quasiSecret repository is updated, run ```nix flake lock --update-input quasiSecrets``` to ensure you're using the most recent pushed commit
 
 
