@@ -46,12 +46,6 @@ in
     };
   };
 
-  environment.variables = {
-    CP = config.sops.secrets."clusterPassword".path;
-    CAE = config.sops.secrets."cloudflare-api-email".path;
-    CAK = config.sops.secrets."cloudflare-api-key".path;
-  };
-
   systemd.user.services.mbsync.unitConfig.After = [ "sops-nix.service" ];
   fileSystems."/persist".neededForBoot = true;
 
@@ -67,25 +61,27 @@ in
       };
     };
   };
-  
-  services.nginx.enable = true;
 
-  services.nginx.virtualHosts."roypository.com" = {
-    forceSSL = true;
-    enableACME = true; 
-    acmeRoot = null;
-  };
+  services.nginx = {
+    enable = true;
+    
+    virtualHosts."roypository.com" = {
+      forceSSL = true;
+      enableACME = true; 
+      acmeRoot = null;
+    };
 
-
-  services.nginx.virtualHosts."test.roypository.com" = {
-    forceSSL = true;
-    enableACME = true;
-    acmeRoot = null;
-    root = "${testSiteIndex}";
-    locations."/" = {
-      extraConfig = ''
-        index index.html;
-      '';
+    virtualHosts."test.roypository.com" = {
+      forceSSL = true;
+      enableACME = true;
+      acmeRoot = null;
+      root = "${testSiteIndex}";
+      locations."/" = {
+        extraConfig = 
+        ''
+          index index.html;
+        '';
+      };
     };
   };
 
@@ -104,24 +100,24 @@ in
   boot.initrd.postMountCommands = lib.mkAfter ''
     zfs rollback -r zroot/root@blank
   '';
+  
+  networking = {
+    hostName = meta.hostname;
+    hostId = meta.hostId;
+    defaultGateway = "192.168.1.1";
+    nameservers = [ "1.1.1.1" "1.0.0.1" ];
 
-  networking.hostName = meta.hostname;
-  networking.hostId = meta.hostId;
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [ 22 80 443];
+    };
 
-  networking.interfaces.eth0.ipv4.addresses = [
-    {
-      address = config.ipAddrs.${meta.hostname};
-      prefixLength = 24;
-    }
-  ];
-
-  networking.defaultGateway = "192.168.1.1";
-  networking.nameservers = [ "1.1.1.1" "1.0.0.1" ];
-
-  # Open ports in the firewall.
-  networking.firewall = {
-    enable = true;
-    allowedTCPPorts = [ 22 80 443 ];
+    interfaces.eth0.ipv4.addresses = [
+      {
+        adress = config.ipAddrs.${meta.hostname};
+        prefixLength = 24;
+      }
+    ];
   };
 
   # Set your time zone.
