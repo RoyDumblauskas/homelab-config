@@ -58,17 +58,6 @@ function sops_generate_host_age_key() {
   sops updatekeys secrets/*
 }
 
-# ---HELPER FUNCTIONS END---
-
-# Create a temporary directory
-temp=$(mktemp -d)
-
-# Function to cleanup temporary directory on exit
-cleanup() {
-  rm -rf "$temp"
-}
-trap cleanup EXIT
-
 function help_and_exit() {
 	echo
 	echo "Remotely installs NixOS on a target machine using this nix-config."
@@ -87,6 +76,36 @@ function help_and_exit() {
 	echo "  -h | --help                             Print this help."
 	exit 0
 }
+
+# Function to cleanup temporary directory on exit
+cleanup() {
+  rm -rf "$temp"
+}
+trap cleanup EXIT
+
+await_boot() {
+  local host=$1
+  local user=${2:-root}  # default to root if not provided
+  local timeout=${3:-2}  # default SSH connect timeout (seconds)
+  
+  if [[ -z "$host" ]]; then
+    echo "Usage: await_boot <host> [user] [timeout]"
+    return 1
+  fi
+
+  echo "Waiting for SSH to become available at ${user}@${host}..."
+  
+  until ssh -o ConnectTimeout=$timeout -o StrictHostKeyChecking=no -o BatchMode=yes "${user}@${host}" 'exit' 2>/dev/null; do
+    sleep 2
+  done
+  
+  echo "SSH is now available at ${user}@${host}."
+}
+
+# ---HELPER FUNCTIONS END---
+
+# Create a temporary directory
+temp=$(mktemp -d)
 
 # Handle command-line arguments
 while [[ $# -gt 0 ]]; do
@@ -144,4 +163,5 @@ sops_generate_host_age_key "$target_key"
 # Install NixOS to the host system with our secrets
 nix run github:nix-community/nixos-anywhere --extra-experimental-features "nix-command flakes" -- --ssh-port "$ssh_port" --post-kexec-ssh-port "$ssh_port" --extra-files "$temp" --generate-hardware-config nixos-generate-config ./hardware-configuration.nix --disko-mode disko --build-on local --flake .#"$target_hostname" --target-host "$target_user"@"$target_destination"
 
-echo "Success"
+echo "\nConfig Successfully Deployed\n"
+

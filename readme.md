@@ -9,6 +9,7 @@
 2. Create a sudo password for root ```sudo passwd```
 3. Get IP address with ```ip addr```
 4. From the nixos directory, run the bash script ```bootstrap.sh``` using IP address from step 3 (```./bootstrap.sh -h``` for options)
+5. If you want to make changes/rebuild the machine from the machine, you'll need to add an ssh key to the user, and then put that public key into github to authorize the server to read from your secrets repository
 
 ### Random
 - Any time the quasiSecret repository is updated, run ```nix flake lock --update-input quasiSecrets``` to ensure you're using the most recent pushed commit
