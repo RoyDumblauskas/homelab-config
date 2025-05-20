@@ -17,6 +17,10 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # IDK if this is right, might need to import each service, hope not
+    services = {
+      url = "./services/";
+    };
   };
 
   outputs = { self, nixpkgs, nixvim, home-manager, disko, sops-nix, quasiSecrets }@inputs: 

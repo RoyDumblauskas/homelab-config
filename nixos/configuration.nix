@@ -164,6 +164,12 @@ in
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICNkZ5Xr75thR/tEgsASzYAtaA/kbsv2PKI8ux9rgpTe roydumblauskas@gmail.com"
     ];
   };
+
+  # Symlink the user directories that need to be persisted (ssh key/repository folder)
+  systemd.tmpfiles.rules = [
+    "L /home/sysAdmin/.ssh/ - - - - /persist/home/sysAdmin/.ssh"
+    "L /home/sysAdmin/rp/ - - - - /persist/home/sysAdmin/rp" 
+  ];
   
   users.users.root = {
     hashedPassword = "$y$j9T$IjaP0KIfdpEvlLtOn.u0T/$0MJDaFEdSu6zSJ04CF1dtorD6IVgbN3vmDiiwGwwqr5";
