@@ -51,11 +51,6 @@
             options.mountpoint = "/nix";
             mountpoint = "/nix";
           };
-          "home" = {
-            type = "zfs_fs";
-            options.mountpoint = "/home";
-            mountpoint = "/home";
-          };
           "persist" = {
             type = "zfs_fs";
             options.mountpoint = "/persist";
