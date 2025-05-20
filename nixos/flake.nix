@@ -44,7 +44,7 @@
           ./disk-config.nix
           disko.nixosModules.disko
           sops-nix.nixosModules.sops
-          quasiSecrets.nixosModules.ipAddrs
+          (quasiSecrets.nixosModules)
           home-manager.nixosModules.home-manager {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
