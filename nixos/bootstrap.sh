@@ -157,6 +157,7 @@ sed -i "/$target_hostname/d; /$target_destination/d" ~/.ssh/known_hosts
 # create directory that will be used to store the users ssh keys 
 # (Not sure if it's necessary, but I want the directory to exist before it's symlinked as declared in the configuration.nix file)
 install -d -m755 "$temp/persist/$target_administrator/.ssh"
+install -d -m755 "$temp/persist/$target_administrator/rp"
 
 # Create the directory where sshd expects to find the host keys
 install -d -m755 "$temp/persist/etc/ssh"
