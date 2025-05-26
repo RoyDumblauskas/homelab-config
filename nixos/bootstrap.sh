@@ -3,6 +3,7 @@
 # User variables
 target_hostname=""
 target_destination=""
+target_administrator=""
 target_user=${BOOTSTRAP_USER-root} # Set BOOTSTRAP_ defaults in your shell.nix
 ssh_port=${BOOTSTRAP_SSH_PORT-22}
 
@@ -67,7 +68,9 @@ function help_and_exit() {
 	echo "ARGS:"
 	echo "  -n <target_hostname>                    specify target_hostname of the target host to deploy the nixos config on."
 	echo "  -d <target_destination>                 specify ip or domain to the target host."
-	echo
+	echo "  -a <target_administrator>               specify the name of the user that will act as the system administrator"
+  echo "                                          (in my configurations this is 'sysAdmin')"
+  echo 
 	echo "OPTIONS:"
 	echo "  -u <target_user>                        specify target_user with sudo access. nix-config will be cloned to their home."
 	echo "                                          Default=root."
@@ -118,6 +121,10 @@ while [[ $# -gt 0 ]]; do
 		shift
 		target_destination=$1
 		;;
+  -a)
+    shift
+    target_administrator=$1
+    ;;
 	-u)
 		shift
 		target_user=$1
@@ -146,6 +153,10 @@ fi
 
 # delete known hosts
 sed -i "/$target_hostname/d; /$target_destination/d" ~/.ssh/known_hosts
+
+# create directory that will be used to store the users ssh keys 
+# (Not sure if it's necessary, but I want the directory to exist before it's symlinked as declared in the configuration.nix file)
+install -d -m755 "$temp/persist/$target_administrator/.ssh"
 
 # Create the directory where sshd expects to find the host keys
 install -d -m755 "$temp/persist/etc/ssh"
