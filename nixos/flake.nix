@@ -17,9 +17,11 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # IDK if this is right, might need to import each service, hope not
+    # This is a path to the services I've declared. 
+    # It just happens to be stored in the same repository (relative), 
+    # but could well be a separate repository
     services = {
-      url = "./services/";
+      url = "../../services/";
     };
   };
 
@@ -48,7 +50,8 @@
           ./disk-config.nix
           disko.nixosModules.disko
           sops-nix.nixosModules.sops
-          (quasiSecrets.nixosModules)
+          quasiSecrets.nixosModules.ipAddrs
+          quasiSecrets.nixosModules.services
           home-manager.nixosModules.home-manager {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;

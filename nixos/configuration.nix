@@ -49,7 +49,7 @@ in
   systemd.user.services.mbsync.unitConfig.After = [ "sops-nix.service" ];
   fileSystems."/persist".neededForBoot = true;
 
-  # set up DNS with nginx
+  # Set up https certs via cloudflare/acme
   security.acme = {
     acceptTerms = true;
     defaults = {
@@ -62,6 +62,7 @@ in
     };
   };
 
+  # Setup vhosts via nginx
   services.nginx = {
     enable = true;
     
