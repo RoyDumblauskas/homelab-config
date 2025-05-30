@@ -145,8 +145,8 @@ while [[ $# -gt 0 ]]; do
 	shift
 done
 
-if [ -z "$target_hostname" ] || [ -z "$target_destination" ]; then
-	echo "ERROR: -n, -d, and -k are all required"
+if [ -z "$target_hostname" ] || [ -z "$target_destination" ] || [ -z "$target_administrator" ]; then
+	echo "ERROR: -n, -d, and -a are all required"
 	echo
 	help_and_exit
 fi
