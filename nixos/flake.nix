@@ -20,12 +20,12 @@
     # This is a path to the services I've declared. 
     # It just happens to be stored in the same repository (relative), 
     # but could well be a separate repository
-    services = {
-      url = "../../services/";
+    tests-service = {
+      url = "github:RoyDumblauskas/tests-service";
     };
   };
 
-  outputs = { self, nixpkgs, nixvim, home-manager, disko, sops-nix, quasiSecrets }@inputs: 
+  outputs = { self, nixpkgs, nixvim, home-manager, disko, sops-nix, quasiSecrets, tests-service }@inputs: 
   let 
     nodes = [
       { 
@@ -52,6 +52,7 @@
           sops-nix.nixosModules.sops
           quasiSecrets.nixosModules.ipAddrs
           quasiSecrets.nixosModules.services
+          tests-service.nixosModules."x86_64-linux"
           home-manager.nixosModules.home-manager {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
