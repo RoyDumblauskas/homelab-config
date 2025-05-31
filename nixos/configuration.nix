@@ -1,16 +1,5 @@
 { config, lib, pkgs, meta, ... }:
 
-let
-  testSiteIndex = pkgs.writeText "index.html" ''
-    <html>
-      <head><title>Hello</title></head>
-      <body>
-        <h1>Hello from test.roypository.com</h1>
-        <p>This content is defined in configuration.nix</p>
-      </body>
-    </html>
-  '';
-in
 {
   imports = [ ];
 
@@ -71,18 +60,15 @@ in
       enableACME = true; 
       acmeRoot = null;
     };
+  };
 
-    virtualHosts."test.roypository.com" = {
-      forceSSL = true;
-      enableACME = true;
-      acmeRoot = null;
-      root = "${testSiteIndex}";
-      locations."/" = {
-        extraConfig = 
-        ''
-          index index.html;
-        '';
-      };
+  # Declare test service manually
+  services.tests-service = {
+    enable = true;
+    port = 8080;
+    nginx = {
+      enable = true;
+      hostname = "test.roypository.com";
     };
   };
 
