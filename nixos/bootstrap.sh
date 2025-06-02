@@ -175,5 +175,5 @@ sops_generate_host_age_key "$target_key"
 # Install NixOS to the host system with our secrets
 nix run github:nix-community/nixos-anywhere --extra-experimental-features "nix-command flakes" -- --ssh-port "$ssh_port" --post-kexec-ssh-port "$ssh_port" --extra-files "$temp" --generate-hardware-config nixos-generate-config ./hardware-configuration.nix --disko-mode disko --build-on local --flake .#"$target_hostname" --target-host "$target_user"@"$target_destination"
 
-echo "\nConfig Successfully Deployed\n"
+echo "Config Successfully Deployed"
 
