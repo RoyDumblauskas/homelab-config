@@ -66,7 +66,7 @@
   services.tests-service = {
     enable = true;
     port = 8080;
-    nginx = {
+    default-nginx = {
       enable = true;
       hostname = "test.roypository.com";
     };
@@ -101,7 +101,7 @@
 
     interfaces.eth0.ipv4.addresses = [
       {
-        adress = config.ipAddrs.${meta.hostname};
+        address = config.ipAddrs.${meta.hostname};
         prefixLength = 24;
       }
     ];

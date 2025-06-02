@@ -52,7 +52,7 @@
           sops-nix.nixosModules.sops
           quasiSecrets.nixosModules.ipAddrs
           quasiSecrets.nixosModules.serviceList
-          tests-service.nixosModules."x86_64-linux"
+          tests-service.nixosModules.default
           home-manager.nixosModules.home-manager {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
