@@ -315,11 +315,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1748883449,
-        "narHash": "sha256-3oAm3A6G06ugpYuVxtghBhtFLEPQs8ZKSJVfvnQjiJg=",
+        "lastModified": 1748888914,
+        "narHash": "sha256-CZBUN0N+KXVgSwg/yBtDhZ27Q5NWq5m65DCir0x5Z7s=",
         "owner": "RoyDumblauskas",
         "repo": "tests-service",
-        "rev": "4538794f94985595be646308cecd449b759d93e5",
+        "rev": "8ccfabbbcc7fa3f01cd00138bcbaa8c629ae3ec3",
         "type": "github"
       },
       "original": {
