@@ -1,133 +1,65 @@
 {
-  description = "tests-service for Roy's Homelab";
+  description = "Server Config Controller";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
-    flake-utils.url = "github:numtide/flake-utils";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixvim.url = "github:nix-community/nixvim";
+    quasiSecrets.url = "git+ssh://git@github.com/RoyDumblauskas/server-semi-secrets";
+    home-manager = {
+      url = "github:nix-community/home-manager/release-24.11";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # This is a path to the services I've declared. 
+    # It just happens to be stored in the same repository (relative), 
+    # but could well be a separate repository
+    tests-service = {
+      url = "github:RoyDumblauskas/tests-service";
+    };
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    flake-utils,
-  }: let
-    nixosModule = {
-      config,
-      lib,
-      pkgs,
-      ...
-    }: {
-      options.services.tests-service = {
-        enable = lib.mkEnableOption "Status reports for all homelab services";
-
-        port = lib.mkOption {
-          type = lib.types.port;
-          default = 8080;
-          description = "Port to listen on";
-        };
-
-        default-nginx = {
-          enable = lib.mkEnableOption "Enable nginx reverse proxy to direct to service";
-          hostname = {
-            type = lib.types.str;
-            default = "localhost";
-            description = "Hostname to attach to service";
+  outputs = { self, nixpkgs, nixvim, home-manager, disko, sops-nix, quasiSecrets, tests-service }@inputs: 
+  let 
+    nodes = [
+      { 
+        name = "nixos-homelab-00";
+        hostId = "3884D2F1";
+      }
+    ];
+  in {
+    nixosConfigurations = builtins.listToAttrs (map (node: {
+      name = node.name;
+      value = nixpkgs.lib.nixosSystem {
+        specialArgs = {
+          meta = {
+            hostname = node.name;
+            hostId = node.hostId;
           };
         };
-      };
-
-      config = lib.mkIf config.services.tests-service.enable {
-        systemd.services.tests-service = {
-          description = "Status page for homelab services";
-          wantedBy = ["multi-user.target"];
-          after = ["network.target"];
-          serviceConfig = {
-            ExecStart = "${pkgs.simple-http-server}/bin/tests-service  --port ${ toString config.services.tests-service.port }";
-            Restart = "always";
-            Type = "simple";
-            DynamicUser = "yes";
-            WorkingDirectory = "${self.packages.${pkgs.system}.default}";
-          };
-        };
-
-        services.nginx = lib.mkIf config.services.tests-service.default-nginx.enable {
-          enable = true;
-          virtualHosts."${config.services.tests-service.default-nginx.hostname}" = {
-            forceSSL = true;
-            enableACME = true;
-            acmeRoot = null;
-            locations."/" = {
-              proxyPass = "http://localhost:${toString config.services.tests-service.port}";
-              extraConfig = ''
-                proxy_set_header Host $host;
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_set_header X-Forwarded-Proto $scheme;
-              '';
-            };
-          };
-        };
-
-        networking.firewall.allowedTCPPorts = lib.mkMerge [
-          (lib.mkIf config.services.tests-service.enable [ config.services.tests-service.port ])
-          (lib.mkIf config.services.tests-service.default-nginx.enable [ 80 443 ])
+        system = "x86_64-linux";
+        modules = [
+          ./configuration.nix
+          ./hardware-configuration.nix
+          ./disk-config.nix
+          disko.nixosModules.disko
+          sops-nix.nixosModules.sops
+          quasiSecrets.nixosModules.ipAddrs
+          quasiSecrets.nixosModules.serviceList
+          tests-service.nixosModules."x86_64-linux"
+          home-manager.nixosModules.home-manager {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.sysAdmin = ./home.nix;
+          }
         ];
-      };
-    };
-  in
-    (flake-utils.lib.eachDefaultSystem (system: let
-      pkgs = nixpkgs.legacyPackages.${system};
-
-      dioxusApp = pkgs.stdenv.mkDerivation {
-        pname = "tests-service";
-        version = "0.1.0";
-        src = ./.;
-
-        buildInputs = with pkgs; [
-            dioxus-cli
-            rustc
-            cargo
-
-            # tauri deps?
-            pkg-config
-            gobject-introspection
-            cargo-tauri
-            nodejs
-            at-spi2-atk
-            atkmm
-            cairo
-            gdk-pixbuf
-            glib
-            gtk3
-            harfbuzz
-            librsvg
-            libsoup_3
-            pango
-            webkitgtk_4_1
-            openssl
-            wasm-pack
-            wasm-bindgen-cli
-            lld
-          ];
-
-        buildPhase = ''
-          dx build --release
-        '';
-
-        installPhase = ''
-          mkdir -p $out
-          cp -r dist/* $out/
-        '';
-      };
-    in {
-      packages.default = dioxusApp;
-
-      apps.default = {
-        type = "app";
-        program = "${dioxusApp}/index.html";
-      };
-    }))
-    // {
-      nixosModules.default = nixosModule;
-    };
+      };      
+    }) nodes);
+  };
 }
