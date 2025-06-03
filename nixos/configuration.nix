@@ -65,7 +65,7 @@
   # Declare test service manually
   services.tests-service = {
     enable = true;
-    port = 8080;
+    # port = 8080;
     default-nginx = {
       enable = true;
       hostname = "test.roypository.com";
