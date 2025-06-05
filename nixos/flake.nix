@@ -17,10 +17,7 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    impermanence = {
-      url = "github:nix-community/impermanence";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    impermanence.url = "github:nix-community/impermanence";
     # This is a path to the services I've declared. 
     # It just happens to be stored in the same repository (relative), 
     # but could well be a separate repository
