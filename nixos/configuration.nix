@@ -159,11 +159,11 @@
         ".ssh"
         "rp"
       ];
-
-      root.directories = [
-        ".ssh"
-      ];
     };
+
+    directories = [
+      "/root/.ssh"
+    ];
   };
   
   users.users.root = {
