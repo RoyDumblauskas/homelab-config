@@ -154,10 +154,16 @@
 
   # Symlink the user directories that need to be persisted (ssh key/repository folder)
   environment.persistence."/persist" = {
-    users.sysAdmin.directories = [
-      ".ssh"
-      "rp"
-    ];
+    users = {
+      sysAdmin.directories = [
+        ".ssh"
+        "rp"
+      ];
+
+      root.directories = [
+        ".ssh"
+      ];
+    };
   };
   
   users.users.root = {
