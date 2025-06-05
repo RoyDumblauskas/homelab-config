@@ -17,6 +17,10 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    impermanence = {
+      url = "github:nix-community/impermanence";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # This is a path to the services I've declared. 
     # It just happens to be stored in the same repository (relative), 
     # but could well be a separate repository
@@ -25,7 +29,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixvim, home-manager, disko, sops-nix, quasiSecrets, tests-service }@inputs: 
+  outputs = { self, nixpkgs, nixvim, home-manager, disko, sops-nix, quasiSecrets, impermanence, tests-service }@inputs: 
   let 
     nodes = [
       { 
@@ -52,6 +56,7 @@
           sops-nix.nixosModules.sops
           quasiSecrets.nixosModules.ipAddrs
           quasiSecrets.nixosModules.serviceList
+          impermanence.nixosModules.impermanence
           tests-service.nixosModules.default
           home-manager.nixosModules.home-manager {
             home-manager.useGlobalPkgs = true;

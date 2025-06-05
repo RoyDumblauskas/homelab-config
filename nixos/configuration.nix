@@ -65,7 +65,7 @@
   # Declare test service manually
   services.tests-service = {
     enable = true;
-    # port = 8080;
+    port = 8080;
     default-nginx = {
       enable = true;
       hostname = "test.roypository.com";
@@ -153,10 +153,12 @@
   };
 
   # Symlink the user directories that need to be persisted (ssh key/repository folder)
-  systemd.tmpfiles.rules = [
-    "L /home/sysAdmin/.ssh/ - - - - /persist/home/sysAdmin/.ssh"
-    "L /home/sysAdmin/rp/ - - - - /persist/home/sysAdmin/rp" 
-  ];
+  environment.persistence."/persist" = {
+    users.sysAdmin.directories = [
+      ".ssh"
+      "rp"
+    ];
+  };
   
   users.users.root = {
     hashedPassword = "$y$j9T$IjaP0KIfdpEvlLtOn.u0T/$0MJDaFEdSu6zSJ04CF1dtorD6IVgbN3vmDiiwGwwqr5";
