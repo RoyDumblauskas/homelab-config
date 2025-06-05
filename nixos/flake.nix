@@ -4,7 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
     nixvim.url = "github:nix-community/nixvim";
-    quasiSecrets.url = "git+ssh://git@github.com/RoyDumblauskas/server-semi-secrets";
+    quasiSecrets.url = "git+ssh://git@github.com/RoyDumblauskas/server-semi-secrets?shallow=1";
     home-manager = {
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -22,7 +22,7 @@
     # It just happens to be stored in the same repository (relative), 
     # but could well be a separate repository
     tests-service = {
-      url = "github:RoyDumblauskas/tests-service";
+      url = "github:RoyDumblauskas/tests-service?shallow=1";
     };
   };
 

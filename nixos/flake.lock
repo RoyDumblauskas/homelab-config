@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1749089136,
-        "narHash": "sha256-A1UgwtAEQYd38Z6VoRAiGs4jZQczAGyP5DF3hhYUdpg=",
+        "lastModified": 1749147380,
+        "narHash": "sha256-UvCI5f1qD9l1fCQkoG/kJI0yNjDQIiJaN7gkve8fmII=",
         "owner": "nix-community",
         "repo": "disko",
-        "rev": "a4f7deb49f7336feb6c5abaf213b374936421dbe",
+        "rev": "d74db625a5cf3f46cf8fa545d6ef10bd3463ea07",
         "type": "github"
       },
       "original": {
@@ -221,11 +221,12 @@
         "narHash": "sha256-l5vEHHoG0X49ZaAi/dlyVidrgRl+uY2sTHSXiPStoUA=",
         "ref": "refs/heads/main",
         "rev": "f6dad37607b8044097d2f8700aee755e4268a6ce",
-        "revCount": 14,
+        "shallow": true,
         "type": "git",
         "url": "ssh://git@github.com/RoyDumblauskas/server-semi-secrets"
       },
       "original": {
+        "shallow": true,
         "type": "git",
         "url": "ssh://git@github.com/RoyDumblauskas/server-semi-secrets"
       }
@@ -297,11 +298,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1749140308,
-        "narHash": "sha256-qUdbbvRcnff4IcqvYB9lE6/R4w4QrMUtvc9iDJE2g3s=",
+        "lastModified": 1749149328,
+        "narHash": "sha256-/cdYxdO1RrcFMPj/YmYQEZWL4LMbiV3ZLplQLZT79os=",
         "owner": "RoyDumblauskas",
         "repo": "tests-service",
-        "rev": "938de22060286391156f8d8533f8e7f7fa6b498b",
+        "rev": "e260cd74cdead80078136ab65cb173c107b45efd",
         "type": "github"
       },
       "original": {
