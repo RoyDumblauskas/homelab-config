@@ -163,6 +163,7 @@
 
     directories = [
       "/root/.ssh"
+      "/var/lib/nixos"
     ];
   };
   
