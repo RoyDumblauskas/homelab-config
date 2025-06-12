@@ -1,37 +1,10 @@
 keys:
   hosts:
-    - &laptop age1ldgnl53dmvl4fjz6hgdj0cvensagddn3ltpmxfm72m8q273w75fsk42p8v
+    - &laptop age13ldedhh6ymava0d5dn54860a3f799gufknre9lfegegjt9ytes2qq5qgmr
     - &nixos-homelab-00 age15w5qelqemnvytp38ywdwmflc6qmrqph3dwqmx3lrec5cm5d9nchq9pfe8s
 creation_rules:
   - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
     key_groups:
       - age:
           - *laptop
-          - *nixos-homelab-00
-          - *nixos-homelab-00
-          - *nixos-homelab-00
-          - *nixos-homelab-00
-          - *nixos-homelab-00
-          - *nixos-homelab-00
-          - *nixos-homelab-00
-          - *nixos-homelab-00
-          - *nixos-homelab-00
-          - *nixos-homelab-00
-          - *nixos-homelab-00
-          - *nixos-homelab-00
-          - *nixos-homelab-00
-          - *nixos-homelab-00
-          - *nixos-homelab-00
-          - *nixos-homelab-00
-          - *nixos-homelab-00
-          - *nixos-homelab-00
-          - *nixos-homelab-00
-          - *nixos-homelab-00
-          - *nixos-homelab-00
-          - *nixos-homelab-00
-          - *nixos-homelab-00
-          - *nixos-homelab-00
-          - *nixos-homelab-00
-          - *nixos-homelab-00
-          - *nixos-homelab-00
           - *nixos-homelab-00
