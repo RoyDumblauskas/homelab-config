@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
-    quasiSecrets.url = "git+ssh://git@github.com/RoyDumblauskas/server-semi-secrets/main?shallow=1";
+    quasiSecrets.url = "git+ssh://git@github.com/RoyDumblauskas/server-semi-secrets?shallow=1";
     home-manager = {
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -20,7 +20,7 @@
     # This is a path to the services I've declared. 
     # It just happens to be stored in the same repository (relative), 
     # but could well be a separate repository
-    tests-service.url = "github:RoyDumblauskas/tests-service/main?shallow=1";
+    tests-service.url = "github:RoyDumblauskas/tests-service?shallow=1";
     minio-service.url = "path:../homelab-services/minio-service";
   };
 
