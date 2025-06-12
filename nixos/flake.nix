@@ -2,7 +2,7 @@
   description = "Server Config Controller";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     quasiSecrets.url = "git+ssh://git@github.com/RoyDumblauskas/server-semi-secrets?shallow=1";
     home-manager = {
       url = "github:nix-community/home-manager/release-24.11";
@@ -21,10 +21,7 @@
     # It just happens to be stored in the same repository (relative), 
     # but could well be a separate repository
     tests-service.url = "github:RoyDumblauskas/tests-service?shallow=1";
-    minio-service = {
-      url = "path:../homelab-services/minio-service";
-      flake = true;
-    };
+    minio-service.url = "path:../homelab-services/minio-service";
   };
 
   outputs = { self, nixpkgs, home-manager, disko, sops-nix, quasiSecrets, impermanence, tests-service, minio-service }@inputs: 
