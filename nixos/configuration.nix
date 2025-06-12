@@ -20,9 +20,6 @@
 
     # Define file and key for each secret
     secrets = {
-      "clusterPassword" = {
-        sopsFile = ./secrets/build.json;
-      };
       "cloudflare-api-email" = {
         sopsFile = ./secrets/cloudflare.json;
         key = "CF_API_EMAIL";
