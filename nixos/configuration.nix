@@ -167,7 +167,14 @@
     # created with mkpasswd
     hashedPassword = "$6$8KRJ44z15XsQALM.$J4geTLaph7ynaLimlYXMGafqPOP6DONLSlTbRowH7JF7WJ4cWyMSTYQQB4OwsAgPpLCTYDzpqn6a/pfIizWFA.";
     openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICNkZ5Xr75thR/tEgsASzYAtaA/kbsv2PKI8ux9rgpTe roydumblauskas@gmail.com"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMu8YZ/m8xl7bq9NxtXjywm1T1u2WMMmEmTppWCR9xGB roydumblauskas@gmail.com"
+    ];
+  };
+
+  users.users.root = {
+    hashedPassword = "$y$j9T$IjaP0KIfdpEvlLtOn.u0T/$0MJDaFEdSu6zSJ04CF1dtorD6IVgbN3vmDiiwGwwqr5";
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMu8YZ/m8xl7bq9NxtXjywm1T1u2WMMmEmTppWCR9xGB roydumblauskas@gmail.com" 
     ];
   };
 
@@ -183,13 +190,6 @@
     directories = [
       "/root/.ssh"
       "/var/lib/nixos"
-    ];
-  };
-  
-  users.users.root = {
-    hashedPassword = "$y$j9T$IjaP0KIfdpEvlLtOn.u0T/$0MJDaFEdSu6zSJ04CF1dtorD6IVgbN3vmDiiwGwwqr5";
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICNkZ5Xr75thR/tEgsASzYAtaA/kbsv2PKI8ux9rgpTe roydumblauskas@gmail.com" 
     ];
   };
 
