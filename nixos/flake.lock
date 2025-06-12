@@ -56,6 +56,20 @@
         "type": "github"
       }
     },
+    "minio-service": {
+      "inputs": {
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "path": "../homelab-services/minio-service",
+        "type": "path"
+      },
+      "original": {
+        "path": "../homelab-services/minio-service",
+        "type": "path"
+      },
+      "parent": []
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1749727998,
@@ -68,6 +82,38 @@
       "original": {
         "owner": "NixOS",
         "ref": "nixos-25.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1749727998,
+        "narHash": "sha256-mHv/yeUbmL91/TvV95p+mBVahm9mdQMJoqaTVTALaFw=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "fd487183437963a59ba763c0cc4f27e3447dd6dd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-25.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_3": {
+      "locked": {
+        "lastModified": 1748693115,
+        "narHash": "sha256-StSrWhklmDuXT93yc3GrTlb0cKSS0agTAxMGjLKAsY8=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "910796cabe436259a29a72e8d3f5e180fc6dfacc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -93,9 +139,11 @@
         "disko": "disko",
         "home-manager": "home-manager",
         "impermanence": "impermanence",
-        "nixpkgs": "nixpkgs",
+        "minio-service": "minio-service",
+        "nixpkgs": "nixpkgs_2",
         "quasiSecrets": "quasiSecrets",
-        "sops-nix": "sops-nix"
+        "sops-nix": "sops-nix",
+        "tests-service": "tests-service"
       }
     },
     "sops-nix": {
@@ -115,6 +163,24 @@
       "original": {
         "owner": "Mic92",
         "repo": "sops-nix",
+        "type": "github"
+      }
+    },
+    "tests-service": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_3"
+      },
+      "locked": {
+        "lastModified": 1749149328,
+        "narHash": "sha256-/cdYxdO1RrcFMPj/YmYQEZWL4LMbiV3ZLplQLZT79os=",
+        "owner": "RoyDumblauskas",
+        "repo": "tests-service",
+        "rev": "e260cd74cdead80078136ab65cb173c107b45efd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "RoyDumblauskas",
+        "repo": "tests-service",
         "type": "github"
       }
     }
