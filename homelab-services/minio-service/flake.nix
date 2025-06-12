@@ -74,8 +74,8 @@
               User = "minio";
               Group = "minio";
               Environment = [
-                "MINIO_ROOT_USER=${opts.rootUser}"
-                "MINIO_ROOT_PASSWORD_FILE=${opts.rootPasswordFile}"
+                "MINIO_ACCESS_KEY=${opts.rootUser}"
+                "MINIO_SECRET_KEY_FILE=${opts.rootPasswordFile}"
               ];
               Restart = "always";
             };
