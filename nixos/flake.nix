@@ -53,7 +53,7 @@
           quasiSecrets.nixosModules.serviceList
           impermanence.nixosModules.impermanence
           tests-service.nixosModules.default
-          minio-service.nixosModules.default
+          minio-service.nixosModules.minio-service
           home-manager.nixosModules.home-manager {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
