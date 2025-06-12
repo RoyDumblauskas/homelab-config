@@ -9,7 +9,7 @@
           partitions = {
             # boot
             ESP = {
-              size = "64M";
+              size = "1024M";
               type = "EF00";
               content = {
                 type = "filesystem";
