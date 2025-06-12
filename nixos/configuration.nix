@@ -65,26 +65,28 @@
   };
 
   # Declare test service manually
-  services.tests-service = {
-    enable = true;
-    port = 8080;
-    default-nginx = {
-      enable = true;
-      hostname = "test.roypository.com";
-    };
-  };
+  #services.tests-service = {
+   # enable = true;
+    #port = 8080;
+    #default-nginx = {
+     # enable = true;
+      #hostname = "test.roypository.com";
+    #};
+  #};
 
   # Declare minio service manually
 
   # Grub Boot Loader Setup
-  boot.loader.grub = {
-    enable = true;
-    zfsSupport = true;
-    efiSupport = true;
-    efiInstallAsRemovable = true;
-    mirroredBoots = [
-      { devices = [ "nodev" ]; path = "/boot"; }
-    ];
+  boot.loader = {
+    efi = {
+      canTouchEfiVariables = true;
+      efiSysMountPoint = "/boot/efi";
+    };
+    grub = {
+      efiSupport = true;
+      efiInstallAsRemovable = true;
+      device = "nodev";
+    };
   };
 
   # Rollback root on reboot
