@@ -72,22 +72,6 @@
         "type": "github"
       }
     },
-    "nixpkgs_2": {
-      "locked": {
-        "lastModified": 1748693115,
-        "narHash": "sha256-StSrWhklmDuXT93yc3GrTlb0cKSS0agTAxMGjLKAsY8=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "910796cabe436259a29a72e8d3f5e180fc6dfacc",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "quasiSecrets": {
       "locked": {
         "lastModified": 1748827872,
@@ -111,8 +95,7 @@
         "impermanence": "impermanence",
         "nixpkgs": "nixpkgs",
         "quasiSecrets": "quasiSecrets",
-        "sops-nix": "sops-nix",
-        "tests-service": "tests-service"
+        "sops-nix": "sops-nix"
       }
     },
     "sops-nix": {
@@ -132,24 +115,6 @@
       "original": {
         "owner": "Mic92",
         "repo": "sops-nix",
-        "type": "github"
-      }
-    },
-    "tests-service": {
-      "inputs": {
-        "nixpkgs": "nixpkgs_2"
-      },
-      "locked": {
-        "lastModified": 1749149328,
-        "narHash": "sha256-/cdYxdO1RrcFMPj/YmYQEZWL4LMbiV3ZLplQLZT79os=",
-        "owner": "RoyDumblauskas",
-        "repo": "tests-service",
-        "rev": "e260cd74cdead80078136ab65cb173c107b45efd",
-        "type": "github"
-      },
-      "original": {
-        "owner": "RoyDumblauskas",
-        "repo": "tests-service",
         "type": "github"
       }
     }
