@@ -24,7 +24,7 @@
     minio-service.url = "path:../homelab-services/minio-service";
   };
 
-  outputs = { self, nixpkgs, home-manager, disko, sops-nix, quasiSecrets, impermanence, tests-service }@inputs: 
+  outputs = { self, nixpkgs, home-manager, disko, sops-nix, quasiSecrets, impermanence, tests-service, minio-service }@inputs: 
   let 
     nodes = [
       { 
@@ -53,6 +53,7 @@
           quasiSecrets.nixosModules.serviceList
           impermanence.nixosModules.impermanence
           tests-service.nixosModules.default
+          minio-service.nixosModules.default
           home-manager.nixosModules.home-manager {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;

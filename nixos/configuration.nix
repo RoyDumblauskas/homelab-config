@@ -32,6 +32,11 @@
         sopsFile = ./secrets/cloudflare.json;
         key = "CF_API_KEY";
       };
+
+      "minio-root-pass" = {
+        sopsFile = ./secrets/minio.json;
+        key = "minioPass";
+      };
     };
   };
 
@@ -69,6 +74,23 @@
     default-nginx = {
       enable = true;
       hostname = "test.roypository.com";
+    };
+  };
+
+  # Declare minio service manually
+  services.minio-service = {
+    enable = true;
+
+    dataDir = "/data/minio";
+    rootUser = "admin";
+    rootPasswordFile = config.sops.secrets."minio-root-pass".path;
+
+    dataPort = 9000;     # S3 API access
+    consolePort = 9001;  # Admin console access
+
+    default-nginx = {
+      enable = true;
+      hostname = "imgs.roypository.com";
     };
   };
 
