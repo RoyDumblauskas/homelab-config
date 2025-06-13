@@ -82,7 +82,7 @@
 
     dataDir = "/data/minio";
     rootUser = "admin";
-    rootPasswordFile = config.sops.secrets."minio-credentials".path;
+    credentialsFile = config.sops.secrets."minio-credentials".path;
 
     dataPort = 9000;     # S3 API access
     consolePort = 9001;  # Admin console access
