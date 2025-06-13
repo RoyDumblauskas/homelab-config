@@ -80,7 +80,7 @@
   services.minio-service = {
     enable = true;
 
-    dataDir = "/home/minio/data";
+    dataDir = "/data/minio";
     rootUser = "admin";
     credentialsFile = config.sops.secrets."minio-credentials".path;
 
