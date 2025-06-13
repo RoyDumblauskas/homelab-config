@@ -65,6 +65,11 @@
             after = [ "network.target" ];
             wantedBy = [ "multi-user.target" ];
 
+            preStart = ''
+              chown -R minio:minio ${opts.dataDir}
+              chmod u+rxw ${opts.dataDir}
+            '';
+
             serviceConfig = {
               ExecStart = ''
                 ${pkgs.minio}/bin/minio server ${opts.dataDir} \

@@ -76,7 +76,6 @@
   };
 
   # Declare minio service manually
-  # Declare minio service manually
 
   services.minio-service = {
     enable = true;
