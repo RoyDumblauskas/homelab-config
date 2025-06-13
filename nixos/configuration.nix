@@ -30,9 +30,9 @@
         key = "CF_API_KEY";
       };
 
-      "minio-root-pass" = {
-        sopsFile = ./secrets/minio.json;
-        key = "minioPass";
+      "minio-credentials" = {
+        sopsFile = ./secrets/minio.yaml;
+        key = "minioCredentials";
       };
     };
   };
@@ -82,7 +82,7 @@
 
     dataDir = "/data/minio";
     rootUser = "admin";
-    rootPasswordFile = config.sops.secrets."minio-root-pass".path;
+    rootPasswordFile = config.sops.secrets."minio-credentials".path;
 
     dataPort = 9000;     # S3 API access
     consolePort = 9001;  # Admin console access

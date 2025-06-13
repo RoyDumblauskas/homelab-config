@@ -37,9 +37,9 @@
             description = "MinIO root username.";
           };
 
-          rootPasswordFile = lib.mkOption {
+          credentialsFile = lib.mkOption {
             type = lib.types.path;
-            description = "File containing MinIO root password.";
+            description = "File containing MinIO credentials.";
           };
 
           default-nginx = {
@@ -74,8 +74,7 @@
               User = "minio";
               Group = "minio";
               Environment = [
-                "MINIO_ACCESS_KEY=${opts.rootUser}"
-                "MINIO_SECRET_KEY_FILE=${opts.rootPasswordFile}"
+                "environmentFile = ${opts.credentialsFile}" 
               ];
               Restart = "always";
             };
