@@ -81,7 +81,6 @@
     enable = true;
 
     dataDir = "/data/minio";
-    rootUser = "admin";
     credentialsFile = config.sops.secrets."minio-credentials".path;
 
     dataPort = 9000;     # S3 API access

@@ -31,12 +31,6 @@
             description = "MinIO Admin Console port.";
           };
 
-          rootUser = lib.mkOption {
-            type = lib.types.str;
-            default = "minioadmin";
-            description = "MinIO root username.";
-          };
-
           credentialsFile = lib.mkOption {
             type = lib.types.path;
             description = "File containing MinIO credentials.";
@@ -66,12 +60,6 @@
             after = [ "network.target" ];
             wantedBy = [ "multi-user.target" ];
 
-            # preStart = ''
-            #   mkdir -p ${opts.dataDir}
-            #   chown -R minio:minio ${opts.dataDir}
-            #   chmod u+rxw ${opts.dataDir}
-            # '';
-
             serviceConfig = {
               ExecStart = ''
                 ${pkgs.minio}/bin/minio server ${opts.dataDir} \
@@ -92,6 +80,7 @@
             virtualHosts.${opts.default-nginx.hostname} = {
               forceSSL = true;
               enableACME = true;
+              acmeRoot = null;
               locations."/" = {
                 proxyPass = "http://localhost:${toString opts.dataPort}";
               };
@@ -102,7 +91,7 @@
           };
 
           networking.firewall.allowedTCPPorts = lib.mkMerge [
-            [ opts.dataPort opts.consolePort ]
+            (lib.mkIf opts.enable [ opts.dataPort opts.consolePort ])
             (lib.mkIf opts.default-nginx.enable [ 80 443 ])
           ];
         };
