@@ -33,6 +33,7 @@
       "minio-credentials" = {
         sopsFile = ./secrets/minio.yaml;
         key = "minioCredentials";
+        format = "yaml"
       };
     };
   };
