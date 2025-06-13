@@ -65,11 +65,11 @@
             after = [ "network.target" ];
             wantedBy = [ "multi-user.target" ];
 
-            preStart = ''
-              mkdir -p ${opts.dataDir}
-              chown -R minio:minio ${opts.dataDir}
-              chmod u+rxw ${opts.dataDir}
-            '';
+            # preStart = ''
+            #   mkdir -p ${opts.dataDir}
+            #   chown -R minio:minio ${opts.dataDir}
+            #   chmod u+rxw ${opts.dataDir}
+            # '';
 
             serviceConfig = {
               ExecStart = ''
