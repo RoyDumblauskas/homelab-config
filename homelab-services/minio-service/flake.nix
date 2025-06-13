@@ -57,7 +57,7 @@
           users.users.minio = {
             isSystemUser = true;
             group = "minio";
-            home = opts.dataDir;
+            home = "${opts.dataDir}";
           };
 
           systemd.services.minio = {
