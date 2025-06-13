@@ -68,7 +68,7 @@
               ''; 
               User = "minio";
               Group = "minio";
-              environmentFile = "${opts.credentialsFile}"; 
+              EnvironmentFile = "${opts.credentialsFile}"; 
               Restart = "always";
             };
           };
