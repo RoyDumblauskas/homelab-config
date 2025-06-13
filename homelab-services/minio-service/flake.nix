@@ -82,7 +82,7 @@
               locations."/" = {
                 proxyPass = "http://localhost:${toString opts.dataPort}";
               };
-              locations."/console" = {
+              locations."/console/" = {
                 proxyPass = "https://localhost:${toString opts.consolePort}";
               };
             };
