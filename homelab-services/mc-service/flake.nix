@@ -8,11 +8,11 @@
   };
 
   outputs = { self, nixpkgs, nix-minecraft }@inputs: {
-    nixosModules.mc-service = { config, lib, ... }:
+    nixosModules.mc-service = { config, lib, nix-minecraft, ... }:
     let 
       # manually import pkgs to get nix-minecraft overlay
       pkgs = import nixpkgs {
-        system = "x86_64-linux";  # or use `config.nixpkgs.system` if passed in
+        system = "x86_64-linux";
         overlays = [ nix-minecraft.overlays.default ];
       };
       opts = config.services.mc-service;
