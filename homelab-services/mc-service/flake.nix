@@ -19,6 +19,9 @@
       };
       opts = config.services.mc-service;
     in {
+
+      imports = [ inputs.nix-minecraft.nixosModules.minecraft-servers ];
+
       options.services.mc-service = {
         enable = lib.mkEnableOption "Enable Minecraft Server";
 
@@ -39,7 +42,7 @@
           group = "mc-service";
         };
         
-        nix-minecraft.nixosModules.minecraft-servers = {
+        services.minecraft-servers = {
           enable = true;
           eula = true;
           openFirewall = true;
