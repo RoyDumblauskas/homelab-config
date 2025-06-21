@@ -110,17 +110,7 @@
       motd = "Dumble Server";
       allow-cheats = true;
     };
-    jvmOpts = ''
-      -Xms16G
-      -Xmx16G
-      -XX:+UseG1GC
-      -XX:+UnlockExperimentalVMOptions
-      -XX:G1NewSizePercent=20
-      -XX:G1ReservePercent=20
-      -XX:MaxGCPauseMillis=50
-      -XX:G1HeapRegionSize=32M
-      -Djava.net.preferIPv4Stack=true
-    '';
+    jvmOpts = "-Xms16G -Xmx16G -XX:+UseG1GC -Djava.net.preferIPv4Stack=true";
   };
   
   # ================================ #
