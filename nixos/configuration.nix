@@ -122,6 +122,15 @@
       -Djava.net.preferIPv4Stack=true
     ";
   };
+
+  services.nginx.virtualHosts."mc.roypository.com" = {
+    forceSSL = true;
+    enableACME = true;
+    acmeRoot = null;
+    locations."/" = {
+      proxyPass = "http://localhost:25565";
+    };
+  };
   
   # ================================ #
   #             END MINECRAFT        #
