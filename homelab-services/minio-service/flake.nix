@@ -76,8 +76,8 @@
                 done
 
                 ${pkgs.minio-client}/bin/mc alias set local http://localhost:${toString opts.dataPort} \"$MINIO_ROOT_USER\" \"$MINIO_ROOT_PASSWORD\"
-                ${pkgs.minio-client}/bin/mc mb --ignore-existing prod
-                ${pkgs.minio-client}/bin/mc mb --ignore-existing dev
+                ${pkgs.minio-client}/bin/mc mb --ignore-existing local/prod
+                ${pkgs.minio-client}/bin/mc mb --ignore-existing local/dev
               ''";
 
               User = "minio";
