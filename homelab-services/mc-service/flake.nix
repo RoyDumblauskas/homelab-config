@@ -9,15 +9,14 @@
 
   outputs = { self, nixpkgs, nix-minecraft }@inputs: {
 
-    nixosModules.mc-service = 
-    let
-      pkgs = import nixpkgs {
-        system = "x86_64-linux";
-        overlays = [ nix-minecraft.overlays.default ];
-      };
-    in 
-      { config, lib, ... }:
+    nixosModules.mc-service = { config, lib, pkgs, ... }:
     let 
+      system = "x86_64-linux"; # change this to your system string
+      pkgs = import nixpkgs {
+        inherit system;
+        overlays = [ nix-minecraft.overlay ];
+        config = { };
+      };
       opts = config.services.mc-service;
     in {
       options.services.mc-service = {
@@ -40,7 +39,7 @@
           group = "mc-service";
         };
         
-        services.minecraft-servers = {
+        nix-minecraft.nixosModules.minecraft-servers = {
           enable = true;
           eula = true;
           openFirewall = true;
