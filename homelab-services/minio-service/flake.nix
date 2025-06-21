@@ -61,23 +61,23 @@
             wantedBy = [ "multi-user.target" ];
 
             serviceConfig = {
-              ExecStart = ''
+              ExecStart=''
                 ${pkgs.minio}/bin/minio server ${opts.dataDir} \
                   --address ":${toString opts.dataPort}" \
                   --console-address ":${toString opts.consolePort}"
               '';
 
-              ExecStartPost = ''
+              ExecStartPost=''
                 ${pkgs.minio-client}/bin/mc alias set local http://localhost:${toString opts.dataPort} \"$MINIO_ROOT_USER\" \"$MINIO_ROOT_PASSWORD\"
                 ${pkgs.minio-client}/bin/mc mb --ignore-existing local/prod
                 ${pkgs.minio-client}/bin/mc mb --ignore-existing local/dev
               '';
 
-              User = "minio";
-              Group = "minio";
-              EnvironmentFile = "${opts.credentialsFile}"; 
-              Restart = "always";
-              RestartSec = "5";
+              User="minio";
+              Group="minio";
+              EnvironmentFile="${opts.credentialsFile}"; 
+              Restart="always";
+              RestartSec="5";
             };
           };
 
