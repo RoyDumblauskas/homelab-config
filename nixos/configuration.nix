@@ -105,7 +105,7 @@
     serverProperties = {
       server-port = 25565;
       difficulty = 3;
-      gamemode = 1;
+      gamemode = 0;
       max-players = 10;
       motd = "NixOS Minecraft server!";
       allow-cheats = true;
