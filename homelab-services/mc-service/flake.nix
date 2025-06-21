@@ -7,7 +7,7 @@
     nix-minecraft.url = "github:Infinidoge/nix-minecraft";
   };
 
-  outputs = { self, nixpkgs, nix-minecraft }@inputs: {
+  outputs = { self, nixpkgs, nix-minecraft }: {
 
     nixosModules.mc-service = { config, lib, pkgs, ... }:
     let 
@@ -20,7 +20,7 @@
       opts = config.services.mc-service;
     in {
 
-      imports = [ inputs.nix-minecraft.nixosModules.minecraft-servers ];
+      imports = [ nix-minecraft.nixosModules.minecraft-servers ];
 
       options.services.mc-service = {
         enable = lib.mkEnableOption "Enable Minecraft Server";
@@ -47,7 +47,7 @@
           eula = true;
           openFirewall = true;
           dataDir = "${opts.storeDir}";
-          users = "mc-service";
+          user = "mc-service";
           group = "mc-service";
 
           servers.homeServer = {
