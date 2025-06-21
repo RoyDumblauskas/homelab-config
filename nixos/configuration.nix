@@ -110,7 +110,17 @@
       motd = "NixOS Minecraft server!";
       allow-cheats = true;
     };
-    jvmOpts = "-Xms4092M -Xmx4092M -XX:+UseG1GC -XX:+CMSIncrementalPacing -XX:+CMSClassUnloadingEnabled -XX:ParallelGCThreads=2 -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -Djava.net.preferIPv4Stack=true";
+    jvmOpts = "
+      -Xms4096M
+      -Xmx4096M
+      -XX:+UseG1GC
+      -XX:+UnlockExperimentalVMOptions
+      -XX:G1NewSizePercent=20
+      -XX:G1ReservePercent=20
+      -XX:MaxGCPauseMillis=50
+      -XX:G1HeapRegionSize=32M
+      -Djava.net.preferIPv4Stack=true
+    ";
   };
   
   # ================================ #
