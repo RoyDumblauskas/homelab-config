@@ -22,9 +22,10 @@
     # but could well be a separate repository
     tests-service.url = "github:RoyDumblauskas/tests-service?shallow=1";
     minio-service.url = "path:../homelab-services/minio-service";
+    mc-service.url = "path:../homelab-services/mc-service";
   };
 
-  outputs = { self, nixpkgs, home-manager, disko, sops-nix, quasiSecrets, impermanence, tests-service, minio-service }@inputs: 
+  outputs = { self, nixpkgs, home-manager, disko, sops-nix, quasiSecrets, impermanence, tests-service, minio-service, mc-service }@inputs: 
   let 
     nodes = [
       { 
@@ -54,6 +55,7 @@
           impermanence.nixosModules.impermanence
           tests-service.nixosModules.default
           minio-service.nixosModules.minio-service
+          mc-service.nixosModules.mc-service
           home-manager.nixosModules.home-manager {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;

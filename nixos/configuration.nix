@@ -95,6 +95,12 @@
   # ================================ #
   #             MINECRAFT            #
   # ================================ #
+
+  services.mc-service = {
+    enable = true;
+    storeDir = "/persist/srv/minecraft";
+  };
+
   services.minecraft-server = {
     enable = true;
     eula = true;
