@@ -68,7 +68,7 @@
               '';
 
               ExecStartPost = ''
-                echo $MINIO_ROOT_USER
+                env
               '';
 
               User = "minio";
