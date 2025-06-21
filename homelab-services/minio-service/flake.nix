@@ -68,6 +68,14 @@
               '';
 
               ExecStartPost = ''
+                # Wait until MinIO responds
+                for i in {1..30}; do
+                  if ${pkgs.curl}/bin/curl -s http://localhost:${toString opts.dataPort}/minio/health/ready >/dev/null; then
+                    break
+                  fi
+                  sleep 1
+                done
+
                 ${pkgs.minio-client}/bin/mc alias set local http://localhost:${toString opts.dataPort} "$MINIO_ROOT_USER" "$MINIO_ROOT_PASSWORD"
                 ${pkgs.minio-client}/bin/mc mb --ignore-existing local/prod
                 ${pkgs.minio-client}/bin/mc mb --ignore-existing local/dev
