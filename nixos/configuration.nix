@@ -109,7 +109,7 @@
     dataDir = "/persist/var/lib/minecraft";
     
     serverProperties = {
-      server-port = 25565;
+      server-port = 43000;
       difficulty = 3;
       gamemode = 0;
       max-players = 7;
