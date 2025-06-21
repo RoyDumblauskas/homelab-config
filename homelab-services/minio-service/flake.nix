@@ -67,10 +67,6 @@
                   --console-address ":${toString opts.consolePort}"
               '';
 
-              ExecStartPost = ''
-                env
-              '';
-
               User = "minio";
               Group = "minio";
               EnvironmentFile = "${opts.credentialsFile}"; 
