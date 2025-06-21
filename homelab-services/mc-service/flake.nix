@@ -55,7 +55,7 @@
             };
 
             # Specify the custom minecraft server package
-            package = pkgs.minecraftServers.fabric-server;
+            package = pkgs.fabricServers.fabric;
           };
         };
       };
