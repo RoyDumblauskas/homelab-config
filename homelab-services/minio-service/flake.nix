@@ -68,7 +68,6 @@
               '';
 
               ExecStartPost = ''
-                # Wait until MinIO responds
                 for i in {1..30}; do
                   if ${pkgs.curl}/bin/curl -s http://localhost:${toString opts.dataPort}/minio/health/ready >/dev/null; then
                     break
