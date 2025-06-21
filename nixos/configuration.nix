@@ -101,6 +101,7 @@
     storeDir = "/persist/srv/minecraft";
   };
 
+  /*
   services.minecraft-server = {
     enable = true;
     eula = true;
@@ -118,6 +119,7 @@
     };
     jvmOpts = "-Xms16G -Xmx16G -XX:+UseG1GC -Djava.net.preferIPv4Stack=true";
   };
+  */
   
   # ================================ #
   #             END MINECRAFT        #
