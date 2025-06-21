@@ -106,13 +106,13 @@
       server-port = 25565;
       difficulty = 3;
       gamemode = 0;
-      max-players = 10;
-      motd = "NixOS Minecraft server!";
+      max-players = 7;
+      motd = "Dumble Server";
       allow-cheats = true;
     };
-    jvmOpts = "
-      -Xms4096M
-      -Xmx4096M
+    jvmOpts = ''
+      -Xms16G
+      -Xmx16G
       -XX:+UseG1GC
       -XX:+UnlockExperimentalVMOptions
       -XX:G1NewSizePercent=20
@@ -120,16 +120,7 @@
       -XX:MaxGCPauseMillis=50
       -XX:G1HeapRegionSize=32M
       -Djava.net.preferIPv4Stack=true
-    ";
-  };
-
-  services.nginx.virtualHosts."mc.roypository.com" = {
-    forceSSL = true;
-    enableACME = true;
-    acmeRoot = null;
-    locations."/" = {
-      proxyPass = "http://localhost:25565";
-    };
+    '';
   };
   
   # ================================ #
