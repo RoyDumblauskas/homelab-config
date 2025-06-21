@@ -8,8 +8,13 @@
   };
 
   outputs = { self, nixpkgs, nix-minecraft }@inputs: {
-    nixosModules.mc-service = { config, lib, pkgs, ... }:
+    nixosModules.mc-service = { config, lib, ... }:
     let 
+      # manually import pkgs to get nix-minecraft overlay
+      pkgs = import nixpkgs {
+        system = "x86_64-linux";  # or use `config.nixpkgs.system` if passed in
+        overlays = [ nix-minecraft.overlays.default ];
+      };
       opts = config.services.mc-service;
     in {
       options.services.mc-service = {
@@ -40,7 +45,7 @@
           users = "mc-service";
           group = "mc-service";
 
-          servers.vanilla = {
+          servers.homeServer = {
             enable = true;
             restart = "always";
             jvmOpts = "-Xmx16G -Xms8G";
