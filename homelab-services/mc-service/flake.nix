@@ -16,7 +16,7 @@
         overlays = [ nix-minecraft.overlays.default ];
       };
     in 
-    { config, lib, ... }:
+      { config, lib, ... }:
     let 
       opts = config.services.mc-service;
     in {
@@ -40,7 +40,7 @@
           group = "mc-service";
         };
         
-        nix-minecraft.nixosModules.minecraft-servers = {
+        services.minecraft-servers = {
           enable = true;
           eula = true;
           openFirewall = true;
