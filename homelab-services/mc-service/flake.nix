@@ -15,7 +15,7 @@
       pkgs = import nixpkgs {
         inherit system;
         overlays = [ nix-minecraft.overlay ];
-        config = { };
+        config = { allowUnfree = true; };
       };
       opts = config.services.mc-service;
     in {
@@ -41,7 +41,7 @@
           home = "${opts.storeDir}";
           group = "mc-service";
         };
-        
+
         services.minecraft-servers = {
           enable = true;
           eula = true;
