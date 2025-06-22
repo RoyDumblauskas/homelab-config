@@ -71,7 +71,7 @@
     port = 8080;
     default-nginx = {
       enable = true;
-      hostname = "tests.roypository.com";
+      hostname = "test.roypository.com";
     };
   };
 

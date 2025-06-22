@@ -11,7 +11,7 @@
 
     nixosModules.mc-service = { config, lib, pkgs, ... }:
     let 
-      system = "x86_64-linux"; # change this to your system string
+      system = "x86_64-linux";
       pkgs = import nixpkgs {
         inherit system;
         overlays = [ nix-minecraft.overlay ];
