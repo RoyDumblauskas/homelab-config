@@ -235,6 +235,7 @@
   environment.systemPackages = with pkgs; [
     curl
     kitty
+    tmux
     vim
     wget
   ];
