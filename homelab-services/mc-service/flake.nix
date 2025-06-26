@@ -88,7 +88,7 @@
           servers.testingServer = {
             enable = true;
             restart = "always";
-            jvmOpts = "-Xmx512M-Xms512M";
+            jvmOpts = "-Xmx1G -Xms1G";
             whitelist = {
               SquidMcJiggles = "7ae4f5a9-dc2b-4b42-ab30-f8d10d38fa83";
             };
