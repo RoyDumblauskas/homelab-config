@@ -100,26 +100,6 @@
     enable = true;
     storeDir = "/persist/srv/minecraft";
   };
-
-  /*
-  services.minecraft-server = {
-    enable = true;
-    eula = true;
-    openFirewall = true; # Opens the port the server is running on (by default 25565 but in this case 43000)
-    declarative = true;
-    dataDir = "/persist/var/lib/minecraft";
-    
-    serverProperties = {
-      server-port = 43000;
-      difficulty = 3;
-      gamemode = 0;
-      max-players = 7;
-      motd = "Dumble Server";
-      allow-cheats = true;
-    };
-    jvmOpts = "-Xms16G -Xmx16G -XX:+UseG1GC -Djava.net.preferIPv4Stack=true";
-  };
-  */
   
   # ================================ #
   #             END MINECRAFT        #

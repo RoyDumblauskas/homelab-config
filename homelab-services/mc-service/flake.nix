@@ -62,6 +62,7 @@
               max-players = 10;
               motd = "Home MC Server";
               white-list = false;
+              spawn-protection = 0;
             };
 
             # Specify the custom minecraft server package
