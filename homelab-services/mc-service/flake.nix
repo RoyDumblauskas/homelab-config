@@ -71,7 +71,7 @@
           servers.testingServer = {
             enable = true;
             restart = "always";
-            fvmOpts = "-Xmx1G -Xms1G";
+            jvmOpts = "-Xmx1G -Xms1G";
             serverProperties = {
               server-port = 43000;
               difficulty = 3;
