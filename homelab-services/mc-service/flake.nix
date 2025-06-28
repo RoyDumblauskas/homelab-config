@@ -54,6 +54,9 @@
             enable = true;
             restart = "always";
             jvmOpts = "-Xmx16G -Xms16G";
+            whitelist = {
+              SquidMcJiggles = "7ae4f5a9-dc2b-4b42-ab30-f8d10d38fa83";
+            };
             serverProperties = {
               server-port = 25565;
               difficulty = 3;
@@ -61,7 +64,7 @@
               force-gamemode = true;
               max-players = 10;
               motd = "Home MC Server";
-              white-list = false;
+              white-list = true;
               spawn-protection = 0;
             };
 
