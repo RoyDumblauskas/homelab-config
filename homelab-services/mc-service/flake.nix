@@ -56,6 +56,8 @@
             jvmOpts = "-Xmx16G -Xms16G";
             whitelist = {
               SquidMcJiggles = "7ae4f5a9-dc2b-4b42-ab30-f8d10d38fa83";
+              Baloneyjohn = "aa33ea9c-05ce-46d4-9ae3-715c80f618da";
+              Beankurd = "4bdd135f-e9a6-4830-9755-6282ec71e338";
             };
             serverProperties = {
               server-port = 25565;
