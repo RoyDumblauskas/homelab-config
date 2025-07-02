@@ -80,6 +80,8 @@
               forceSSL = true;
               enableACME = true;
               acmeRoot = null;
+              # Dev and Prod buckets must be created manually
+              # will work on script/minio command line for this later
               locations."/dev" = {
                 proxyPass = "http://localhost:${toString opts.dataPort}/dev";
               };

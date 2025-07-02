@@ -80,7 +80,8 @@
   services.minio-service = {
     enable = true;
 
-    dataDir = "/data/minio";
+    # Persist data inside of database
+    dataDir = "/persist/data/minio";
     credentialsFile = config.sops.secrets."minio-credentials".path;
 
     dataPort = 9000;     # S3 API access
