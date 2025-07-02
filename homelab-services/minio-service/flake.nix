@@ -80,11 +80,14 @@
               forceSSL = true;
               enableACME = true;
               acmeRoot = null;
-              locations."/" = {
-                proxyPass = "http://localhost:${toString opts.dataPort}";
+              locations."/dev" = {
+                proxyPass = "http://localhost:${toString opts.dataPort}/dev";
               };
-              locations."/console/" = {
-                proxyPass = "http://localhost:${toString opts.consolePort}";
+              locations."/prod" = {
+                proxyPass = "http://localhost:${toString opts.dataPort}/prod";
+              };
+              locations."/console" = {
+                proxyPass = "http://localhost:${toString opts.consolePort}/browser";
               };
             };
           };
@@ -97,3 +100,4 @@
       };
   };
 }
+
