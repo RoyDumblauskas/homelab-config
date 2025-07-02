@@ -208,6 +208,7 @@
     directories = [
       "/root/.ssh"
       "/var/lib/nixos"
+      "/var/db/sudo/lectured"
     ];
   };
 
