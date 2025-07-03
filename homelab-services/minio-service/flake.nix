@@ -91,6 +91,10 @@
               locations."/console" = {
                 proxyPass = "http://localhost:${toString opts.consolePort}/browser";
               };
+              # Add directive for s3like queries, which only accept root path allegedly
+              location."/" = {
+                proxyPass = "http://localhost:${toString opts.dataPort}";
+              };
             };
           };
 
