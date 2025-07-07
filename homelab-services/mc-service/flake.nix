@@ -126,6 +126,18 @@
                   url = "https://cdn.modrinth.com/data/P7dR8mSH/versions/b2dnY6PN/fabric-api-0.128.0%2B1.21.6.jar";
                   sha512 = "c668402e1a877c2d572d16e31e6d2783be27a80993fa83bf040ea2007994518786bd3140dcea15334f8ee1630836292b8ae4d41444e47cba0ac43d05f1eb1e78";
                 };
+                ScaleableLux = pkgs.fetchurl {
+                  url = "https://cdn.modrinth.com/data/Ps1zyz6x/versions/PQLHDg2Q/ScalableLux-0.1.5%2Bfabric.e4acdcb-all.jar";
+                  sha512 = "ec8fabc3bf991fbcbe064c1e97ded3e70f145a87e436056241cbb1e14c57ea9f59ef312f24c205160ccbda43f693e05d652b7f19aa71f730caec3bb5f7f7820a"; 
+                };
+                Noisium = pkgs.fetchurl {
+                  url = "https://cdn.modrinth.com/data/KuNKN7d2/versions/V9mMIy0f/noisium-fabric-2.7.0%2Bmc1.21.6.jar";
+                  sha512 = "80cc286f3a51b2d12304ef6a44f84c11d67cedec1a02fbaf59e2e816d9b5f0abd17cc6b5a0ca5880935e9dadfea3b951b790ee1e54300c009bc419c1c7451785";
+                };
+                C2ME = pkgs.fetchurl {
+                  url = "https://cdn.modrinth.com/data/VSNURh3q/versions/Erjpfj2l/c2me-fabric-mc1.21.7-0.3.4%2Bbeta.1.0.jar";
+                  sha512 = "8942e82c216315198d4752fbb9396e6d59d6447085ce5c00811ba0189765b20acad0153a10532f7ade29f7c090e0299c01802174aa89d4da642bc10f9429998d";
+                };
               });
             };
           };
