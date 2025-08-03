@@ -35,6 +35,12 @@
         key = "minioCredentials";
         format = "yaml";
       };
+
+      "tests-service" = {
+        sopsFile = ./secrets/tests-service.yaml;
+        key = "credentials";
+        format = "yaml";
+      };
     };
   };
 
@@ -69,6 +75,7 @@
   services.tests-service = {
     enable = true;
     port = 8080;
+    credentialsFile = config.sops.secrets."tests-service".path;
     default-nginx = {
       enable = true;
       hostname = "test.roypository.com";
