@@ -88,7 +88,7 @@
     enable = true;
 
     # Persist data inside of database
-    dataDir = "/persist/data/minio";
+    dataDir = "/data/minio";
     credentialsFile = config.sops.secrets."minio-credentials".path;
 
     dataPort = 9000;     # S3 API access
