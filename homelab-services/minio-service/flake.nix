@@ -99,7 +99,7 @@
                 mc_bin=${pkgs.minio-client}/bin/mc
 
                 # Point mc at the local minio instance
-                $mc_bin alias set "$alias_name" http://127.0.0.1:${toString opts.dataPort} \
+                $mc_bin alias set "$alias_name" http://localhost:${toString opts.dataPort} \
                   "$MINIO_ROOT_USER" "$MINIO_ROOT_PASSWORD"
 
                 # Loop through requested environments
@@ -159,6 +159,7 @@ EOF
               '';
               User = "minio";
               Group = "minio";
+              EnvironmentFile = "${opts.credentialsFile}";
               
             };
           };
