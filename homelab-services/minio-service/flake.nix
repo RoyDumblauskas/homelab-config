@@ -103,7 +103,7 @@
                 mc_bin=${pkgs.minio-client}/bin/mc
 
                 # Delete alias if it already exists
-                mc alias rm local || true
+                mc alias rm "$alias_name" || true
 
                 # Point mc at the local minio instance
                 $mc_bin alias set "$alias_name" http://localhost:${toString opts.dataPort} \
@@ -164,7 +164,12 @@ EOF
                   # Attach policy
                   $mc_bin admin policy attach "$alias_name" "$policy" --user "''${user_val}"
 
+                  # Cleanup
                   rm -f "$policy_file"
+
+                  # Delete alias if it already exists
+                  mc alias rm "$alias_name" || true
+
                 done
               '';
               User = "minio";
