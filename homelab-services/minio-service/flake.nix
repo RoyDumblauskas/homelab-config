@@ -48,7 +48,7 @@
           default-nginx = {
             enable = lib.mkEnableOption "Enable nginx reverse proxy for MinIO";
             hostname = lib.mkOption {
-              type = lib.types.list lib.types.str;
+              type = lib.types.listOf lib.types.str;
               default = "localhost";
               description = "Hostname for nginx reverse proxy.";
             };
