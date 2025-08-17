@@ -78,7 +78,7 @@
 
               User = "minio";
               Group = "minio";
-              Environment = "https://${opts.default-nginx.hostname}/console";
+              Environment = "MINIO_BROWSER_REDIRECT_URL=https://${opts.default-nginx.hostname}/console";
               EnvironmentFile = "${opts.credentialsFile}"; 
               Restart = "always";
             };
