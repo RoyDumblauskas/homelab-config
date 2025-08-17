@@ -78,6 +78,7 @@
 
               User = "minio";
               Group = "minio";
+              Environment = "https://${opts.default-nginx.hostname}/console";
               EnvironmentFile = "${opts.credentialsFile}"; 
               Restart = "always";
             };
@@ -123,6 +124,9 @@
 
                   # Create bucket if not exists
                   $mc_bin mb --ignore-existing "$alias_name/$bucket"
+
+                  # Set bucket limit in future
+                  # $mc_bin bucket quota is deprecated
 
                   # Create policy JSON (full access to that bucket)
                   policy_file=$(mktemp)
@@ -172,7 +176,7 @@ EOF
               acmeRoot = null;
 
               locations."/console" = {
-                proxyPass = "http://localhost:${toString opts.consolePort}/browser";
+                proxyPass = "http://localhost:${toString opts.consolePort}/console";
               };
 
               # Add directive for s3like queries, which only accept root path allegedly
