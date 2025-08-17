@@ -78,9 +78,10 @@
 
               User = "minio";
               Group = "minio";
-              Environment = ''
-                MINIO_BROWSER_REDIRECT_URL=https://${opts.default-nginx.hostname}/console
-              '';
+              # This breaks the local browser access
+              # Environment = ''
+              #   MINIO_BROWSER_REDIRECT_URL=https://${opts.default-nginx.hostname}/console
+              # '';
               EnvironmentFile = "${opts.credentialsFile}"; 
               Restart = "always";
             };
@@ -180,6 +181,7 @@ EOF
               enableACME = true;
               acmeRoot = null;
 
+              # This does not work even with the MINIO_BROWSER_REDIRECT_URL set
               locations."/console" = {
                 proxyPass = "http://localhost:${toString opts.consolePort}";
               };
