@@ -92,9 +92,70 @@
             serviceConfig = {
               Type = "oneshot";
               ExecStart = pkgs.writeShellScript "bootstrap-minio" ''
+
                 set -euo pipefail
 
-                echo $SHELL
+                alias_name="local"
+                mc_bin=${pkgs.minio-client}/bin/mc
+
+                # Point mc at the local minio instance
+                $mc_bin alias set "$alias_name" http://127.0.0.1:${toString opts.dataPort} \
+                  "$MINIO_ROOT_USER" "$MINIO_ROOT_PASSWORD"
+
+                # Loop through requested environments
+                for env in ${lib.escapeShellArgs opts.bootstrap-minio.environments}; do
+                  bucket="bucket-$env"
+                  user_var="MINIO_''${env^^}_USER"
+                  pass_var="MINIO_''${env^^}_PASSWORD"
+
+                  # expand env var names dynamically
+                  user_val=$(eval "echo \''${$user_var:-}")
+                  pass_val=$(eval "echo \''${$pass_var:-}")
+
+                  if [ -z "$user_val" ] || [ -z "$pass_val" ]; then
+                    echo "Missing credentials for $env ($user_var / $pass_var)" >&2
+                    exit 1
+                  fi
+
+                  policy="policy-$env"
+
+                  echo "Bootstrapping environment: $env"
+
+                  # Create bucket if not exists
+                  $mc_bin mb --ignore-existing "$alias_name/$bucket"
+
+                  # Create policy JSON (full access to that bucket)
+                  policy_file=$(mktemp)
+                  cat > "$policy_file" <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": ["s3:*"],
+      "Resource": [
+        "arn:aws:s3:::$bucket",
+        "arn:aws:s3:::$bucket/*"
+      ]
+    }
+  ]
+}
+EOF
+
+                  # Apply policy
+                  $mc_bin admin policy add "$alias_name" "$policy" "$policy_file"
+
+                  # Create or update user
+                  if ! $mc_bin admin user info "$alias_name" "$user_val" >/dev/null 2>&1; then
+                    $mc_bin admin user add "$alias_name" "$user_val" "$pass_val"
+                    echo "Created user $user_val"
+                  fi
+
+                  # Attach policy
+                  $mc_bin admin policy set "$alias_name" "$policy" user="$user_val"
+
+                  rm -f "$policy_file"
+                done
               '';
               User = "minio";
               Group = "minio";
@@ -108,11 +169,11 @@
               forceSSL = true;
               enableACME = true;
               acmeRoot = null;
-              # Dev and Prod buckets must be created manually
-              # will work on script/minio command line for this later
+
               locations."/console" = {
                 proxyPass = "http://localhost:${toString opts.consolePort}/browser";
               };
+
               # Add directive for s3like queries, which only accept root path allegedly
               locations."/" = {
                 proxyPass = "http://localhost:${toString opts.dataPort}";
