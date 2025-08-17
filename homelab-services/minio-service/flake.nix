@@ -179,7 +179,7 @@ EOF
               acmeRoot = null;
 
               locations."/console" = {
-                proxyPass = "http://localhost:${toString opts.consolePort}/console";
+                proxyPass = "http://localhost:${toString opts.consolePort}";
               };
 
               # Add directive for s3like queries, which only accept root path allegedly
