@@ -152,7 +152,7 @@ EOF
                   fi
 
                   # Attach policy
-                  $mc_bin admin policy set "$alias_name" "$policy" user="$user_val"
+                  $mc_bin admin policy attach "$alias_name" "$policy" --user "''${user_val}"
 
                   rm -f "$policy_file"
                 done
