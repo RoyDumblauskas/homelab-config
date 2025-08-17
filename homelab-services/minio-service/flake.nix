@@ -99,6 +99,9 @@
                 alias_name="local"
                 mc_bin=${pkgs.minio-client}/bin/mc
 
+                # Delete alias if it already exists
+                mc alias rm local || true
+
                 # Point mc at the local minio instance
                 $mc_bin alias set "$alias_name" http://localhost:${toString opts.dataPort} \
                   "$MINIO_ROOT_USER" "$MINIO_ROOT_PASSWORD"
