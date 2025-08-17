@@ -94,6 +94,11 @@
     dataPort = 9000;     # S3 API access
     consolePort = 9001;  # Admin console access
 
+    bootstrap-minio = {
+      enable = true;
+      environments = [ "dev" "prod" ];
+    };
+
     default-nginx = {
       enable = true;
       hostname = "imgs.roypository.com";
