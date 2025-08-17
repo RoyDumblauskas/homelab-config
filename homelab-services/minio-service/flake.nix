@@ -36,10 +36,19 @@
             description = "File containing MinIO credentials.";
           };
 
+          bootstrap-minio = {
+            enable = lib.mkEnableOption "Enable bootstrapping minio creds";
+            environments = lib.mkOption {
+              type = lib.types.listOf lib.types.str;
+              default = [];
+              description = "list of environments to bootstrap (dev, prod, stage, etc)";
+            };
+          };
+
           default-nginx = {
             enable = lib.mkEnableOption "Enable nginx reverse proxy for MinIO";
             hostname = lib.mkOption {
-              type = lib.types.str;
+              type = lib.types.list lib.types.str;
               default = "localhost";
               description = "Hostname for nginx reverse proxy.";
             };
@@ -74,6 +83,25 @@
             };
           };
 
+          systemd.services.bootstrap-minio = lib.mkIf opts.bootstrap-minio.enable {
+            description = "Minio bootstrap users, policies, buckets";
+            after = [ "minio.service" ];
+            requires = [ "minio.service" ];
+            wantedBy = [ "multi-user.target" ];
+
+            serviceConfig = {
+              Type = "oneshot";
+              ExecStart = pkgs.writeShellScript "bootstrap-minio" ''
+                set -euo pipefail
+
+                echo $SHELL
+              '';
+              User = "minio";
+              Group = "minio";
+              
+            };
+          };
+
           services.nginx = lib.mkIf opts.default-nginx.enable {
             enable = true;
             virtualHosts.${opts.default-nginx.hostname} = {
@@ -82,12 +110,6 @@
               acmeRoot = null;
               # Dev and Prod buckets must be created manually
               # will work on script/minio command line for this later
-              locations."/dev" = {
-                proxyPass = "http://localhost:${toString opts.dataPort}/dev";
-              };
-              locations."/prod" = {
-                proxyPass = "http://localhost:${toString opts.dataPort}/prod";
-              };
               locations."/console" = {
                 proxyPass = "http://localhost:${toString opts.consolePort}/browser";
               };
