@@ -104,7 +104,7 @@
 
                 # Loop through requested environments
                 for env in ${lib.escapeShellArgs opts.bootstrap-minio.environments}; do
-                  bucket="bucket-$env"
+                  bucket="$env"
                   user_var="MINIO_''${env^^}_USER"
                   pass_var="MINIO_''${env^^}_PASSWORD"
 
@@ -143,7 +143,7 @@
 EOF
 
                   # Apply policy
-                  $mc_bin admin policy add "$alias_name" "$policy" "$policy_file"
+                  $mc_bin admin policy create "$alias_name" "$policy" "$policy_file"
 
                   # Create or update user
                   if ! $mc_bin admin user info "$alias_name" "$user_val" >/dev/null 2>&1; then
