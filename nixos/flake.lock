@@ -288,11 +288,11 @@
         "nixpkgs": "nixpkgs_5"
       },
       "locked": {
-        "lastModified": 1754248380,
-        "narHash": "sha256-pDMYJlcH0fwKPvq1OB8jNxr4sEFPyW0Xmsthv+c+nlo=",
+        "lastModified": 1755752918,
+        "narHash": "sha256-bamvg3TAroFLMmAazq+QqyJ1sZpQ79A6RZFd/+7RnuQ=",
         "owner": "RoyDumblauskas",
         "repo": "tests-service",
-        "rev": "97a1ef4aa23f260a310ee5ba94f39ab3ddda755c",
+        "rev": "5ca64502298d02f483ddfb50ae292a5a5c9fc310",
         "type": "github"
       },
       "original": {
