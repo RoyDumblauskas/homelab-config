@@ -107,7 +107,7 @@
 
     default-nginx = {
       enable = true;
-      hostname = "imgs.roypository.com";
+      hostname = "img.roypository.com";
     };
   };
 
