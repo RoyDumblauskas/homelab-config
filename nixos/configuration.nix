@@ -63,6 +63,7 @@
   # Setup vhosts via nginx
   services.nginx = {
     enable = true;
+    logError = "stderr";
     
     virtualHosts."roypository.com" = {
       forceSSL = true;
