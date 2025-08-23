@@ -84,7 +84,7 @@
     credentialsFile = config.sops.secrets."tests-service".path;
     default-nginx = {
       enable = true;
-      hostname = "test.roypository.com";
+      hostname = "tests.roypository.com";
     };
   };
 
