@@ -70,11 +70,6 @@
       enableACME = true; 
       acmeRoot = null;
     };
-    virtualHosts."dummy.roypository.com" = {
-      forceSSL = true;
-      enableACME = true;
-      acmeRoot = null;
-    };
   };
 
   # Declare test service manually
@@ -84,7 +79,7 @@
     credentialsFile = config.sops.secrets."tests-service".path;
     default-nginx = {
       enable = true;
-      hostname = "tests.roypository.com";
+      hostname = "dummy.roypository.com";
     };
   };
 
