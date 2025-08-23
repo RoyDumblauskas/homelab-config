@@ -205,6 +205,7 @@
     isNormalUser = true;
     extraGroups = [ "wheel" ];
     hashedPassword = "$y$j9T$G2m/EwKgOjFKZPeOuhOIk.$totgh8uu5yizRLnLA9SdBkRrJeGHowXYfkayn7r/Rs1";
+    shell = pkgs.fish;
   };
 
   users.users.root = {

@@ -7,6 +7,7 @@
 
   home.packages = with pkgs; [
     age
+    alacritty
     awscli2
     dig
     discord
@@ -18,6 +19,7 @@
     kdePackages.gwenview
     minio-client
     prismlauncher
+    rose-pine-hyprcursor
     slurp
     sops
     ssh-to-age
