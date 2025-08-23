@@ -73,6 +73,7 @@
               imports = [
                 ./home-roy.nix
                 nixvim.homeManagerModules.nixvim
+                impermanence.homeManagerModules.impermanence
                 sops-nix.homeManagerModules.sops
               ];
             };
