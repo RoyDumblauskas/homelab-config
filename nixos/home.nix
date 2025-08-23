@@ -13,7 +13,7 @@
   ];
 
   # user persisted dirs
-  home.persistence."/persist/home/roy" = {
+  home.persistence."/persist/home/sysAdmin" = {
     directories = [
       ".ssh"
       "rp"
