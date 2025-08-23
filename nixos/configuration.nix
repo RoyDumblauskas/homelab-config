@@ -70,6 +70,11 @@
       enableACME = true; 
       acmeRoot = null;
     };
+    virtualHosts."dummy.roypository.com" = {
+      forceSSL = true;
+      enableACME = true;
+      acmeRoot = null;
+    };
   };
 
   # Declare test service manually
