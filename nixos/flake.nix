@@ -67,7 +67,13 @@
           home-manager.nixosModules.home-manager {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.sysAdmin = ./home.nix;
+            home-manager.users.sysAdmin = { ... }: {
+              imports = [
+                ./home.nix
+                impermanence.homeManagerModules.impermanence
+                sops-nix.homeManagerModules.sops
+              ];
+            };
             home-manager.extraSpecialArgs = { inherit inputs; };
             home-manager.users.roy = { ... }: {
               imports = [

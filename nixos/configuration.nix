@@ -195,35 +195,30 @@
     isNormalUser = true;
     extraGroups = [ "wheel" "networkManager" ];
     # created with mkpasswd
-    hashedPassword = "$6$8KRJ44z15XsQALM.$J4geTLaph7ynaLimlYXMGafqPOP6DONLSlTbRowH7JF7WJ4cWyMSTYQQB4OwsAgPpLCTYDzpqn6a/pfIizWFA.";
+    hashedPassword = "$y$j9T$ILYm49Ylk4h6Wforpdw161$ds0DvzLQkbh0o3vN6D.gZ4KMo..0AOR/DwNcWtY0nH2";
     openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMu8YZ/m8xl7bq9NxtXjywm1T1u2WMMmEmTppWCR9xGB roydumblauskas@gmail.com"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFEQyjykrRpkgMFpNAR2G1rbofqbtcuLwIYzgqH85QCn roydumblauskas@gmail.com"
     ];
   };
 
   users.users.roy = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
-    hashedPassword = "$y$j9T$G2m/EwKgOjFKZPeOuhOIk.$totgh8uu5yizRLnLA9SdBkRrJeGHowXYfkayn7r/Rs1";
+    hashedPassword = "$y$j9T$GigbbrHNEe.fhkEYbbYGc1$7dS10OH5LGoZtCfoDy82H71nZVbCgGHdkwVwxZpGUY4";
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFEQyjykrRpkgMFpNAR2G1rbofqbtcuLwIYzgqH85QCn roydumblauskas@gmail.com"
+    ];
     shell = pkgs.fish;
   };
 
   users.users.root = {
-    hashedPassword = "$y$j9T$IjaP0KIfdpEvlLtOn.u0T/$0MJDaFEdSu6zSJ04CF1dtorD6IVgbN3vmDiiwGwwqr5";
     openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMu8YZ/m8xl7bq9NxtXjywm1T1u2WMMmEmTppWCR9xGB roydumblauskas@gmail.com" 
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFEQyjykrRpkgMFpNAR2G1rbofqbtcuLwIYzgqH85QCn roydumblauskas@gmail.com"
     ];
   };
 
   # Symlink the user directories that need to be persisted (ssh key/repository folder)
   environment.persistence."/persist" = {
-    users = {
-      sysAdmin.directories = [
-        ".ssh"
-        "rp"
-      ];
-    };
-
     directories = [
       "/root/.ssh"
       "/var/lib/nixos"

@@ -12,6 +12,21 @@
     unixtools.ping
   ];
 
+  # user persisted dirs
+  home.persistence."/persist/home/roy" = {
+    directories = [
+      ".ssh"
+      "rp"
+    ];
+    files = [
+      ".bash_history"
+      ".config/sops/age/keys.txt"
+
+    ];
+    allowOther = true;
+  };
+
+
   home.stateVersion = "24.11";
   programs.home-manager.enable = true;
 
