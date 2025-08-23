@@ -201,6 +201,12 @@
     ];
   };
 
+  users.users.roy = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" ];
+    hashedPassword = "$y$j9T$G2m/EwKgOjFKZPeOuhOIk.$totgh8uu5yizRLnLA9SdBkRrJeGHowXYfkayn7r/Rs1";
+  };
+
   users.users.root = {
     hashedPassword = "$y$j9T$IjaP0KIfdpEvlLtOn.u0T/$0MJDaFEdSu6zSJ04CF1dtorD6IVgbN3vmDiiwGwwqr5";
     openssh.authorizedKeys.keys = [
@@ -234,6 +240,24 @@
     wget
   ];
 
+  fonts.packages = with pkgs; [
+    nerd-fonts.mononoki
+    nerd-fonts.ubuntu-mono
+  ];
+
+  programs = {
+    hyprland = {
+      enable = true;
+      xwayland.enable = true;
+    };
+    waybar.enable = true;
+    fish.enable = true;
+    fuse.userAllowOther = true;
+  };
+
+  environment.variables = {
+    EDITOR = "nvim";
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
