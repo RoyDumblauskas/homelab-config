@@ -6,6 +6,7 @@
   home.homeDirectory = "/home/sysAdmin";
 
   home.packages = with pkgs; [
+    sops
     git
     tree
     unixtools.ping
