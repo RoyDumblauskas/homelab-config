@@ -1,5 +1,11 @@
 { config, lib, pkgs, meta, ... }:
 
+let
+  nimhStaticSite = pkgs.runCommand "nimh-static-site" { } ''
+    mkdir -p $out
+    cp -r ${../homelab-services/nimh-static}/* $out/
+  '';
+in
 {
   imports = [ ];
 
@@ -70,6 +76,8 @@
     };
   };
 
+
+
   # Setup vhosts via nginx
   services.nginx = {
     enable = true;
@@ -86,7 +94,13 @@
       forceSSL = true;
       useACMEHost = "roypository.com";
 
-      locations = { };
+      locations."/" = {
+        root = nimhStaticSite;
+        index = "index.html";
+        extraConfig = ''
+          autoindex off;
+        '';
+      };
     };
   };
 
