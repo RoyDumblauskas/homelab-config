@@ -79,9 +79,9 @@
               User = "minio";
               Group = "minio";
               # This breaks the local browser access
-              # Environment = ''
-              #   MINIO_BROWSER_REDIRECT_URL=https://${opts.default-nginx.hostname}/console
-              # '';
+              Environment = ''
+                MINIO_BROWSER_REDIRECT_URL=https://${opts.default-nginx.hostname}/console
+              '';
               EnvironmentFile = "${opts.credentialsFile}"; 
               Restart = "always";
             };
@@ -189,6 +189,12 @@ EOF
               # This does not work even with the MINIO_BROWSER_REDIRECT_URL set
               locations."/console" = {
                 proxyPass = "http://localhost:${toString opts.consolePort}";
+                extraConfig = ''
+                  proxy_set_header Host $host;
+                  proxy_set_header X-Real-IP $remote_addr;
+                  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                  proxy_set_header X-Forwarded-Proto $scheme;
+                '';
               };
 
               # Add directive for s3like queries, which only accept root path allegedly

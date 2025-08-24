@@ -51,8 +51,10 @@
   security.acme = {
     acceptTerms = true;
     defaults = {
-      # use staging temporarily for testing
+      # use staging testing
       server = "https://acme-staging-v02.api.letsencrypt.org/directory";
+      # use prod for deploy
+      # server = "https://acme-v02.api.letsencrypt.org/directory";
       email = "roydumblauskas@gmail.com";
       dnsProvider = "cloudflare";
       credentialFiles = {
