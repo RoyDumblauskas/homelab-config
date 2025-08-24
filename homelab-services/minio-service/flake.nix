@@ -183,8 +183,9 @@ EOF
             enable = true;
             virtualHosts.${opts.default-nginx.hostname} = {
               forceSSL = true;
-              # Parse TLD from hostname to use wildcard cert
-              useACMEHost = (domain: let parts = lib.strings.split "." domain; len = builtins.length parts; in if len>=2 then lib.strings.concatStringsSep "." (lib.lists.drop (len - 2) parts) else domain) "${opts.default-nginx.hostname}";
+              # Parse TLD from hostname to use wildcard cert (just takes last two elements separated by a period)
+              useACMEHost = let b = builtins; s = lib.strings; fl = s.splitString "." "${opts.default-nginx.hostname}";
+              in b.concatStringsSep "." [ (b.elemAt fl (b.length fl - 2)) (b.elemAt fl (b.length fl - 1)) ];
 
               # This does not work even with the MINIO_BROWSER_REDIRECT_URL set
               locations."/console" = {
