@@ -57,6 +57,13 @@
         CF_API_EMAIL_FILE = config.sops.secrets."cloudflare-api-email".path;
         CF_API_KEY_FILE = config.sops.secrets."cloudflare-api-key".path;
       };
+    certs = {
+      "roypository.com" = {
+        domain = "*.roypository.com";
+        group = "nginx";
+      };
+    };    
+
     };
   };
 
