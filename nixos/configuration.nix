@@ -83,6 +83,8 @@
     virtualHosts."nimh.roypository.com" = {
       forceSSL = true;
       useACMEHost = "roypository.com";
+
+      locations = { };
     };
   };
 
