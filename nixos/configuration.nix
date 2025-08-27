@@ -63,6 +63,8 @@ in
       server = "https://acme-v02.api.letsencrypt.org/directory";
       email = "roydumblauskas@gmail.com";
       dnsProvider = "cloudflare";
+      # When the service CHECKS to see if certs are near expiry (< 30 days)
+      renewInterval = "daily";
       credentialFiles = {
         CF_API_EMAIL_FILE = config.sops.secrets."cloudflare-api-email".path;
         CF_API_KEY_FILE = config.sops.secrets."cloudflare-api-key".path;
@@ -121,7 +123,7 @@ in
     enable = true;
 
     # Persist data inside of database
-    dataDir = "/data/minio";
+    dataDir = "/persist/data/minio";
     credentialsFile = config.sops.secrets."minio-credentials".path;
 
     dataPort = 9000;     # S3 API access
