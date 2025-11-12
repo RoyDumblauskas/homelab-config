@@ -139,6 +139,20 @@ in
   };
 
   # ================================ #
+  #           BLOG SERVICE           #
+  # ================================ #
+
+  # Minio for backend storage
+
+  # Postgresql/postgrest for text storage
+
+  # Fullstack sourcecode
+
+  # ================================ #
+  #         END BLOG SERVICE         #
+  # ================================ #
+
+  # ================================ #
   #             MINECRAFT            #
   # ================================ #
 

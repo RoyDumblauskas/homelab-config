@@ -167,9 +167,6 @@ EOF
                   # Cleanup
                   rm -f "$policy_file"
 
-                  # Delete alias if it already exists
-                  mc alias rm "$alias_name" || true
-
                 done
               '';
               User = "minio";
