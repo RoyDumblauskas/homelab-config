@@ -47,6 +47,12 @@ in
         key = "credentials";
         format = "yaml";
       };
+
+      "postgresql-credentials" = {
+        sopsFile = ./secrets/psql.yaml;
+        key = "credentials";
+        format = "yaml";
+      };
     };
   };
 
@@ -145,6 +151,13 @@ in
   # Minio for backend storage
 
   # Postgresql/postgrest for text storage
+  services.postgresql-db = {
+    enable = true;
+    dataDir = "var/lib/postgresql";
+    port = 5432;
+    credentialsFile = config.sops.secrets."postgresql-credentials".path;
+    databases = [ "rdblog" ];
+  };
 
   # Fullstack sourcecode
 

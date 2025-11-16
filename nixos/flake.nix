@@ -31,9 +31,10 @@
     tests-service.url = "github:RoyDumblauskas/tests-service?shallow=1";
     minio-service.url = "path:../homelab-services/minio-service";
     mc-service.url = "path:../homelab-services/mc-service";
+    postgresql-db.url = "path:../homelab-services/postgresql-db";
   };
 
-  outputs = { self, nixpkgs, nixvim, home-manager, disko, sops-nix, quasiSecrets, impermanence, firefox-addons, tests-service, minio-service, mc-service }@inputs: 
+  outputs = { self, nixpkgs, nixvim, home-manager, disko, sops-nix, quasiSecrets, impermanence, firefox-addons, tests-service, minio-service, mc-service, postgresql-db }@inputs: 
   let 
     nodes = [
       { 
@@ -64,6 +65,7 @@
           tests-service.nixosModules.default
           minio-service.nixosModules.minio-service
           mc-service.nixosModules.mc-service
+          postgresql-db.nixosModule.postgresql-db
           home-manager.nixosModules.home-manager {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
