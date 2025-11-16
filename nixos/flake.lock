@@ -294,6 +294,22 @@
     },
     "nixpkgs_5": {
       "locked": {
+        "lastModified": 1763049705,
+        "narHash": "sha256-A5LS0AJZ1yDPTa2fHxufZN++n8MCmtgrJDtxFxrH4S8=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "3acb677ea67d4c6218f33de0db0955f116b7588c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-25.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_6": {
+      "locked": {
         "lastModified": 1748693115,
         "narHash": "sha256-StSrWhklmDuXT93yc3GrTlb0cKSS0agTAxMGjLKAsY8=",
         "owner": "nixos",
@@ -354,6 +370,20 @@
         "type": "github"
       }
     },
+    "postgresql-db": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_5"
+      },
+      "locked": {
+        "path": "../homelab-services/postgresql-db",
+        "type": "path"
+      },
+      "original": {
+        "path": "../homelab-services/postgresql-db",
+        "type": "path"
+      },
+      "parent": []
+    },
     "quasiSecrets": {
       "locked": {
         "lastModified": 1751257463,
@@ -380,6 +410,7 @@
         "minio-service": "minio-service",
         "nixpkgs": "nixpkgs_4",
         "nixvim": "nixvim",
+        "postgresql-db": "postgresql-db",
         "quasiSecrets": "quasiSecrets",
         "sops-nix": "sops-nix",
         "tests-service": "tests-service"
@@ -452,7 +483,7 @@
     },
     "tests-service": {
       "inputs": {
-        "nixpkgs": "nixpkgs_5"
+        "nixpkgs": "nixpkgs_6"
       },
       "locked": {
         "lastModified": 1760310813,
