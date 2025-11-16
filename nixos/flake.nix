@@ -65,7 +65,7 @@
           tests-service.nixosModules.default
           minio-service.nixosModules.minio-service
           mc-service.nixosModules.mc-service
-          postgresql-db.nixosModule.postgresql-db
+          postgresql-db.nixosModules.postgresql-db
           home-manager.nixosModules.home-manager {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
