@@ -15,7 +15,7 @@
 
         dataDir = lib.mkOption {
           type = lib.types.path;
-          default = "var/lib/postgresql";
+          default = "/var/lib/postgresql";
           description = "Where to store database data";
         };
 

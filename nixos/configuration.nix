@@ -153,7 +153,7 @@ in
   # Postgresql/postgrest for text storage
   services.postgresql-db = {
     enable = true;
-    dataDir = "var/lib/postgresql";
+    dataDir = "/var/lib/postgresql";
     port = 5432;
     credentialsFile = config.sops.secrets."postgresql-credentials".path;
     databases = [ "rdblog" ];
