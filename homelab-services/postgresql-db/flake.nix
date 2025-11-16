@@ -50,10 +50,14 @@
           enable = true;
           dataDir = opts.dataDir;
           settings.port = opts.port;
+          identMap = ''
+            postgres roy postgres
+            two roy freakonomics
+          '';
         };
 
         systemd.services.bootstrap-psql = {
-          description = "Minio bootstrap users, policies, buckets";
+          description = "Bootstrap psql dbs and users";
           after = [ "postgresql.service" ];
           requires = [ "postgresql.service" ];
           wantedBy = [ "multi-user.target" ];
