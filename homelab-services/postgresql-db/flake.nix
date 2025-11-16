@@ -10,7 +10,7 @@
     let
       opts = config.services.postgresql-db;
     in {
-      options.services.posgresql-db = {
+      options.services.postgresql-db = {
         enable = lib.mkEnableOption "Postgres make DBs";
 
         dataDir = lib.mkOption {
