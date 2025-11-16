@@ -67,7 +67,7 @@
             ExecStart = pkgs.writeShellScript "bootstrap-psql" ''
               set -euo pipefail
 
-              psql_bin=${pkgs.postgres}/bin/psql
+              psql_bin=${pkgs.postgresql}/bin/psql
 
               # Create databases and users
               for db in ${lib.escapeShellArgs opts.databases}; do
