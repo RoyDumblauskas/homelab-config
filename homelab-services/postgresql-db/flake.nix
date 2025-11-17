@@ -91,13 +91,13 @@
 
                 # CREATE USER (if not exists)
                 $psql_bin --tuples-only --no-align -c \
-                  "SELECT 1 FROM pg_roles WHERE rolname='\$${user_val}'" | grep -q 1 \
-                  || $psql_bin -c "CREATE USER ''${user_val} WITH PASSWORD '\$${pass_val}';"
+                  "SELECT 1 FROM pg_roles WHERE rolname='$user_val'" | grep -q 1 \
+                  || $psql_bin -c "CREATE USER ''${user_val} WITH PASSWORD '$pass_val';"
 
                 # CREATE DATABASE (if not exists)
                 $psql_bin --tuples-only --no-align -c \
-                  "SELECT 1 FROM pg_database WHERE datname='\$${db}'" | grep -q 1 \
-                  || $psql_bin -c "CREATE DATABASE ''${db} OWNER '\$${user_val}';"
+                  "SELECT 1 FROM pg_database WHERE datname='$db'" | grep -q 1 \
+                  || $psql_bin -c "CREATE DATABASE ''${db} OWNER '\$user_val';"
 
                 # Privileges
                 $psql_bin -c "ALTER DATABASE ''${db} OWNER TO ''${user_val};"
