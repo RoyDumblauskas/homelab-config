@@ -88,6 +88,8 @@
                 fi
 
                 echo "Bootstrapping PostgreSQL for database: $db"
+                echo $user_val
+                echo $pass_val
 
                 # CREATE USER (if not exists)
                 $psql_bin --tuples-only --no-align -c \
@@ -97,7 +99,7 @@
                 # CREATE DATABASE (if not exists)
                 $psql_bin --tuples-only --no-align -c \
                   "SELECT 1 FROM pg_database WHERE datname='$db'" | grep -q 1 \
-                  || $psql_bin -c "CREATE DATABASE ''${db} OWNER '\$user_val';"
+                  || $psql_bin -c "CREATE DATABASE ''${db} OWNER '$user_val';"
 
                 # Privileges
                 $psql_bin -c "ALTER DATABASE ''${db} OWNER TO ''${user_val};"
