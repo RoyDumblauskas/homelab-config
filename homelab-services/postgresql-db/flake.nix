@@ -56,7 +56,7 @@
 
         services.postgresql = {
           enable = true;
-          cfg.enableTCPIP = true;
+          enableTCPIP = true;
           dataDir = opts.dataDir;
           settings.port = opts.port;
           identMap = ''
