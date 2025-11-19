@@ -27,13 +27,21 @@
 
         credentialsFile = lib.mkOption {
             type = lib.types.path;
-            description = "File containing postgresql user credentials";
+            description = ''
+              File containing postgresql user credentials.
+              Format:
+
+              PSQL_DB_USER=username
+              PSQL_DB_PASSWORD=password
+              PSQL_DB_DEV_USER=dev_username
+              PSQL_DB_DEV_PASSWORD=dev_password
+            '';
         };
 
         databases = lib.mkOption {
           type = lib.types.listOf lib.types.str;
           default = [];
-          description = "list of databases to bootstrap";
+          description = "list of databases to bootstrap. Will expand into DB, and DB-DEV for each item. And each Database will recieve it's own user. The user credentials must be in the correct format in the credentials file.";
         };
       };
 
@@ -52,8 +60,13 @@
           settings.port = opts.port;
           identMap = ''
             postgres roy postgres
-            two roy freakonomics
           '';
+
+          # allow remote connections to dev DBs
+          authentication = ''
+            ${lib.concatStringsSep "" (map (db: "host ${db}_dev all md5\n") opts.databases) }  
+          '';
+
         };
 
         systemd.services.bootstrap-psql = {
@@ -78,32 +91,29 @@
 
                 user_var="PSQL_''${db_upper}_USER"
                 pass_var="PSQL_''${db_upper}_PASSWORD"
+                dev_user_var="PSQL_''${db_upper}_DEV_USER"
+                dev_pass_var="PSQL_''${db_upper}_DEV_PASSWORD"
 
                 user_val=$(eval "echo \''${$user_var:-}")
                 pass_val=$(eval "echo \''${$pass_var:-}")
+                dev_user_val=$(eval "echo \''${$dev_user_var:-}")
+                dev_pass_val=$(eval "echo \''${$dev_pass_var:-}")
 
                 if [ -z "$user_val" ] || [ -z "$pass_val" ]; then
                   echo "Missing credentials for database '$db' ($user_var / $pass_var)" >&2
                   exit 1
                 fi
 
+                if [ -z "$dev_user_val" ] || [ -z "$dev_pass_val" ]; then
+                  echo "Missing credentials for database '$db'_dev ($dev_user_var / $dev_pass_var)" >&2
+                  exit 1
+                fi
+
                 echo "Bootstrapping PostgreSQL for database: $db"
                 echo $user_val
                 echo $pass_val
-
-                # CREATE USER (if not exists)
-                $psql_bin --tuples-only --no-align -c \
-                  "SELECT 1 FROM pg_roles WHERE rolname='$user_val'" | grep -q 1 \
-                  || $psql_bin -c "CREATE USER ''${user_val} WITH PASSWORD '$pass_val';"
-
-                # CREATE DATABASE (if not exists)
-                $psql_bin --tuples-only --no-align -c \
-                  "SELECT 1 FROM pg_database WHERE datname='$db'" | grep -q 1 \
-                  || $psql_bin -c "CREATE DATABASE ''${db} OWNER '$user_val';"
-
-                # Privileges
-                $psql_bin -c "ALTER DATABASE ''${db} OWNER TO ''${user_val};"
-                $psql_bin -d "$db" -c "GRANT ALL PRIVILEGES ON DATABASE ''${db} TO ''${user_val};"
+                echo $dev_user_val
+                echo $dev_pass_val
 
                 echo "Bootstrapped DB ''${db} (user: ''${user_val})"
               done
