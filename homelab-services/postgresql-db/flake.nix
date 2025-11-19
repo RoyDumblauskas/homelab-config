@@ -58,6 +58,7 @@
           enable = true;
           dataDir = opts.dataDir;
           settings.port = opts.port;
+          settings.listen_addresses = "*";
           identMap = ''
             postgres roy postgres
           '';
@@ -115,15 +116,39 @@
                 echo $dev_user_val
                 echo $dev_pass_val
 
-                # Create databases
-                $psql_bin -c "CREATE DATABASE "$db";"
+                # Create databases if not exists
+                if $psql_bin -c "\du" | grep -c \"$db \"; then
+                  echo "$db already exists, skipping creation."
+                else
+                  echo "Creating database $db"
+                  $psql_bin -c "CREATE DATABASE "$db";"
+                fi
+
+                if $psql_bin -c "\du" | grep -c "$db"_dev; then
+                  echo ""$db"_dev already exists, skipping creation."
+                else
+                  echo "Creating database "$db"_dev"
+                  $psql_bin -c "CREATE DATABASE "$db";"
+                fi
+
                 $psql_bin -c "CREATE DATABASE "$db"_dev;"
 
                 # Create users if not exists
-                $psql_bin -c "CREATE ROLE "$user_val" WITH LOGIN PASSWORD '$pass_val';"
-                $psql_bin -c "CREATE ROLE "$dev_user_val" WITH LOGIN PASSWORD '$dev_pass_val';"
+                if $psql_bin -c "\du" | grep -c "$user_val"; then
+                  echo "$user_val already exists, skipping creation. WARN: password may not be correct. Delete user and allow to be recreated for assurity"
+                else
+                  echo "Creating $user_val"
+                  $psql_bin -c "CREATE ROLE "$user_val" WITH LOGIN PASSWORD '$pass_val';"
+                fi
 
-                # Give users privileges on databases
+                if $psql_bin -c "\du" | grep "$dev_user_val"; then
+                  echo "$dev_user_val already exists, skipping creation. WARN: password may not be correct. Delete user and allow to be recreated for assurity"
+                else
+                  echo "Creating $dev_user_val"
+                  $psql_bin -c "CREATE ROLE "$dev_user_val" WITH LOGIN PASSWORD '$dev_pass_val';"
+                fi
+
+                # Give users privileges on databases (always)
                 $psql_bin -c "GRANT ALL PRIVILEGES ON DATABASE "$db" TO "$user_val";"
                 $psql_bin -c "GRANT ALL PRIVILEGES ON DATABASE "$db"_dev TO "$dev_user_val";"
 
