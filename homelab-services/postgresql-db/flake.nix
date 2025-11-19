@@ -128,10 +128,9 @@
                   echo ""$db"_dev already exists, skipping creation."
                 else
                   echo "Creating database "$db"_dev"
-                  $psql_bin -c "CREATE DATABASE "$db";"
+                  $psql_bin -c "CREATE DATABASE "$db"_dev;"
                 fi
 
-                $psql_bin -c "CREATE DATABASE "$db"_dev;"
 
                 # Create users if not exists
                 if $psql_bin -c "\du" | grep -c "$user_val"; then
