@@ -157,7 +157,7 @@
           };
 
           networking.firewall.allowedTCPPorts = lib.mkMerge [
-            (lib.mkIf opts.enable [ opts.dataPort ])
+            (lib.mkIf opts.enable [ opts.port ])
           ];
       };
     };
