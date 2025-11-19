@@ -61,8 +61,6 @@
           settings.port = opts.port;
           identMap = ''
             postgres roy postgres
-            dev      roy devuser
-            prod     roy produser
           '';
 
           # allow remote connections to dev DBs
