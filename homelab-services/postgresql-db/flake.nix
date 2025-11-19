@@ -120,8 +120,8 @@
                 $psql_bin -c "CREATE DATABASE "$db"_dev;"
 
                 # Create users if not exists
-                $psql_bin -c "CREATE ROLE "$user_val" WITH LOGIN PASSWORD \"$pass_val\";"
-                $psql_bin -c "CREATE ROLE "$dev_user_val" WITH LOGIN PASSWORD \"$dev_pass_val\";"
+                $psql_bin -c "CREATE ROLE "$user_val" WITH LOGIN PASSWORD '$pass_val';"
+                $psql_bin -c "CREATE ROLE "$dev_user_val" WITH LOGIN PASSWORD '$dev_pass_val';"
 
                 # Give users privileges on databases
                 $psql_bin -c "GRANT ALL PRIVELEGES ON DATABASE "$db" TO "$user_val";"
