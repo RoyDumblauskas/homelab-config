@@ -117,14 +117,14 @@
                 echo $dev_pass_val
 
                 # Create databases if not exists
-                if $psql_bin -c "\du" | grep -c \""$db" \"; then
+                if $psql_bin -c "\l" | grep -c ""$db" "; then
                   echo "$db already exists, skipping creation."
                 else
                   echo "Creating database $db"
                   $psql_bin -c "CREATE DATABASE "$db";"
                 fi
 
-                if $psql_bin -c "\du" | grep -c "$db"_dev; then
+                if $psql_bin -c "\l" | grep -c "$db"_dev; then
                   echo ""$db"_dev already exists, skipping creation."
                 else
                   echo "Creating database "$db"_dev"
