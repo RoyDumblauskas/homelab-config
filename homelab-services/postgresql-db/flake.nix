@@ -56,9 +56,9 @@
 
         services.postgresql = {
           enable = true;
+          cfg.enableTCPIP = true;
           dataDir = opts.dataDir;
           settings.port = opts.port;
-          settings.listen_addresses = "*";
           identMap = ''
             postgres roy postgres
           '';
