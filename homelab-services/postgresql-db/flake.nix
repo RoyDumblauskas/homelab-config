@@ -66,7 +66,7 @@
           '';
 
           # allow remote connections to dev DBs
-          authentication = pkgs.lib.mkOverride ''
+          authentication = pkgs.lib.mkOverride 10 ''
             # TYPE  DATABASE        USER            ADDRESS                 METHOD
             # "local" is for Unix domain socket connections only
             local   all             all                                     trust
@@ -80,7 +80,7 @@
             host    replication     all             127.0.0.1/32            trust
             host    replication     all             ::1/128                 trust
             # Connections via LAN
-            "${lib.concatStringsSep " " (map (db: "host ${db}_dev all samenet md5\n") opts.databases) }"
+            ${lib.concatStringsSep " " (map (db: "host ${db}_dev all samenet md5\n") opts.databases) }
           '';
 
         };
