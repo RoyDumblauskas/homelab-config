@@ -116,16 +116,16 @@
                 echo $dev_pass_val
 
                 # Create databases
-                $psql_bin CREATE DATABASE "$db"
-                $psql_bin CREATE DATABASE "$db"_dev
+                $psql_bin -c CREATE DATABASE "$db"
+                $psql_bin -c CREATE DATABASE "$db"_dev
 
                 # Create users if not exists
-                $psql-bin CREATE ROLE "$user_val" LOGIN PASSWORD "$pass_val"
-                $psql-bin CREATE ROLE "$dev_user_val" LOGIN PASSWORD "$dev_pass_val"
+                $psql-bin -c CREATE ROLE "$user_val" LOGIN PASSWORD "$pass_val"
+                $psql-bin -c CREATE ROLE "$dev_user_val" LOGIN PASSWORD "$dev_pass_val"
 
                 # Give users privileges on databases
-                $psql-bin GRANT ALL PRIVELEGES ON DATABASE "$db" TO "$user_val"
-                $psql-bin GRANT ALL PRIVELEGES ON DATABASE "$db"_dev TO "$dev_user_val"
+                $psql-bin -c GRANT ALL PRIVELEGES ON DATABASE "$db" TO "$user_val"
+                $psql-bin -c GRANT ALL PRIVELEGES ON DATABASE "$db"_dev TO "$dev_user_val"
 
               done
             '';
