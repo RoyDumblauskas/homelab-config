@@ -124,8 +124,8 @@
                 $psql_bin -c "CREATE ROLE "$dev_user_val" WITH LOGIN PASSWORD '$dev_pass_val';"
 
                 # Give users privileges on databases
-                $psql_bin -c "GRANT ALL PRIVELEGES ON DATABASE "$db" TO "$user_val";"
-                $psql_bin -c "GRANT ALL PRIVELEGES ON DATABASE "$db"_dev TO "$dev_user_val";"
+                $psql_bin -c "GRANT ALL PRIVILEGES ON DATABASE "$db" TO "$user_val";"
+                $psql_bin -c "GRANT ALL PRIVILEGES ON DATABASE "$db"_dev TO "$dev_user_val";"
 
               done
             '';
