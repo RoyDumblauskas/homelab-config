@@ -65,7 +65,7 @@
 
           # allow remote connections to dev DBs
           authentication = ''
-            ${lib.concatStringsSep " " (map (db: "host ${db}_dev all 10.0.0.141 md5\n") opts.databases) }
+            ${lib.concatStringsSep " " (map (db: "host ${db}_dev all 10.0.0.141/24 md5\n") opts.databases) }
           '';
 
         };
