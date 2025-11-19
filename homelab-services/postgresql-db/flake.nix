@@ -117,14 +117,14 @@
                 echo $dev_pass_val
 
                 # Create databases if not exists
-                if $psql_bin -c "\l" | grep -c ""$db" "; then
+                if $psql_bin -c "\l" | grep -ci ""$db" "; then
                   echo "$db already exists, skipping creation."
                 else
                   echo "Creating database $db"
                   $psql_bin -c "CREATE DATABASE "$db";"
                 fi
 
-                if $psql_bin -c "\l" | grep -c "$db"_dev; then
+                if $psql_bin -c "\l" | grep -ci "$db"_dev; then
                   echo ""$db"_dev already exists, skipping creation."
                 else
                   echo "Creating database "$db"_dev"
@@ -133,14 +133,14 @@
 
 
                 # Create users if not exists
-                if $psql_bin -c "\du" | grep -c "$user_val"; then
+                if $psql_bin -c "\du" | grep -ci "$user_val"; then
                   echo "$user_val already exists, skipping creation. WARN: password may not be correct. Delete user and allow to be recreated for assurity"
                 else
                   echo "Creating $user_val"
                   $psql_bin -c "CREATE ROLE "$user_val" WITH LOGIN PASSWORD '$pass_val';"
                 fi
 
-                if $psql_bin -c "\du" | grep "$dev_user_val"; then
+                if $psql_bin -c "\du" | grep -ci "$dev_user_val"; then
                   echo "$dev_user_val already exists, skipping creation. WARN: password may not be correct. Delete user and allow to be recreated for assurity"
                 else
                   echo "Creating $dev_user_val"
