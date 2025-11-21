@@ -29,12 +29,13 @@
             type = lib.types.path;
             description = ''
               File containing postgresql user credentials.
-              Format:
-
-              PSQL_DB_USER=username
-              PSQL_DB_PASSWORD=password
-              PSQL_DB_DEV_USER=dev_username
-              PSQL_DB_DEV_PASSWORD=dev_password
+              Only the Passwords. Names of Users just follow the pattern:
+              <DB_Name>_produser
+              <DB_Name>_devuser
+              
+              Password Format:
+              PSQL_<DB>_PASSWORD=password
+              PSQL_<DB>_DEV_PASSWORD=dev_password
             '';
         };
 
@@ -63,11 +64,11 @@
             postgres roy postgres
           '';
 
-          # allow remote connections to dev DBs
+          # allow remote connections to dev databases
           authentication = ''
-            ${lib.concatStringsSep " " (map (db: "host ${db}_dev all 10.0.0.141/24 md5\n") opts.databases) }
+            ${lib.concatStringsSep " " (map (db: "host ${db}_dev ${db}_devuser 10.0.0.141/24 md5\n") opts.databases) }
+            ${lib.concatStringsSep " " (map (db: "local ${db} ${db}_produser md5\n") opts.databases) }
           '';
-
         };
 
         systemd.services.bootstrap-psql = {
@@ -90,14 +91,12 @@
               for db in ${lib.escapeShellArgs opts.databases}; do
                 db_upper="''${db^^}"
 
-                user_var="PSQL_''${db_upper}_USER"
-                pass_var="PSQL_''${db_upper}_PASSWORD"
                 dev_user_var="PSQL_''${db_upper}_DEV_USER"
                 dev_pass_var="PSQL_''${db_upper}_DEV_PASSWORD"
 
-                user_val=$(eval "echo \''${$user_var:-}")
+                user_val="$db"_produser
                 pass_val=$(eval "echo \''${$pass_var:-}")
-                dev_user_val=$(eval "echo \''${$dev_user_var:-}")
+                dev_user_val="$db"_devuser
                 dev_pass_val=$(eval "echo \''${$dev_pass_var:-}")
 
                 if [ -z "$user_val" ] || [ -z "$pass_val" ]; then
@@ -111,10 +110,6 @@
                 fi
 
                 echo "Bootstrapping PostgreSQL for database: $db"
-                echo $user_val
-                echo $pass_val
-                echo $dev_user_val
-                echo $dev_pass_val
 
                 # Create databases if not exists
                 if $psql_bin -c "\l" | grep -ci ""$db" "; then
@@ -130,7 +125,6 @@
                   echo "Creating database "$db"_dev"
                   $psql_bin -c "CREATE DATABASE "$db"_dev;"
                 fi
-
 
                 # Create users if not exists
                 if $psql_bin -c "\du" | grep -ci "$user_val"; then
@@ -156,9 +150,7 @@
             };
           };
 
-          networking.firewall.allowedTCPPorts = lib.mkMerge [
-            (lib.mkIf opts.enable [ opts.port ])
-          ];
+          networking.firewall.allowedTCPPorts = lib.mkIf opts.enable opts.port;
       };
     };
   };
