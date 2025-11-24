@@ -154,7 +154,7 @@
             };
           };
 
-          networking.firewall.allowedTCPPorts = lib.mkIf opts.enable opts.port;
+          networking.firewall.allowedTCPPorts = lib.mkIf opts.enable [ opts.port] ;
       };
     };
   };
