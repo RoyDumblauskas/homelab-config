@@ -65,8 +65,12 @@
           '';
 
           # allow remote connections to dev databases
-          authentication = ''
-            ${lib.concatStringsSep " " (map (db: "host ${db}_dev ${db}_devuser 10.0.0.141/24 md5\n") opts.databases) }
+          authentication = pkgs.lib.mkOverride 10 ''
+            local all postgres peer map=postgres
+            local all all peer
+
+            # Dev can be connected to via the LAN, Prod only via localhost
+            ${lib.concatStringsSep " " (map (db: "host ${db}_dev ${db}_devuser samenet md5\n") opts.databases) }
             ${lib.concatStringsSep " " (map (db: "local ${db} ${db}_produser md5\n") opts.databases) }
           '';
         };
