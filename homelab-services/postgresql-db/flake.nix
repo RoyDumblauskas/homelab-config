@@ -95,6 +95,8 @@
               for db in ${lib.escapeShellArgs opts.databases}; do
                 db_upper="''${db^^}"
 
+                user_var="PSQL_''${db_upper}_USER"
+                pass_var="PSQL_''${db_upper}_PASSWORD"
                 dev_user_var="PSQL_''${db_upper}_DEV_USER"
                 dev_pass_var="PSQL_''${db_upper}_DEV_PASSWORD"
 
@@ -103,13 +105,13 @@
                 dev_user_val="$db"_devuser
                 dev_pass_val=$(eval "echo \''${$dev_pass_var:-}")
 
-                if [ -z "$user_val" ] || [ -z "$pass_val" ]; then
-                  echo "Missing credentials for database '$db' ($user_var / $pass_var)" >&2
+                if [ -z "$pass_val" ]; then
+                  echo "Missing password credentials for database '$db'" >&2
                   exit 1
                 fi
 
-                if [ -z "$dev_user_val" ] || [ -z "$dev_pass_val" ]; then
-                  echo "Missing credentials for database '$db'_dev ($dev_user_var / $dev_pass_var)" >&2
+                if [ -z "$dev_pass_val" ]; then
+                  echo "Missing password credentials for database '$db'_dev" >&2
                   exit 1
                 fi
 
