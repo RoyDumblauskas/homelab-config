@@ -152,6 +152,10 @@
                 # Give users privileges on databases (always)
                 $psql_bin -c "GRANT ALL PRIVILEGES ON DATABASE "$db" TO "$user_val";"
                 $psql_bin -c "GRANT ALL PRIVILEGES ON DATABASE "$db"_dev TO "$dev_user_val";"
+                
+                # Grant ownership
+                $psql_bin -c "ALTER DATABASE "$db" OWNER TO "$user_val";"
+                $psql_bin -c "ALTER DATABASE "$db"_dev OWNER TO "$dev_user_val";"
 
               done
             '';
