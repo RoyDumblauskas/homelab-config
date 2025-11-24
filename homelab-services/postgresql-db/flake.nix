@@ -69,9 +69,11 @@
             local all postgres peer map=postgres
             local all all peer
 
-            # Dev can be connected to via the LAN, Prod only via localhost
+            # Dev can be connected to via the LAN or Local
             ${lib.concatStringsSep " " (map (db: "host ${db}_dev ${db}_devuser samenet md5\n") opts.databases) }
+            # Prod can be connected via local machine
             ${lib.concatStringsSep " " (map (db: "host ${db} ${db}_produser 127.0.0.1/32 md5\n") opts.databases) }
+            ${lib.concatStringsSep " " (map (db: "host ${db} ${db}_produser ::1/128 md5\n") opts.databases) }
           '';
         };
 
