@@ -1,4 +1,10 @@
-{ config, lib, pkgs, meta, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  meta,
+  ...
+}:
 
 let
   nimhStaticSite = pkgs.runCommand "nimh-static-site" { } ''
@@ -9,7 +15,10 @@ in
 {
   imports = [ ];
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
   nixpkgs.config.allowUnfree = true;
 
   # Secret Management
@@ -75,7 +84,7 @@ in
         CF_API_EMAIL_FILE = config.sops.secrets."cloudflare-api-email".path;
         CF_API_KEY_FILE = config.sops.secrets."cloudflare-api-key".path;
       };
-    };    
+    };
     certs = {
       "roypository.com" = {
         domain = "*.roypository.com";
@@ -84,13 +93,11 @@ in
     };
   };
 
-
-
   # Setup vhosts via nginx
   services.nginx = {
     enable = true;
     logError = "stderr";
-    
+
     virtualHosts."roypository.com" = {
       forceSSL = true;
       useACMEHost = "roypository.com";
@@ -130,12 +137,15 @@ in
     dataDir = "/persist/data/minio";
     credentialsFile = config.sops.secrets."minio-credentials".path;
 
-    dataPort = 9000;     # S3 API access
-    consolePort = 9001;  # Admin console access
+    dataPort = 9000; # S3 API access
+    consolePort = 9001; # Admin console access
 
     bootstrap-minio = {
       enable = true;
-      environments = [ "dev" "prod" ];
+      environments = [
+        "dev"
+        "prod"
+      ];
     };
 
     default-nginx = {
@@ -148,18 +158,18 @@ in
   #           BLOG SERVICE           #
   # ================================ #
 
+  # Fullstack sourcecode
+
   # Minio for backend storage
 
   # Postgresql/postgrest for text storage
   services.postgresql-db = {
     enable = true;
     dataDir = "/var/lib/postgresql";
-    port = 5432;
+    port = 5431;
     credentialsFile = config.sops.secrets."postgresql-credentials".path;
     databases = [ "rdblog" ];
   };
-
-  # Fullstack sourcecode
 
   # ================================ #
   #         END BLOG SERVICE         #
@@ -173,11 +183,10 @@ in
     enable = true;
     storeDir = "/persist/srv/minecraft";
   };
-  
+
   # ================================ #
   #             END MINECRAFT        #
   # ================================ #
-
 
   # Grub Boot Loader Setup
   boot.loader = {
@@ -196,16 +205,23 @@ in
   boot.initrd.postMountCommands = lib.mkAfter ''
     zfs rollback -r zroot/root@blank
   '';
-  
+
   networking = {
     hostName = meta.hostname;
     hostId = meta.hostId;
     defaultGateway = "10.0.0.1";
-    nameservers = [ "1.1.1.1" "1.0.0.1" ];
+    nameservers = [
+      "1.1.1.1"
+      "1.0.0.1"
+    ];
 
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 22 80 443];
+      allowedTCPPorts = [
+        22
+        80
+        443
+      ];
     };
 
     interfaces.eth0.ipv4.addresses = [
@@ -249,11 +265,13 @@ in
   #   pulse.enable = true;
   # };
 
-
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.sysAdmin = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkManager" ];
+    extraGroups = [
+      "wheel"
+      "networkManager"
+    ];
     # created with mkpasswd
     hashedPassword = "$y$j9T$ILYm49Ylk4h6Wforpdw161$ds0DvzLQkbh0o3vN6D.gZ4KMo..0AOR/DwNcWtY0nH2";
     openssh.authorizedKeys.keys = [
