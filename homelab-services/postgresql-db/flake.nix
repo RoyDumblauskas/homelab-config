@@ -70,7 +70,7 @@
             local all all peer
 
             # Dev can be connected to via the LAN or Local
-            ${lib.concatStringsSep " " (map (db: "host ${db}_dev ${db}_devuser samenet md5\n") opts.databases) }
+            ${lib.concatStringsSep " " (map (db: "host ${db}_dev ${db}_devuser all md5\n") opts.databases) }
             # Prod can be connected via local machine
             ${lib.concatStringsSep " " (map (db: "host ${db} ${db}_produser 127.0.0.1/32 md5\n") opts.databases) }
             ${lib.concatStringsSep " " (map (db: "host ${db} ${db}_produser ::1/128 md5\n") opts.databases) }
@@ -120,42 +120,42 @@
                 echo "Bootstrapping PostgreSQL for database: $db"
 
                 # Create databases if not exists
-                if $psql_bin -c --port=${opts.port} "\l" | grep -ci ""$db" "; then
+                if $psql_bin -c --port=${toString opts.port} "\l" | grep -ci ""$db" "; then
                   echo "$db already exists, skipping creation."
                 else
                   echo "Creating database $db"
-                  $psql_bin -c --port=${opts.port} "CREATE DATABASE "$db";"
+                  $psql_bin -c --port=${toString opts.port} "CREATE DATABASE "$db";"
                 fi
 
-                if $psql_bin -c --port=${opts.port} "\l" | grep -ci "$db"_dev; then
+                if $psql_bin -c --port=${toString opts.port} "\l" | grep -ci "$db"_dev; then
                   echo ""$db"_dev already exists, skipping creation."
                 else
                   echo "Creating database "$db"_dev"
-                  $psql_bin -c --port=${opts.port} "CREATE DATABASE "$db"_dev;"
+                  $psql_bin -c --port=${toString opts.port} "CREATE DATABASE "$db"_dev;"
                 fi
 
                 # Create users if not exists
-                if $psql_bin -c --port=${opts.port} "\du" | grep -ci "$user_val"; then
+                if $psql_bin -c --port=${toString opts.port} "\du" | grep -ci "$user_val"; then
                   echo "$user_val already exists, skipping creation. WARN: password may not be correct. Delete user and allow to be recreated for assurity"
                 else
                   echo "Creating $user_val"
-                  $psql_bin -c --port=${opts.port} "CREATE ROLE "$user_val" WITH LOGIN PASSWORD '$pass_val';"
+                  $psql_bin -c --port=${toString opts.port} "CREATE ROLE "$user_val" WITH LOGIN PASSWORD '$pass_val';"
                 fi
 
-                if $psql_bin -c --port=${opts.port} "\du" | grep -ci "$dev_user_val"; then
+                if $psql_bin -c --port=${toString opts.port} "\du" | grep -ci "$dev_user_val"; then
                   echo "$dev_user_val already exists, skipping creation. WARN: password may not be correct. Delete user and allow to be recreated for assurity"
                 else
                   echo "Creating $dev_user_val"
-                  $psql_bin -c --port=${opts.port} "CREATE ROLE "$dev_user_val" WITH LOGIN PASSWORD '$dev_pass_val';"
+                  $psql_bin -c --port=${toString opts.port} "CREATE ROLE "$dev_user_val" WITH LOGIN PASSWORD '$dev_pass_val';"
                 fi
 
                 # Give users privileges on databases (always)
-                $psql_bin -c --port=${opts.port} "GRANT ALL PRIVILEGES ON DATABASE "$db" TO "$user_val";"
-                $psql_bin -c --port=${opts.port} "GRANT ALL PRIVILEGES ON DATABASE "$db"_dev TO "$dev_user_val";"
+                $psql_bin -c --port=${toString opts.port} "GRANT ALL PRIVILEGES ON DATABASE "$db" TO "$user_val";"
+                $psql_bin -c --port=${toString opts.port} "GRANT ALL PRIVILEGES ON DATABASE "$db"_dev TO "$dev_user_val";"
                 
                 # Grant ownership
-                $psql_bin -c --port=${opts.port} "ALTER DATABASE "$db" OWNER TO "$user_val";"
-                $psql_bin -c --port=${opts.port} "ALTER DATABASE "$db"_dev OWNER TO "$dev_user_val";"
+                $psql_bin -c --port=${toString opts.port} "ALTER DATABASE "$db" OWNER TO "$user_val";"
+                $psql_bin -c --port=${toString opts.port} "ALTER DATABASE "$db"_dev OWNER TO "$dev_user_val";"
 
               done
             '';
