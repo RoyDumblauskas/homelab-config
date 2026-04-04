@@ -7,7 +7,6 @@
 
   home.packages = with pkgs; [
     age
-    alacritty
     awscli2
     dig
     discord
@@ -15,11 +14,15 @@
     fish
     git
     git-filter-repo
+    go
     grim
+    jq
     kdePackages.gwenview
     minio-client
+    nodejs_22
+    postman
     prismlauncher
-    rose-pine-hyprcursor
+    python3
     slurp
     sops
     ssh-to-age
@@ -28,14 +31,20 @@
     unzip
     vlc
     wl-clipboard
+    woeusb
+    wofi
+    xorg.xrandr
     yq-go
     zip
   ];
 
   programs.git = {
     enable = true;
-    userName = "Roy Dumblauskas";
-    userEmail = "roydumblauskas@gmail.com";
+    settings = {
+      user.name = "Roy Dumblauskas";
+      user.email = "roydumblauskas@gmail.com";
+
+    };
   };
 
   # user program config files
@@ -44,6 +53,10 @@
     ".config/waybar".source = ./roy-config/waybar;
     ".config/fish".source = ./roy-config/fish;
     ".config/alacritty".source = ./roy-config/alacritty;
+    ".local/share/PrismLauncher/instances/1.21.6/minecraft/options.txt".source =
+      ./roy-config/PrismLauncher/instances/1.21.6/minecraft/options.txt;
+    ".local/share/PrismLauncher/instances/1.21.6/minecraft/servers.dat".source =
+      ./roy-config/PrismLauncher/instances/1.21.6/minecraft/servers.dat;
   };
 
   # user persisted dirs
@@ -54,12 +67,17 @@
       "dl"
       ".mozilla/firefox/roy/storage/default"
       ".cache/mozilla/firefox/roy"
+      # persist steam
+      ".local/share/Steam"
     ];
     files = [
       ".bash_history"
       ".mozilla/firefox/roy/places.sqlite"
       ".mozilla/firefox/roy/cookies.sqlite"
       ".config/sops/age/keys.txt"
+      ".local/share/PrismLauncher/accounts.json"
+      ".local/share/PrismLauncher/instances/1.21.6/instance.cfg"
+      ".local/share/PrismLauncher/instances/1.21.6/mmc-pack.json"
 
     ];
   };
@@ -93,7 +111,7 @@
       };
 
       extensions.force = true;
-      extensions.packages = with inputs.firefox-addons.packages.${pkgs.system}; [
+      extensions.packages = with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; [
         ublock-origin
         vimium-c
       ];
@@ -293,7 +311,6 @@
         options.silent = true;
         options.desc = "Focus up";
       }
-
     ];
 
     plugins = {
@@ -301,16 +318,10 @@
       lsp-lines.enable = true;
       lsp-format.enable = true;
 
-      neo-tree = {
-        enable = true;
-      };
-
-      # neo-tree dependency
-      web-devicons.enable = true;
-
       lsp = {
         enable = true;
         inlayHints = true;
+
         servers = {
           html.enable = true;
           lua_ls.enable = true;
@@ -320,9 +331,9 @@
           pyright.enable = true;
           gopls.enable = true;
           terraformls.enable = true;
-          ansiblels.enable = true;
           jsonls.enable = true;
           yamlls.enable = true;
+
           rust_analyzer = {
             enable = true;
             installRustc = true;
@@ -337,35 +348,43 @@
 
         keymaps = {
           silent = true;
+
           lspBuf = {
             gd = {
               action = "definition";
               desc = "Goto Definition";
             };
+
             gr = {
               action = "references";
               desc = "Goto References";
             };
+
             gD = {
               action = "declaration";
               desc = "Goto Declaration";
             };
+
             gI = {
               action = "implementation";
               desc = "Goto Implementation";
             };
+
             gT = {
               action = "type_definition";
               desc = "Type Definition";
             };
+
             K = {
               action = "hover";
               desc = "Hover";
             };
+
             "<leader>cw" = {
               action = "workspace_symbol";
               desc = "Workspace Symbol";
             };
+
             "<leader>r" = {
               action = "rename";
               desc = "Rename";
@@ -377,10 +396,12 @@
               action = "open_float";
               desc = "Line Diagnostics";
             };
+
             "]d" = {
               action = "goto_next";
               desc = "Next Diagnostic";
             };
+
             "[d" = {
               action = "goto_prev";
               desc = "Previous Diagnostic";
@@ -388,6 +409,13 @@
           };
         };
       };
+
+      neo-tree = {
+        enable = true;
+      };
+
+      # neo-tree dependency
+      web-devicons.enable = true;
 
       cmp = {
         enable = true;
@@ -399,7 +427,6 @@
             { name = "buffer"; }
             { name = "luasnip"; }
           ];
-
           mapping = {
             "<C-Space>" = "cmp.mapping.complete()";
             "<C-d>" = "cmp.mapping.scroll_docs(-4)";
@@ -412,7 +439,6 @@
         };
       };
     };
-
     extraConfigLua = ''
             local _border = "rounded"
 
@@ -431,10 +457,6 @@
             vim.diagnostic.config{
             	float={border=_border}
             };
-
-            require('lspconfig.ui.windows').default_options = {
-              border = _border
-            }
     '';
 
     colorschemes.catppuccin = {
