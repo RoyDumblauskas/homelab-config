@@ -28,7 +28,6 @@
     # This is a path to the services I've declared.
     # It just happens to be stored in the same repository (relative),
     # but could well be a separate repository
-    tests-service.url = "github:RoyDumblauskas/tests-service?shallow=1";
     minio-service.url = "path:../homelab-services/minio-service";
     mc-service.url = "path:../homelab-services/mc-service";
     postgresql-db.url = "path:../homelab-services/postgresql-db";
@@ -45,7 +44,6 @@
       quasiSecrets,
       impermanence,
       firefox-addons,
-      tests-service,
       minio-service,
       mc-service,
       postgresql-db,
@@ -79,7 +77,6 @@
               quasiSecrets.nixosModules.ipAddrs
               quasiSecrets.nixosModules.serviceList
               impermanence.nixosModules.impermanence
-              tests-service.nixosModules.default
               minio-service.nixosModules.minio-service
               mc-service.nixosModules.mc-service
               postgresql-db.nixosModules.postgresql-db

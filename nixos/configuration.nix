@@ -119,17 +119,6 @@ in
     };
   };
 
-  # Declare test service manually
-  services.tests-service = {
-    enable = true;
-    port = 8080;
-    credentialsFile = config.sops.secrets."tests-service".path;
-    default-nginx = {
-      enable = true;
-      hostname = "test.roypository.com";
-    };
-  };
-
   services.minio-service = {
     enable = true;
 
