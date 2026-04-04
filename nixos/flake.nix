@@ -25,8 +25,8 @@
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # This is a path to the services I've declared. 
-    # It just happens to be stored in the same repository (relative), 
+    # This is a path to the services I've declared.
+    # It just happens to be stored in the same repository (relative),
     # but could well be a separate repository
     tests-service.url = "github:RoyDumblauskas/tests-service?shallow=1";
     minio-service.url = "path:../homelab-services/minio-service";
@@ -34,60 +34,80 @@
     postgresql-db.url = "path:../homelab-services/postgresql-db";
   };
 
-  outputs = { self, nixpkgs, nixvim, home-manager, disko, sops-nix, quasiSecrets, impermanence, firefox-addons, tests-service, minio-service, mc-service, postgresql-db }@inputs: 
-  let 
-    nodes = [
-      { 
-        name = "nixos-homelab-00";
-        hostId = "3884D2F1";
-      }
-    ];
-  in {
-    nixosConfigurations = builtins.listToAttrs (map (node: {
-      name = node.name;
-      value = nixpkgs.lib.nixosSystem {
-        specialArgs = {
-          meta = {
-            hostname = node.name;
-            hostId = node.hostId;
+  outputs =
+    {
+      self,
+      nixpkgs,
+      nixvim,
+      home-manager,
+      disko,
+      sops-nix,
+      quasiSecrets,
+      impermanence,
+      firefox-addons,
+      tests-service,
+      minio-service,
+      mc-service,
+      postgresql-db,
+    }@inputs:
+    let
+      nodes = [
+        {
+          name = "nixos-homelab-00";
+          hostId = "3884D2F1";
+        }
+      ];
+    in
+    {
+      nixosConfigurations = builtins.listToAttrs (
+        map (node: {
+          name = node.name;
+          value = nixpkgs.lib.nixosSystem {
+            specialArgs = {
+              meta = {
+                hostname = node.name;
+                hostId = node.hostId;
+              };
+            };
+            system = "x86_64-linux";
+            modules = [
+              ./configuration.nix
+              ./hardware-configuration.nix
+              ./disk-config.nix
+              disko.nixosModules.disko
+              sops-nix.nixosModules.sops
+              quasiSecrets.nixosModules.ipAddrs
+              quasiSecrets.nixosModules.serviceList
+              impermanence.nixosModules.impermanence
+              tests-service.nixosModules.default
+              minio-service.nixosModules.minio-service
+              mc-service.nixosModules.mc-service
+              postgresql-db.nixosModules.postgresql-db
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.users.sysAdmin =
+                  { ... }:
+                  {
+                    imports = [
+                      ./home.nix
+                      sops-nix.homeManagerModules.sops
+                    ];
+                  };
+                home-manager.extraSpecialArgs = { inherit inputs; };
+                home-manager.users.roy =
+                  { ... }:
+                  {
+                    imports = [
+                      ./home-roy.nix
+                      sops-nix.homeManagerModules.sops
+                    ];
+                  };
+              }
+            ];
           };
-        };
-        system = "x86_64-linux";
-        modules = [
-          ./configuration.nix
-          ./hardware-configuration.nix
-          ./disk-config.nix
-          disko.nixosModules.disko
-          sops-nix.nixosModules.sops
-          quasiSecrets.nixosModules.ipAddrs
-          quasiSecrets.nixosModules.serviceList
-          impermanence.nixosModules.impermanence
-          tests-service.nixosModules.default
-          minio-service.nixosModules.minio-service
-          mc-service.nixosModules.mc-service
-          postgresql-db.nixosModules.postgresql-db
-          home-manager.nixosModules.home-manager {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.sysAdmin = { ... }: {
-              imports = [
-                ./home.nix
-                impermanence.homeManagerModules.impermanence
-                sops-nix.homeManagerModules.sops
-              ];
-            };
-            home-manager.extraSpecialArgs = { inherit inputs; };
-            home-manager.users.roy = { ... }: {
-              imports = [
-                ./home-roy.nix
-                nixvim.homeManagerModules.nixvim
-                impermanence.homeManagerModules.impermanence
-                sops-nix.homeManagerModules.sops
-              ];
-            };
-          }
-        ];
-      };      
-    }) nodes);
-  };
+        }) nodes
+      );
+    };
 }

@@ -14,7 +14,7 @@
   ];
 
   # user persisted dirs
-  home.persistence."/persist/home/sysAdmin" = {
+  home.persistence."/persist" = {
     directories = [
       ".ssh"
       "rp"
@@ -24,9 +24,7 @@
       ".config/sops/age/keys.txt"
 
     ];
-    allowOther = true;
   };
-
 
   home.stateVersion = "24.11";
   programs.home-manager.enable = true;

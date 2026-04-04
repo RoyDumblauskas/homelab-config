@@ -47,7 +47,7 @@
   };
 
   # user persisted dirs
-  home.persistence."/persist/home/roy" = {
+  home.persistence."/persist" = {
     directories = [
       ".ssh"
       "rp"
@@ -62,7 +62,6 @@
       ".config/sops/age/keys.txt"
 
     ];
-    allowOther = true;
   };
 
   # User services must come after sops secrets
