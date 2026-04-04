@@ -33,7 +33,6 @@
     zpool = {
       zroot = {
         type = "zpool";
-        # options.cachefile = "none";
         rootFsOptions = {
           compression = "zstd";
           "com.sun:auto-snapshot" = "false";
