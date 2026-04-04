@@ -9,7 +9,6 @@
     age
     awscli2
     dig
-    discord
     ffmpeg_6
     fish
     git
@@ -21,7 +20,6 @@
     minio-client
     nodejs_22
     postman
-    prismlauncher
     python3
     slurp
     sops
