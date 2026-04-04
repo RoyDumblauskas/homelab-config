@@ -53,10 +53,6 @@
     ".config/waybar".source = ./roy-config/waybar;
     ".config/fish".source = ./roy-config/fish;
     ".config/alacritty".source = ./roy-config/alacritty;
-    ".local/share/PrismLauncher/instances/1.21.6/minecraft/options.txt".source =
-      ./roy-config/PrismLauncher/instances/1.21.6/minecraft/options.txt;
-    ".local/share/PrismLauncher/instances/1.21.6/minecraft/servers.dat".source =
-      ./roy-config/PrismLauncher/instances/1.21.6/minecraft/servers.dat;
   };
 
   # user persisted dirs
@@ -67,18 +63,12 @@
       "dl"
       ".mozilla/firefox/roy/storage/default"
       ".cache/mozilla/firefox/roy"
-      # persist steam
-      ".local/share/Steam"
     ];
     files = [
       ".bash_history"
       ".mozilla/firefox/roy/places.sqlite"
       ".mozilla/firefox/roy/cookies.sqlite"
       ".config/sops/age/keys.txt"
-      ".local/share/PrismLauncher/accounts.json"
-      ".local/share/PrismLauncher/instances/1.21.6/instance.cfg"
-      ".local/share/PrismLauncher/instances/1.21.6/mmc-pack.json"
-
     ];
   };
 
