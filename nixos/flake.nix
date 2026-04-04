@@ -101,6 +101,7 @@
                   {
                     imports = [
                       ./home-roy.nix
+                      nixvim.homeModules.nixvim
                       sops-nix.homeManagerModules.sops
                     ];
                   };
