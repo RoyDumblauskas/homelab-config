@@ -69,11 +69,11 @@ function help_and_exit() {
 	echo "  -n <target_hostname>                    specify target_hostname of the target host to deploy the nixos config on."
 	echo "  -d <target_destination>                 specify ip or domain to the target host."
 	echo "  -a <target_administrator>               specify the name of the user that will act as the system administrator"
-  echo "                                          (in my configurations this is 'sysAdmin')"
+  echo "                                          (in my configurations this is 'roy')"
   echo 
 	echo "OPTIONS:"
 	echo "  -u <target_user>                        specify target_user with sudo access. nix-config will be cloned to their home."
-	echo "                                          Default=root."
+  echo "                                          Default=root. (in my config this is 'roy')"
 	echo "  --port <ssh_port>                       specify the ssh port to use for remote access. Default=${ssh_port}."
 	echo "  --debug                                 Enable debug mode."
 	echo "  -h | --help                             Print this help."

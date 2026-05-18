@@ -255,32 +255,23 @@ in
   # };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.sysAdmin = {
-    isNormalUser = true;
-    extraGroups = [
-      "wheel"
-      "networkManager"
-    ];
-    # created with mkpasswd
-    hashedPassword = "$y$j9T$ILYm49Ylk4h6Wforpdw161$ds0DvzLQkbh0o3vN6D.gZ4KMo..0AOR/DwNcWtY0nH2";
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFEQyjykrRpkgMFpNAR2G1rbofqbtcuLwIYzgqH85QCn roydumblauskas@gmail.com"
-    ];
-  };
-
   users.users.roy = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
-    hashedPassword = "$y$j9T$GigbbrHNEe.fhkEYbbYGc1$7dS10OH5LGoZtCfoDy82H71nZVbCgGHdkwVwxZpGUY4";
+    hashedPassword = "$y$j9T$qHYfvijvytC69cjEWTHYA/$YF6ig1hNvkTQi0UffZP1dpilS.8O28qEY4bfdvRTXYA";
+    # laptop and desktop
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFEQyjykrRpkgMFpNAR2G1rbofqbtcuLwIYzgqH85QCn roydumblauskas@gmail.com"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPERQEHVwrtsWOpu1BgT7b1WNe4ShCy4bXWoGWvYENBw roydumblauskas@gmail.com"
     ];
     shell = pkgs.fish;
   };
 
   users.users.root = {
+    # laptop and desktop
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFEQyjykrRpkgMFpNAR2G1rbofqbtcuLwIYzgqH85QCn roydumblauskas@gmail.com"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPERQEHVwrtsWOpu1BgT7b1WNe4ShCy4bXWoGWvYENBw roydumblauskas@gmail.com"
     ];
   };
 
