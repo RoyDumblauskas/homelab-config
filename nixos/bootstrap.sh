@@ -73,7 +73,7 @@ function help_and_exit() {
   echo 
 	echo "OPTIONS:"
 	echo "  -u <target_user>                        specify target_user with sudo access. nix-config will be cloned to their home."
-  echo "                                          Default=root. (in my config this is 'roy')"
+  echo "                                          Default=root. (PASSWORD FOR THIS USER MUST BE SET ON TARGET MACHINE)"
 	echo "  --port <ssh_port>                       specify the ssh port to use for remote access. Default=${ssh_port}."
 	echo "  --debug                                 Enable debug mode."
 	echo "  -h | --help                             Print this help."

@@ -2,7 +2,7 @@ keys:
   hosts:
     - &laptop age1zad0qu648dhjav4pzjhkc6vswnqtacuv9230xcgle8wmv56r8ykqn0ud7y
     - &desktop age1rwugh86469664fwhgrj9xuhjxs9vpflx3r0ftuvd0glphf2gecfs8thxsj
-    - &nixos-homelab-00 age15w5qelqemnvytp38ywdwmflc6qmrqph3dwqmx3lrec5cm5d9nchq9pfe8s
+    - &nixos-homelab-00 age1z0w0jqxxze7umj0vpve2kt4v89n5t5xk9txup4gtl4vausm3aajs65tdjy
 creation_rules:
   - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
     key_groups:
