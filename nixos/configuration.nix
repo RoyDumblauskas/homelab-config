@@ -178,16 +178,18 @@ in
   # ================================ #
 
   # Grub Boot Loader Setup
-  boot.loader = {
-    efi = {
-      canTouchEfiVariables = true;
-      efiSysMountPoint = "/boot/efi";
-    };
-    grub = {
-      efiSupport = true;
-      device = "nodev";
-      configurationLimit = 3;
-    };
+  boot.loader.grub = {
+    enable = true;
+    zfsSupport = true;
+    efiSupport = true;
+    efiInstallAsRemovable = true;
+    configurationLimit = 25;
+    mirroredBoots = [
+      {
+        devices = [ "nodev" ];
+        path = "/boot";
+      }
+    ];
   };
 
   # Rollback root on reboot
