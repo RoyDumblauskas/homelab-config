@@ -3,6 +3,7 @@ keys:
     - &laptop age1zad0qu648dhjav4pzjhkc6vswnqtacuv9230xcgle8wmv56r8ykqn0ud7y
     - &desktop age1rwugh86469664fwhgrj9xuhjxs9vpflx3r0ftuvd0glphf2gecfs8thxsj
     - &nixos-homelab-00 age16ht8xkm70pmhl28m6g5fr3gl7xtsec37y57wauee6jqu06678ctqfw87ml
+    - &nixos-homelab-00-user age1hzaf8j6djfc4yc98m3kqjzzdj4tcskf9kdzvjmje2xuqcfmrz5lqdtn5w7
 creation_rules:
   - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
     key_groups:
@@ -10,3 +11,4 @@ creation_rules:
           - *laptop
           - *desktop
           - *nixos-homelab-00
+          - *nixos-homelab-00-user

@@ -115,10 +115,19 @@ in
     };
   };
 
+  # ================================ #
+  #           BLOG SERVICE           #
+  # ================================ #
+
+  # Fullstack sourcecode
+
+  # Minio for backend storage
+  # Should be able to decalre as a nixos module
+  # which builds container and pushes to k3s
   services.minio-service = {
     enable = true;
 
-    # Persist data inside of database
+    # Persist (or don't) the data inside of database
     dataDir = "/var/data/minio";
     credentialsFile = config.sops.secrets."minio-credentials".path;
 
@@ -139,15 +148,7 @@ in
     };
   };
 
-  # ================================ #
-  #           BLOG SERVICE           #
-  # ================================ #
-
-  # Fullstack sourcecode
-
-  # Minio for backend storage
-
-  # Postgresql/postgrest for text storage
+  # Postgresql/postgrest for row storage
   services.postgresql-db = {
     enable = true;
     dataDir = "/var/lib/postgresql";
