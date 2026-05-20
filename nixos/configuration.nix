@@ -135,8 +135,6 @@ in
   # Fullstack sourcecode
 
   # Minio for backend storage
-  # Should be able to decalre as a nixos module
-  # which builds container and pushes to k3s
   services.minio-service = {
     enable = true;
 
@@ -161,11 +159,11 @@ in
     };
   };
 
-  # Postgresql/postgrest for row storage
+  # Postgresql/postgrest for row storage (not on k3s)
   services.postgresql-db = {
     enable = true;
     dataDir = "/var/lib/postgresql";
-    port = 5431;
+    port = 5432;
     credentialsFile = config.sops.secrets."postgresql-credentials".path;
     databases = [ "rdblog" ];
   };
