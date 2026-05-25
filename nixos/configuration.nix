@@ -73,9 +73,9 @@ in
     acceptTerms = true;
     defaults = {
       # use staging for testing
-      # server = "https://acme-staging-v02.api.letsencrypt.org/directory";
+      server = "https://acme-staging-v02.api.letsencrypt.org/directory";
       # use prod for deploy
-      server = "https://acme-v02.api.letsencrypt.org/directory";
+      # server = "https://acme-v02.api.letsencrypt.org/directory";
       email = "roydumblauskas@gmail.com";
       dnsProvider = "cloudflare";
       # When the service CHECKS to see if certs are near expiry (< 30 days)
@@ -85,7 +85,6 @@ in
         CF_API_KEY_FILE = config.sops.secrets."cloudflare-api-key".path;
       };
     };
-    # only generate for static site
     certs = {
       "roypository.com" = {
         domain = "*.roypository.com";
@@ -99,7 +98,6 @@ in
   # through k3s traefic
   services.nginx = {
     enable = true;
-    logError = "stderr";
 
     virtualHosts."nimh.roypository.com" = {
       forceSSL = true;
@@ -108,9 +106,6 @@ in
       locations."/" = {
         root = nimhStaticSite;
         index = "index.html";
-        extraConfig = ''
-          autoindex off;
-        '';
       };
     };
   };
