@@ -99,6 +99,10 @@ in
   services.nginx = {
     enable = true;
 
+    # allow proxy through k3s
+    defaultHTTPListenPort = 8080;
+    defaultSSLListenPort = 8443;
+
     virtualHosts."nimh.roypository.com" = {
       forceSSL = true;
       useACMEHost = "roypository.com";
