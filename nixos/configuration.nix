@@ -87,8 +87,12 @@ in
     };
     # only generate for static site
     certs = {
-      "roypository.com" = {
+      "nimh.roypository.com" = {
         domain = "nimh.roypository.com";
+        group = "nginx";
+      };
+      "imgs.roypository.com" = {
+        domain = "imgs.roypository.com";
         group = "nginx";
       };
     };
@@ -103,7 +107,7 @@ in
 
     virtualHosts."nimh.roypository.com" = {
       forceSSL = true;
-      useACMEHost = "roypository.com";
+      useACMEHost = "nimh.roypository.com";
 
       locations."/" = {
         root = nimhStaticSite;
