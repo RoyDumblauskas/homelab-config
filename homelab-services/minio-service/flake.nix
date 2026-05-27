@@ -188,10 +188,6 @@
             services.nginx = lib.mkIf opts.default-nginx.enable {
               enable = true;
 
-              # allow proxy through k3s
-              defaultHTTPListenPort = 8080;
-              defaultSSLListenPort = 8443;
-
               virtualHosts.${opts.default-nginx.hostname} = {
                 forceSSL = true;
 
