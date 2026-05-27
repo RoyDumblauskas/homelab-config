@@ -4,4 +4,11 @@ metadata:
   name: nimh-static
 spec:
   selector:
-    app.hubernetes.io/name: proxy
+    app: nimh-static
+
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30080
+
+  type: NodePort

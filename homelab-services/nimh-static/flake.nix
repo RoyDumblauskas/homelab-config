@@ -20,11 +20,6 @@
         options.services.nimh-static = {
           enable = lib.mkEnableOption "serve nimh via k3s pod.";
 
-          credentialsFile = lib.mkOption {
-            type = lib.types.path;
-            description = "File containing service (k3s) secrets.";
-          };
-
           rootDir = lib.mkOption {
             type = lib.types.path;
             description = "Root of the static site";
@@ -58,15 +53,15 @@
             serviceConfig = {
               Type = "oneshot";
               ExecStart = ''
+                kubernetes_config=$(mktemp)
+                gomplate=${pkgs.gomplate}/bin/gomplate
+                gomplate --input-dir=./k3s --output-dir=$kubernetes_config
                 kubectl=${pkgs.kubectl}/bin/kubectl
-                kubectl apply -k ./k3s
-
-
+                kubectl apply -k $out
               '';
 
               User = "nimh";
               Group = "nimh";
-              EnvironmentFile = "${opts.credentialsFile}";
             };
           };
 

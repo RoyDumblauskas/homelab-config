@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nimh-static
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: nimh-static
+  template:
+    metadata:
+      labels:
+        app: nimh-static
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:stable
+
+          ports:
+            - containerPort: 80
+
+          volumeMounts:
+            - name: static-files
+              mountPath: /var/nimh-static/site
+              readOnly: true
+      volumes:
+        - name: static-files
+          configMap:
+            name: nimh-static-files

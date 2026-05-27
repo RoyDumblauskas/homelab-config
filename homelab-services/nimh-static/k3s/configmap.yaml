@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nimh-static-files
+  namespace: nimh
+
+data:
+  index.html: |
+    {{  file.Read "../site/index.html" | strings.Indent 4}}
