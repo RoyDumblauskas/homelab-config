@@ -20,11 +20,6 @@
         options.services.nimh-static = {
           enable = lib.mkEnableOption "serve nimh via k3s pod.";
 
-          rootDir = lib.mkOption {
-            type = lib.types.path;
-            description = "Root of the static site";
-          };
-
           default-nginx = {
             enable = lib.mkEnableOption "Enable nginx reverse proxy.";
             hostname = lib.mkOption {
@@ -40,8 +35,7 @@
           users.groups.nimh = { };
           users.users.nimh = {
             isSystemUser = true;
-            createHome = true;
-            home = "${opts.rootDir}";
+            createHome = false;
             group = "nimh";
           };
 

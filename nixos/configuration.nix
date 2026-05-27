@@ -86,6 +86,16 @@
     };
   };
 
+  services.nimh-static = {
+    enable = true;
+
+    default-nginx = {
+      enable = true;
+      hostname = "nimh.roypository.com";
+    };
+
+  };
+
   # ================================ #
   #            K3S SERVICE           #
   # ================================ #
