@@ -86,7 +86,7 @@
               };
             };
 
-            networking.firewall.allowedTCPPorts = lib.mkif opts.default-nginx.enable [
+            networking.firewall.allowedTCPPorts = lib.mkIf opts.default-nginx.enable [
               80
               443
             ];
