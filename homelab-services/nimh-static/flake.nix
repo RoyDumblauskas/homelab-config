@@ -61,7 +61,7 @@
               };
             };
 
-            service.nginx = lib.mkIf opts.default-nginx.enable {
+            services.nginx = lib.mkIf opts.default-nginx.enable {
               enable = true;
 
               virtualHosts.${opts.default-nginx.hostname} = {
