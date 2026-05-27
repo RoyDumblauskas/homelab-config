@@ -5,13 +5,6 @@
   meta,
   ...
 }:
-
-let
-  nimhStaticSite = pkgs.runCommand "nimh-static-site" { } ''
-    mkdir -p $out
-    cp -r ${../homelab-services/nimh-static}/* $out/
-  '';
-in
 {
   imports = [ ];
 
@@ -89,23 +82,6 @@ in
       "roypository.com" = {
         domain = "*.roypository.com";
         group = "nginx";
-      };
-    };
-  };
-
-  # Setup vhosts via nginx
-  # all more complicated should route
-  # through k3s traefic
-  services.nginx = {
-    enable = true;
-
-    virtualHosts."nimh.roypository.com" = {
-      forceSSL = true;
-      useACMEHost = "roypository.com";
-
-      locations."/" = {
-        root = nimhStaticSite;
-        index = "index.html";
       };
     };
   };
