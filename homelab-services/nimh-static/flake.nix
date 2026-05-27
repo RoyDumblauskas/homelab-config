@@ -6,7 +6,7 @@
   };
 
   outputs =
-    { }:
+    { self, nixpkgs, ... }:
     {
       nixosModules.nimh-static =
         {
