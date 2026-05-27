@@ -43,7 +43,7 @@
 
             systemd.services.nimh-static = {
               description = "oneshot apply service to k3s";
-              after = [ "k3s.servce" ];
+              after = [ "k3s.service" ];
               wantedBy = [ "multi-user.target" ];
 
               serviceConfig = {
