@@ -233,6 +233,20 @@
       },
       "parent": []
     },
+    "nimh-static": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_5"
+      },
+      "locked": {
+        "path": "../homelab-services/nimh-static",
+        "type": "path"
+      },
+      "original": {
+        "path": "../homelab-services/nimh-static",
+        "type": "path"
+      },
+      "parent": []
+    },
     "nix-minecraft": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -319,6 +333,22 @@
     },
     "nixpkgs_5": {
       "locked": {
+        "lastModified": 1779467186,
+        "narHash": "sha256-nOesoDCiXcUftqbRBMz9tt4blI5PvljMWbm3kuCA+0s=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "b77b3de8775677f84492abe84635f87b0e153f0f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-25.11",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_6": {
+      "locked": {
         "lastModified": 1779102034,
         "narHash": "sha256-vZJZjLo513IeI8hjzHFc6TDezUd4uCE2Eq4SNO3DNNg=",
         "owner": "NixOS",
@@ -333,7 +363,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_6": {
+    "nixpkgs_7": {
       "locked": {
         "lastModified": 1767313136,
         "narHash": "sha256-16KkgfdYqjaeRGBaYsNrhPRRENs0qzkQVUooNHtoy2w=",
@@ -398,7 +428,7 @@
     },
     "postgresql-db": {
       "inputs": {
-        "nixpkgs": "nixpkgs_6"
+        "nixpkgs": "nixpkgs_7"
       },
       "locked": {
         "path": "../homelab-services/postgresql-db",
@@ -434,7 +464,8 @@
         "impermanence": "impermanence",
         "mc-service": "mc-service",
         "minio-service": "minio-service",
-        "nixpkgs": "nixpkgs_5",
+        "nimh-static": "nimh-static",
+        "nixpkgs": "nixpkgs_6",
         "nixvim": "nixvim",
         "postgresql-db": "postgresql-db",
         "quasiSecrets": "quasiSecrets",
