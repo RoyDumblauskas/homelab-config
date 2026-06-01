@@ -6,4 +6,4 @@ metadata:
 
 data:
   index.html: |
-    {{  datasource "site" | strings.Indent 4}}
+{{  datasource "site" | strings.Indent 4}}
