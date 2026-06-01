@@ -56,7 +56,7 @@
                   echo "Generating templated files"
                   echo "${k3sDir}"
                   gomplate=${pkgs.gomplate}/bin/gomplate
-                  $gomplate --input-dir=${k3sDir} --output-dir=$kubernetes_config -d site=file://${siteDir}/index.html
+                  $gomplate --input-dir=${k3sDir} --output-dir=$kubernetes_config -d site=file://${siteDir}/index.html?type=text/plain
                   echo "Applying k3s config"
                   kubectl=${pkgs.kubectl}/bin/kubectl
                   $kubectl apply -k $kubernetes_config
