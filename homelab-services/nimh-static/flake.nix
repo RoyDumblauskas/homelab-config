@@ -80,7 +80,7 @@
 
                 locations."/" = {
                   # Default k3s port?
-                  proxyPass = "http://localhost:30080";
+                  proxyPass = "http://127.0.0.1:30080";
                 };
               };
             };

@@ -1,3 +1,4 @@
+namespace: nimh
 resources:
   - namespace.yaml
   - configmap.yaml

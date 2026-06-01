@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nimh-static
-  namespace: nimh
 
 spec:
   replicas: 1
