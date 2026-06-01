@@ -48,7 +48,7 @@
 
               serviceConfig = {
                 Type = "oneshot";
-                ExecStart = ''
+                ExecStart = pkgs.writeShellScript "start-nimh-static" ''
                   kubernetes_config=$(mktemp)
                   gomplate=${pkgs.gomplate}/bin/gomplate
                   gomplate --input-dir=./k3s --output-dir=$kubernetes_config
