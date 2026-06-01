@@ -54,9 +54,9 @@
                   echo "Creating temp dir"
                   kubernetes_config=$(mktemp -d)
                   echo "Generating templated files"
-                  echo "${k3sDir}"
                   gomplate=${pkgs.gomplate}/bin/gomplate
                   $gomplate --input-dir=${k3sDir} --output-dir=$kubernetes_config -d site=file://${siteDir}/index.html?type=text/plain
+                  cat "${k3sDir}/configmap.yaml"
                   echo "Applying k3s config"
                   kubectl=${pkgs.kubectl}/bin/kubectl
                   $kubectl apply -k $kubernetes_config
