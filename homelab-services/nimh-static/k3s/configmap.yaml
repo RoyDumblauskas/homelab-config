@@ -6,4 +6,4 @@ metadata:
 
 data:
   index.html: |
-    {{  file.Read "../site/index.html" | strings.Indent 4}}
+    {{  datasource "site" | strings.Indent 4}}

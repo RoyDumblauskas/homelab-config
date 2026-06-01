@@ -17,6 +17,7 @@
         }:
         let
           k3sDir = ./k3s;
+          siteDir = ./site;
           opts = config.services.nimh-static;
         in
         {
@@ -55,7 +56,7 @@
                   echo "Generating templated files"
                   echo "${k3sDir}"
                   gomplate=${pkgs.gomplate}/bin/gomplate
-                  $gomplate --input-dir=${k3sDir} --output-dir=$kubernetes_config
+                  $gomplate --input-dir=${k3sDir} --output-dir=$kubernetes_config -d site=file://${siteDir}/index.html
                   echo "Applying k3s config"
                   kubectl=${pkgs.kubectl}/bin/kubectl
                   $kubectl apply -k $kubernetes_config
