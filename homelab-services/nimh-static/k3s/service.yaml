@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: nimh-static
+  namespace: nimh
 spec:
   selector:
     app: nimh-static
