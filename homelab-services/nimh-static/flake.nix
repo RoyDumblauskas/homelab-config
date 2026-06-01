@@ -35,14 +35,6 @@
             };
           };
 
-          config = lib.mkIf opts.enable {
-            users.groups.nimh = { };
-            users.users.nimh = {
-              isSystemUser = true;
-              createHome = false;
-              group = "nimh";
-            };
-
             systemd.services.nimh-static = {
               description = "oneshot apply service to k3s";
               after = [ "k3s.service" ];
@@ -62,8 +54,8 @@
                   $kubectl apply -k $kubernetes_config
                 '';
 
-                User = "nimh";
-                Group = "nimh";
+                User = "root";
+                Group = "root";
               };
             };
 
