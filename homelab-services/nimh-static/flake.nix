@@ -51,9 +51,9 @@
                 ExecStart = pkgs.writeShellScript "start-nimh-static" ''
                   kubernetes_config=$(mktemp)
                   gomplate=${pkgs.gomplate}/bin/gomplate
-                  gomplate --input-dir=./k3s --output-dir=$kubernetes_config
+                  $gomplate --input-dir=./k3s --output-dir=$kubernetes_config
                   kubectl=${pkgs.kubectl}/bin/kubectl
-                  kubectl apply -k $out
+                  $kubectl apply -k $out
                 '';
 
                 User = "nimh";
