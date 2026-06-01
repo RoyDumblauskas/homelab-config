@@ -86,6 +86,7 @@
     };
   };
 
+  # This deploys to the k3s cluster declared below
   services.nimh-static = {
     enable = true;
 
