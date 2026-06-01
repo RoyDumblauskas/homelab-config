@@ -49,11 +49,15 @@
               serviceConfig = {
                 Type = "oneshot";
                 ExecStart = pkgs.writeShellScript "start-nimh-static" ''
+                  echo "Creating temp dir"
                   kubernetes_config=$(mktemp)
+                  echo "Generating templated files"
+                  ls -a
                   gomplate=${pkgs.gomplate}/bin/gomplate
                   $gomplate --input-dir=./k3s --output-dir=$kubernetes_config
+                  echo "Applying k3s config"
                   kubectl=${pkgs.kubectl}/bin/kubectl
-                  $kubectl apply -k $out
+                  $kubectl apply -k $kubernetes_config
                 '';
 
                 User = "nimh";
