@@ -35,6 +35,8 @@
             };
           };
 
+          config = lib.mkIf opts.enable {
+
             systemd.services.nimh-static = {
               description = "oneshot apply service to k3s";
               after = [ "k3s.service" ];
@@ -48,7 +50,6 @@
                   echo "Generating templated files"
                   gomplate=${pkgs.gomplate}/bin/gomplate
                   $gomplate --input-dir=${k3sDir} --output-dir=$kubernetes_config -d site=file://${siteDir}/index.html?type=text/plain
-                  cat $kubernetes_config/configmap.yaml
                   echo "Applying k3s config"
                   kubectl=${pkgs.kubectl}/bin/kubectl
                   $kubectl apply -k $kubernetes_config
