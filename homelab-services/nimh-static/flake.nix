@@ -16,6 +16,7 @@
           ...
         }:
         let
+          k3sDir = ./k3s;
           opts = config.services.nimh-static;
         in
         {
@@ -50,11 +51,11 @@
                 Type = "oneshot";
                 ExecStart = pkgs.writeShellScript "start-nimh-static" ''
                   echo "Creating temp dir"
-                  kubernetes_config=$(mktemp)
+                  kubernetes_config=$(mktemp -d)
                   echo "Generating templated files"
-                  ls -a
+                  echo "${k3sDir}"
                   gomplate=${pkgs.gomplate}/bin/gomplate
-                  $gomplate --input-dir=./k3s --output-dir=$kubernetes_config
+                  $gomplate --input-dir=${k3sDir} --output-dir=$kubernetes_config
                   echo "Applying k3s config"
                   kubectl=${pkgs.kubectl}/bin/kubectl
                   $kubectl apply -k $kubernetes_config
