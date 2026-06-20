@@ -185,11 +185,26 @@
     ];
   };
 
-  # Rollback root on reboot
-  boot.initrd.postMountCommands = lib.mkAfter ''
-    zfs rollback -r zroot/root@blank
-  '';
+  boot.zfs.forceImportRoot = false;
 
+  # Delete root on reboot
+  boot.initrd.systemd.services = {
+    rollback = {
+      description = "Rollback root zfs dataset to blank snapshot";
+      wantedBy = [ "initrd.target" ];
+      before = [ "sysroot.mount" ];
+      after = [ "zfs-import-zroot.service" ];
+      path = [ pkgs.zfs ];
+
+      unitConfig.DefaultDependencies = "no";
+      serviceConfig.Type = "oneshot";
+
+      script = ''
+        zfs rollback -r zroot/root@blank
+        echo "blank rollback complete" > /dev/kmsg
+      '';
+    };
+  };
   networking = {
     hostName = meta.hostname;
     hostId = meta.hostId;
