@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nimh-static-nginx
+
+data:
+  default.conf: |
+    server {
+      listen 80;
+
+      root /var/nimh-static/site;
+      index index.html;
+
+      location / {
+        try_files $uri $uri/ =404;
+      }
+    }

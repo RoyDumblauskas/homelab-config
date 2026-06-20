@@ -1,6 +1,5 @@
 {
   config,
-  lib,
   pkgs,
   meta,
   ...
@@ -42,12 +41,6 @@
         group = "acme";
       };
 
-      "minio-credentials" = {
-        sopsFile = ./secrets/minio.yaml;
-        key = "minioCredentials";
-        format = "yaml";
-      };
-
       "postgresql-credentials" = {
         sopsFile = ./secrets/psql.yaml;
         key = "credentials";
@@ -78,6 +71,7 @@
         CF_API_KEY_FILE = config.sops.secrets."cloudflare-api-key".path;
       };
     };
+
     certs = {
       "roypository.com" = {
         domain = "*.roypository.com";

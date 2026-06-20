@@ -79,7 +79,6 @@
                   ];
 
                 locations."/" = {
-                  # Default k3s port?
                   proxyPass = "http://127.0.0.1:30080";
 
                   extraConfig = ''
