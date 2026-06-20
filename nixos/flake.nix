@@ -29,7 +29,8 @@
     # It just happens to be stored in the same repository (relative),
     # but could well be a separate repository
     nimh-static.url = "path:../homelab-services/nimh-static";
-    minio-service.url = "path:../homelab-services/minio-service";
+    # MINIO IS DEPRECATED, KEEPING CODE FOR REFERENCE. MOVE TO GARAGE/SEAWEEDFS
+    # minio-service.url = "path:../homelab-services/minio-service";
     mc-service.url = "path:../homelab-services/mc-service";
     postgresql-db.url = "path:../homelab-services/postgresql-db";
   };
@@ -46,7 +47,6 @@
       impermanence,
       firefox-addons,
       nimh-static,
-      minio-service,
       mc-service,
       postgresql-db,
     }@inputs:
@@ -80,7 +80,6 @@
               quasiSecrets.nixosModules.serviceList
               impermanence.nixosModules.impermanence
               nimh-static.nixosModules.nimh-static
-              minio-service.nixosModules.minio-service
               mc-service.nixosModules.mc-service
               postgresql-db.nixosModules.postgresql-db
               home-manager.nixosModules.home-manager

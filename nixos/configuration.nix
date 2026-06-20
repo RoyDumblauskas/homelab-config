@@ -119,30 +119,32 @@
 
   # Fullstack sourcecode
 
-  # Minio for backend storage
-  services.minio-service = {
-    enable = true;
-
-    # Persist (or don't) the data inside of database
-    dataDir = "/var/data/minio";
-    credentialsFile = config.sops.secrets."minio-credentials".path;
-
-    dataPort = 9000; # S3 API access
-    consolePort = 9001; # Admin console access
-
-    bootstrap-minio = {
+  /*
+    MINIO DEPRECATED
+    services.minio-service = {
       enable = true;
-      environments = [
-        "dev"
-        "prod"
-      ];
-    };
 
-    default-nginx = {
-      enable = true;
-      hostname = "imgs.roypository.com";
+      # Persist (or don't) the data inside of database
+      dataDir = "/var/data/minio";
+      credentialsFile = config.sops.secrets."minio-credentials".path;
+
+      dataPort = 9000; # S3 API access
+      consolePort = 9001; # Admin console access
+
+      bootstrap-minio = {
+        enable = true;
+        environments = [
+          "dev"
+          "prod"
+        ];
+      };
+
+      default-nginx = {
+        enable = true;
+        hostname = "imgs.roypository.com";
+      };
     };
-  };
+  */
 
   # Postgresql/postgrest for row storage (not on k3s)
   services.postgresql-db = {
@@ -205,6 +207,7 @@
       '';
     };
   };
+
   networking = {
     hostName = meta.hostname;
     hostId = meta.hostId;
