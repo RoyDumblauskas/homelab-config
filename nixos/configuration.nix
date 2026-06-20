@@ -97,7 +97,7 @@
 
   services.k3s = {
     enable = true;
-    disable = [ "traefic" ];
+    disable = [ "traefik" ];
     role = "server";
   };
 
