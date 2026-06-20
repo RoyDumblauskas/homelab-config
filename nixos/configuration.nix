@@ -46,8 +46,6 @@
         sopsFile = ./secrets/minio.yaml;
         key = "minioCredentials";
         format = "yaml";
-        owner = "minio";
-        group = "minio";
       };
 
       "postgresql-credentials" = {
