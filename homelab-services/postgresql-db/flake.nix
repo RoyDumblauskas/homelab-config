@@ -2,11 +2,11 @@
   description = "Declare a new table and user for postgresql";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
   };
 
   outputs =
-    { self, nixpkgs, ... }:
+    { ... }:
     {
       nixosModules.postgresql-db =
         {

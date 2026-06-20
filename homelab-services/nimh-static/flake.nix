@@ -2,11 +2,11 @@
   description = "Flake that configures a static site hosted in a k3s pod";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
   };
 
   outputs =
-    { self, nixpkgs, ... }:
+    { ... }:
     {
       nixosModules.nimh-static =
         {

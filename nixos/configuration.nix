@@ -31,29 +31,31 @@
       "cloudflare-api-email" = {
         sopsFile = ./secrets/cloudflare.json;
         key = "CF_API_EMAIL";
+        owner = "acme";
+        group = "acme";
       };
 
       "cloudflare-api-key" = {
         sopsFile = ./secrets/cloudflare.json;
         key = "CF_API_KEY";
+        owner = "acme";
+        group = "acme";
       };
 
       "minio-credentials" = {
         sopsFile = ./secrets/minio.yaml;
         key = "minioCredentials";
         format = "yaml";
-      };
-
-      "tests-service" = {
-        sopsFile = ./secrets/tests-service.yaml;
-        key = "credentials";
-        format = "yaml";
+        owner = "minio";
+        group = "minio";
       };
 
       "postgresql-credentials" = {
         sopsFile = ./secrets/psql.yaml;
         key = "credentials";
         format = "yaml";
+        owner = "postgres";
+        group = "postgres";
       };
     };
   };
