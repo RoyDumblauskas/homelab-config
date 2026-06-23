@@ -87,7 +87,9 @@
                   spawn-protection = 0;
                 };
 
-                package = pkgs.fabricServers.fabric;
+                package = pkgs.fabricServers.fabric-26_2.override {
+                  loaderVersion = "0.19.3";
+                };
               };
             };
           };
