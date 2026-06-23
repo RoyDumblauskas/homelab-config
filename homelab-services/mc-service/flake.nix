@@ -65,9 +65,6 @@
               user = "mc-service";
               group = "mc-service";
 
-              # debug
-              managementSystem.systemd-socket.enable = true;
-
               servers.homeServer = {
                 enable = true;
                 restart = "always";
