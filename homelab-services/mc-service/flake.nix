@@ -8,18 +8,15 @@
   };
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      nix-minecraft,
-    }:
+    { ... }:
     {
 
       nixosModules.mc-service =
         {
           config,
           lib,
-          pkgs,
+          nixpkgs,
+          nix-minecraft,
           ...
         }:
         let
