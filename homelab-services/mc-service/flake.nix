@@ -87,7 +87,7 @@
                   spawn-protection = 0;
                 };
 
-                package = pkgs.fabricServers.fabric-26_1_2.override {
+                package = pkgs.fabricServers.fabric-26_2.override {
                   jre_headless = pkgs.openjdk25_headless;
                 };
               };
