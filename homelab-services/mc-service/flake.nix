@@ -89,6 +89,29 @@
               package = pkgs.fabricServers.fabric-26_2.override {
                 jre_headless = pkgs.openjdk25_headless;
               };
+
+              symlinks = {
+                mods = pkgs.linkFarmFromDrvs "mods" (
+                  builtins.attrValues {
+                    Sleep = pkgs.fetchurl {
+                      url = "https://cdn.modrinth.com/data/WTzuSu8P/versions/epDz3qzS/sleep-v4.3.18.jar";
+                      sha512 = "f4bfd7bf8c9dc64640a3f1353993341cccb9d76f5b0aed8f746ed7159689a336b2ddc1bcc3ec2ea5cb70d0ecee9072a325c33d4a56179a22e98d4c2849bc6971";
+                    };
+                    Lithium = pkgs.fetchurl {
+                      url = "https://cdn.modrinth.com/data/gvQqBUqZ/versions/UPNexAfy/lithium-fabric-0.25.2%2Bmc26.2.jar";
+                      sha512 = "db676376c05b7e912cdae5aad9e51f125adc1554ae2b204599ccb598751921aedbac98e97b9cba0333b6b52488c6b75c915a7dbd50436f97800387fe1aad1c50";
+                    };
+                    FabricAPI = pkgs.fetchurl {
+                      url = "https://cdn.modrinth.com/data/P7dR8mSH/versions/lVXlbH4w/fabric-api-0.155.2%2B26.2.jar";
+                      sha512 = "cc56984378a27c5bcd56374d6ffbb27a45c6bf3355add2ac6be9817ccac5854362249bf9d0147eb271a70fda2716129204e240d53c9aa876a2a7861f4c7f880f";
+                    };
+                    Chunky = pkgs.fetchurl {
+                      url = "https://cdn.modrinth.com/data/fALzjamp/versions/4Eotm6ov/Chunky-Fabric-1.5.3.jar";
+                      sha512 = "b83bfe7b218d0aa6232af977ae741dc1f82b10e50cd12bb759f65cf416b8b62beccb543e587ef0b9670abe03815660f8e091bc6823624d65cf07300571573516";
+                    };
+                  }
+                );
+              };
             };
           };
         };
