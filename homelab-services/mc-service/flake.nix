@@ -38,6 +38,11 @@
             description = "Minecraft files locations";
 
           };
+
+          rconSecrets = lib.mkOption {
+            type = lib.types.path;
+            description = "minecraft rcon secret";
+          };
         };
 
         config = lib.mkIf opts.enable {
@@ -77,6 +82,8 @@
                 motd = "Home MC Server";
                 white-list = true;
                 spawn-protection = 0;
+                enable-rcon = true;
+                "rcon.password" = "CHANGE_THIS_SECRET";
               };
 
               package = pkgs.fabricServers.fabric-26_2.override {
