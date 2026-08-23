@@ -133,21 +133,6 @@
 
                     echo "Bootstrapping PostgreSQL for database: $db"
 
-                    # Create databases if not exists
-                    if $psql_bin --port=${toString opts.port} -c "\l" | grep -ci ""$db" "; then
-                      echo "$db already exists, skipping creation."
-                    else
-                      echo "Creating database $db"
-                      $psql_bin --port=${toString opts.port} -c "CREATE DATABASE "$db";"
-                    fi
-
-                    if $psql_bin --port=${toString opts.port} -c "\l" | grep -ci "$db"_dev; then
-                      echo ""$db"_dev already exists, skipping creation."
-                    else
-                      echo "Creating database "$db"_dev"
-                      $psql_bin --port=${toString opts.port} -c "CREATE DATABASE "$db"_dev;"
-                    fi
-
                     # Create users if not exists
                     if $psql_bin --port=${toString opts.port} -c "\du" | grep -ci "$user_val"; then
                       echo "$user_val already exists, skipping creation. WARN: password may not be correct. Delete user and allow to be recreated for assurity"
@@ -163,11 +148,22 @@
                       $psql_bin --port=${toString opts.port} -c "CREATE ROLE "$dev_user_val" WITH LOGIN PASSWORD '$dev_pass_val';"
                     fi
 
-                    # Give users privileges on databases (always)
-                    $psql_bin --port=${toString opts.port} -c "GRANT ALL PRIVILEGES ON DATABASE "$db" TO "$user_val";"
-                    $psql_bin --port=${toString opts.port} -c "GRANT ALL PRIVILEGES ON DATABASE "$db"_dev TO "$dev_user_val";"
-                    
-                    # Grant ownership
+                    # Create databases if not exists
+                    if $psql_bin --port=${toString opts.port} -c "\l" | grep -ci ""$db" "; then
+                      echo "$db already exists, skipping creation."
+                    else
+                      echo "Creating database $db"
+                      $psql_bin --port=${toString opts.port} -c "CREATE DATABASE "$db" WITH OWNER "$user_val";"
+                    fi
+
+                    if $psql_bin --port=${toString opts.port} -c "\l" | grep -ci "$db"_dev; then
+                      echo ""$db"_dev already exists, skipping creation."
+                    else
+                      echo "Creating database "$db"_dev"
+                      $psql_bin --port=${toString opts.port} -c "CREATE DATABASE "$db"_dev WITH OWNER "$dev_user_val";"
+                    fi
+
+                    # Grant ownership (idempotency for weird states)
                     $psql_bin --port=${toString opts.port} -c "ALTER DATABASE "$db" OWNER TO "$user_val";"
                     $psql_bin --port=${toString opts.port} -c "ALTER DATABASE "$db"_dev OWNER TO "$dev_user_val";"
 
