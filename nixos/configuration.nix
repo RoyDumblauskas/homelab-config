@@ -144,7 +144,10 @@
     dataDir = "/var/lib/postgresql";
     port = 5432;
     credentialsFile = config.sops.secrets."postgresql-credentials".path;
-    databases = [ "rdblog" ];
+    databases = [
+      "rdblog"
+      "gitea"
+    ];
   };
 
   # ================================ #

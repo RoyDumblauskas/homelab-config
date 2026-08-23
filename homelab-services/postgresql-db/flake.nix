@@ -69,6 +69,7 @@
               enableTCPIP = true;
               dataDir = opts.dataDir;
               settings.port = opts.port;
+              settings.password_encryption = "scram-sh-256";
               identMap = ''
                 postgres roy postgres
               '';
@@ -79,12 +80,16 @@
                 local all all peer
 
                 # Dev can be connected to via the LAN or Local
-                ${lib.concatStringsSep " " (map (db: "host ${db}_dev ${db}_devuser all md5\n") opts.databases)}
+                ${lib.concatStringsSep " " (
+                  map (db: "host ${db}_dev ${db}_devuser all scram-sh-256\n") opts.databases
+                )}
                 # Prod can be connected via local machine
                 ${lib.concatStringsSep " " (
-                  map (db: "host ${db} ${db}_produser 127.0.0.1/32 md5\n") opts.databases
+                  map (db: "host ${db} ${db}_produser 127.0.0.1/32 scram-sh-256\n") opts.databases
                 )}
-                ${lib.concatStringsSep " " (map (db: "host ${db} ${db}_produser ::1/128 md5\n") opts.databases)}
+                ${lib.concatStringsSep " " (
+                  map (db: "host ${db} ${db}_produser ::1/128 scram-sh-256\n") opts.databases
+                )}
               '';
             };
 
