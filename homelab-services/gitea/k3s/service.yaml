@@ -16,9 +16,9 @@ spec:
       protocol: TCP
 
     - name: ssh
-      port: 2222
+      port: 2222 # pod port
       targetPort: ssh
-      nodePort: 30222
+      nodePort: 30222 # external
       protocol: TCP
 
   type: NodePort
