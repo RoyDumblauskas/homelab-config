@@ -64,7 +64,7 @@
 
                   echo "Generating templated files"
                   gomplate=${pkgs.gomplate}/bin/gomplate
-                  echo "${opts.database-hostname}" | $gomplate \
+                  printf '%s' "${opts.database-hostname}" | $gomplate \
                     --input-dir=${k3sDir} \
                     --output-dir=$kubernetes_config \
                     --datasource credentials=file://${opts.credentialsFile}?type=application/x-env \
