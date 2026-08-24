@@ -121,7 +121,7 @@
   # ================================ #
 
   services.hl-gitea = {
-    enable = false;
+    enable = true;
     credentialsFile = config.sops.secrets."minio-credentials".path;
     database-hostname = "127.0.0.1:5432"; # whatever port I host psql on below
 
