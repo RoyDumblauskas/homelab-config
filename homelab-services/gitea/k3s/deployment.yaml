@@ -27,7 +27,7 @@ spec:
               protocol: TCP
 
             - name: ssh
-              containerPort: 2222
+              containerPort: 22
               protocol: TCP
 
           env:
