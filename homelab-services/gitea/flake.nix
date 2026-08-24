@@ -117,7 +117,7 @@
             networking.firewall.allowedTCPPorts = lib.mkIf opts.default-nginx.enable [
               80
               443
-              2222
+              30222
             ];
           };
         };
