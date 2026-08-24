@@ -81,14 +81,14 @@
 
                 # Dev can be connected to via the LAN or Local
                 ${lib.concatStringsSep " " (
-                  map (db: "host ${db}_dev ${db}_devuser all scram-sh-256\n") opts.databases
+                  map (db: "host ${db}_dev ${db}_devuser all scram-sha-256\n") opts.databases
                 )}
                 # Prod can be connected via local machine
                 ${lib.concatStringsSep " " (
-                  map (db: "host ${db} ${db}_produser 127.0.0.1/32 scram-sh-256\n") opts.databases
+                  map (db: "host ${db} ${db}_produser 127.0.0.1/32 scram-sha-256\n") opts.databases
                 )}
                 ${lib.concatStringsSep " " (
-                  map (db: "host ${db} ${db}_produser ::1/128 scram-sh-256\n") opts.databases
+                  map (db: "host ${db} ${db}_produser ::1/128 scram-sha-256\n") opts.databases
                 )}
               '';
             };
