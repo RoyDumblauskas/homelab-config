@@ -81,7 +81,7 @@
               nimh-static.nixosModules.nimh-static
               mc-service.nixosModules.mc-service
               postgresql-db.nixosModules.postgresql-db
-              gitea.nixosModules.gitea
+              gitea.nixosModules.hl-gitea
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;

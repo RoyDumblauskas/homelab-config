@@ -8,7 +8,7 @@
   outputs =
     { ... }:
     {
-      nixosModules.gitea =
+      nixosModules.hl-gitea =
         {
           config,
           lib,
@@ -17,10 +17,10 @@
         }:
         let
           k3sDir = ./k3s;
-          opts = config.services.gitea;
+          opts = config.services.hl-gitea;
         in
         {
-          options.services.gitea = {
+          options.services.hl-gitea = {
             enable = lib.mkEnableOption "Run Gitea in k3s";
 
             default-nginx = {
@@ -49,7 +49,7 @@
           };
 
           config = lib.mkIf opts.enable {
-            systemd.services.gitea = {
+            systemd.services.hl-gitea = {
               description = "oneshot apply service to k3s";
               after = [ "k3s.service" ];
               wantedBy = [ "multi-user.target" ];
