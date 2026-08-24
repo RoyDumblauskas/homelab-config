@@ -69,7 +69,7 @@
               enableTCPIP = true;
               dataDir = opts.dataDir;
               settings.port = opts.port;
-              settings.password_encryption = "scram-sh-256";
+              settings.password_encryption = "scram-sha-256";
               identMap = ''
                 postgres roy postgres
               '';
