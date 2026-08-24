@@ -1,0 +1,12 @@
+# All persistent storage not directed to DB will live in this claim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: gitea-persistent-data
+  namespace: gitea
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi

@@ -30,6 +30,7 @@
     # minio-service.url = "path:../homelab-services/minio-service";
     mc-service.url = "path:../homelab-services/mc-service";
     postgresql-db.url = "path:../homelab-services/postgresql-db";
+    gitea.url = "path:../homelab-services/gitea";
   };
 
   outputs =
@@ -46,6 +47,7 @@
       nimh-static,
       mc-service,
       postgresql-db,
+      gitea,
     }@inputs:
     let
       nodes = [
@@ -79,6 +81,7 @@
               nimh-static.nixosModules.nimh-static
               mc-service.nixosModules.mc-service
               postgresql-db.nixosModules.postgresql-db
+              gitea.nixosModules.gitea
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;

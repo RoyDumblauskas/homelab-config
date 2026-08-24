@@ -48,6 +48,14 @@
         owner = "postgres";
         group = "postgres";
       };
+
+      "gitea-credentials" = {
+        sopsFile = ./secrets/gitea.yaml;
+        key = "credentials";
+        format = "yaml";
+        owner = "root";
+        group = "root";
+      };
     };
   };
 
@@ -99,12 +107,32 @@
     enable = true;
     disable = [ "traefik" ];
     role = "server";
+
+    extraFlags = [
+      "--data-dir=/var/lib/rancher/k3s"
+    ];
   };
 
   # ================================ #
   #          END K3S SERVICE         #
   # ================================ #
+  # ================================ #
+  #           GITEA SERVICE          #
+  # ================================ #
 
+  services.gitea = {
+    enable = false;
+    credentialsFile = config.sops.secrets."minio-credentials".path;
+    database-hostname = "127.0.0.1:5432"; # whatever port I host psql on below
+
+    default-nginx = {
+      enable = true;
+      hostname = "roypository.com";
+    };
+  };
+  # ================================ #
+  #           GITEA SERVICE          #
+  # ================================ #
   # ================================ #
   #           BLOG SERVICE           #
   # ================================ #

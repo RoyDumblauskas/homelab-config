@@ -1,0 +1,24 @@
+# point to the deployment
+apiVersion: v1
+kind: Service
+metadata:
+  name: gitea
+  namespace: gitea
+spec:
+  selector:
+    app: gitea
+
+  ports:
+    - name: http
+      port: 3000
+      targetPort: http
+      nodePort: 30081
+      protocol: TCP
+
+    - name: ssh
+      port: 2222
+      targetPort: ssh
+      nodePort: 30222
+      protocol: TCP
+
+  type: NodePort

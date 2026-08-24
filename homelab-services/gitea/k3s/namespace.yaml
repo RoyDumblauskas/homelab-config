@@ -1,0 +1,5 @@
+# Provide gitea its own namespace (gitea)
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: gitea
