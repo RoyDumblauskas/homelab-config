@@ -57,6 +57,8 @@
               serviceConfig = {
                 Type = "oneshot";
                 ExecStart = pkgs.writeShellScript "start-gitea" ''
+                  set -euo pipefail
+
                   echo "Creating temp dir"
                   kubernetes_config=$(mktemp -d)
 
@@ -65,7 +67,7 @@
                   echo "${opts.database-hostname}" | $gomplate \
                     --input-dir=${k3sDir} \
                     --output-dir=$kubernetes_config \
-                    --datasource credentials=file://${opts.credentialsFile}?type=application/x-env
+                    --datasource credentials=file://${opts.credentialsFile}?type=application/x-env \
                     --datasource dbhostname=stdin:
 
                   echo "Applying k3s config"
