@@ -82,10 +82,12 @@
 
     certs = {
       "roypository.com" = {
-        domain = "*.roypository.com";
+        domain = "roypository.com";
+        extraDomainNames = [ "*.roypository.com" ];
         group = "nginx";
       };
     };
+
   };
 
   # This deploys to the k3s cluster declared below
