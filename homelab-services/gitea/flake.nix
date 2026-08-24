@@ -1,7 +1,7 @@
 {
   description = "Flake configured to render and deploy a k3s folder for homelab gitea";
 
-  input = {
+  inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
   };
 
