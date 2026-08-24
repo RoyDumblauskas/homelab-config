@@ -123,7 +123,7 @@
   services.hl-gitea = {
     enable = true;
     credentialsFile = config.sops.secrets."gitea-credentials".path;
-    database-hostname = "127.0.0.1:5432"; # whatever port I host psql on below
+    database-hostname = "${config.ipAddrs.${meta.hostname}}:5432"; # whatever port I host psql on below
 
     default-nginx = {
       enable = true;
