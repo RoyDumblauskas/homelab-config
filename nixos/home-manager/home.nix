@@ -21,6 +21,7 @@
     git-filter-repo
     go
     grim
+    incus
     jq
     kdePackages.gwenview
     minio-client
@@ -41,7 +42,6 @@
     woeusb
     wofi
     xrandr
-    yq-go
     zip
   ];
 
