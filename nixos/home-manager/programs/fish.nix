@@ -10,7 +10,7 @@
       gpr = "git pull --rebase";
       gl = "git log";
       shypr = "start-hyprland";
-      nixrb = "sudo nixos-rebuild switch --flake";
+      nixrb = "sudo nixos-rebuild switch --flake .#$hostname";
     };
 
     functions = {
