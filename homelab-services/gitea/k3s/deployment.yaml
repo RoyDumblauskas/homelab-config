@@ -58,9 +58,6 @@ spec:
             - name: GITEA__security__INSTALL_LOCK
               value: "true"
 
-            - name: GITEA__security__SECRET_KEY
-              value: "randomHex"
-
           volumeMounts:
             - name: gitea-data
               mountPath: /data
