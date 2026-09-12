@@ -52,6 +52,9 @@ spec:
             - name: GITEA__server__SSH_PORT
               value: "30222"
 
+            - name: GITEA__repository__MAX_CREATION_LIMIT
+              value: "0"
+
           volumeMounts:
             - name: gitea-data
               mountPath: /var/lib/gitea

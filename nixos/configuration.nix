@@ -110,9 +110,11 @@
     disable = [ "traefik" ];
     role = "server";
 
+    # only enable the service on k3s when roughly finalized
+    # Until then use a vm, as k3s is persisted
     extraFlags = [
       "--data-dir=/var/lib/rancher/k3s"
-      "--cluster-cidr 10.42.0.0/20" # allow this subnet to connect to psql
+      "--cluster-cidr 10.42.0.0/20"
     ];
   };
 
@@ -141,34 +143,14 @@
   #           BLOG SERVICE           #
   # ================================ #
 
-  # Fullstack sourcecode
+  # fullstack code. Dev hosted via VMs (incus)
 
-  /*
-    MINIO DEPRECATED
-    services.minio-service = {
-      enable = true;
-
-      # Persist (or don't) the data inside of database
-      dataDir = "/var/data/minio";
-      credentialsFile = config.sops.secrets."minio-credentials".path;
-
-      dataPort = 9000; # S3 API access
-      consolePort = 9001; # Admin console access
-
-      bootstrap-minio = {
-        enable = true;
-        environments = [
-          "dev"
-          "prod"
-        ];
-      };
-
-      default-nginx = {
-        enable = true;
-        hostname = "imgs.roypository.com";
-      };
-    };
-  */
+  # ================================ #
+  #         END BLOG SERVICE         #
+  # ================================ #
+  # ================================ #
+  #           PSQL SERVICE           #
+  # ================================ #
 
   # Postgresql/postgrest for row storage (not on k3s)
   services.postgresql-db = {
@@ -177,16 +159,15 @@
     port = 5432;
     credentialsFile = config.sops.secrets."postgresql-credentials".path;
     databases = [
-      "rdblog"
       "gitea"
     ];
     ipMasks = [
-      "10.42.0.0/20" # k3s cluster mask
+      "10.42.0.0/20" # k3s pod mask
     ];
   };
 
   # ================================ #
-  #         END BLOG SERVICE         #
+  #         END PSQL SERVICE         #
   # ================================ #
 
   # ================================ #
@@ -238,6 +219,10 @@
     };
   };
 
+  # Setup Incus daemon on boot
+  # Init with `incus admin init --minimal`
+  virtualisation.incus.enable = true;
+
   networking = {
     hostName = meta.hostname;
     hostId = meta.hostId;
@@ -246,6 +231,7 @@
       "1.1.1.1"
       "1.0.0.1"
     ];
+    nftables.enable = true;
 
     firewall = {
       enable = true;
@@ -255,6 +241,9 @@
         443
         6443 # k3s
       ];
+
+      # Trust all incusVMs (on this network interface)
+      trustedInterfaces = [ "incusbr0" ];
     };
 
     interfaces.eth0.ipv4.addresses = [
@@ -268,40 +257,16 @@
   # Set your time zone.
   time.timeZone = "America/Chicago";
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  #   useXkbConfig = true; # use xkb.options in tty.
-  # };
-
-  # Enable the X11 windowing system.
-  # services.xserver.enable = true;
-
-  # Configure keymap in X11
-  # services.xserver.xkb.layout = "us";
-  # services.xserver.xkb.options = "eurosign:e,caps:escape";
-
   # Enable CUPS to print documents.
   services.printing.enable = true;
-
-  # Enable sound.
-  # hardware.pulseaudio.enable = true;
-  # OR
-  # services.pipewire = {
-  #   enable = true;
-  #   pulse.enable = true;
-  # };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.roy = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
+    extraGroups = [
+      "wheel"
+      "incus-admin"
+    ];
     hashedPassword = "$y$j9T$qHYfvijvytC69cjEWTHYA/$YF6ig1hNvkTQi0UffZP1dpilS.8O28qEY4bfdvRTXYA";
     # laptop and desktop
     openssh.authorizedKeys.keys = [
@@ -328,8 +293,7 @@
     ];
   };
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
+  # List packages installed in system profile
   environment.systemPackages = with pkgs; [
     curl
     kitty
@@ -357,14 +321,6 @@
   environment.variables = {
     EDITOR = "nvim";
   };
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
 
   # List services that you want to enable:
   services.openssh = {
