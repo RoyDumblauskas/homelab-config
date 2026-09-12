@@ -67,9 +67,9 @@
     acceptTerms = true;
     defaults = {
       # use staging for testing
-      server = "https://acme-staging-v02.api.letsencrypt.org/directory";
+      # server = "https://acme-staging-v02.api.letsencrypt.org/directory";
       # use prod for deploy
-      # server = "https://acme-v02.api.letsencrypt.org/directory";
+      server = "https://acme-v02.api.letsencrypt.org/directory";
       email = "roydumblauskas@gmail.com";
       dnsProvider = "cloudflare";
       # When the service CHECKS to see if certs are near expiry (< 30 days)
@@ -113,7 +113,7 @@
     # only enable the service on k3s when roughly finalized
     # Until then use a vm, as k3s is persisted
     extraFlags = [
-      "--data-dir=/var/lib/rancher/k3s"
+      "--data-dir=/persist/var/lib/rancher/k3s"
       "--cluster-cidr 10.42.0.0/20"
     ];
   };
@@ -155,7 +155,7 @@
   # Postgresql/postgrest for row storage (not on k3s)
   services.postgresql-db = {
     enable = true;
-    dataDir = "/var/lib/postgresql";
+    dataDir = "/persist/var/lib/postgresql";
     port = 5432;
     credentialsFile = config.sops.secrets."postgresql-credentials".path;
     databases = [
