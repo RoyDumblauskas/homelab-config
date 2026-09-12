@@ -40,18 +40,28 @@
                 File containing postgresql user credentials.
                 Only the Passwords. Names of Users just follow the pattern:
                 <DB_Name>_produser
-                <DB_Name>_devuser
 
                 Password Format:
                 PSQL_<DB>_PASSWORD=password
-                PSQL_<DB>_DEV_PASSWORD=dev_password
               '';
             };
 
             databases = lib.mkOption {
               type = lib.types.listOf lib.types.str;
               default = [ ];
-              description = "list of databases to bootstrap. Will expand into DB, and DB-DEV for each item. And each Database will recieve it's own user. The user credentials must be in the correct format in the credentials file.";
+              description = ''
+                List of databases to bootstrap.
+                Each Database will recieve it's own user.
+                The user credentials must be in the correct format in the credentials file.
+              '';
+            };
+
+            ipMasks = lib.mkOption {
+              type = lib.types.listOf lib.types.str;
+              default = [ ];
+              description = ''
+                List of ipMasks that psql will accept connections from
+              '';
             };
           };
 
@@ -74,21 +84,26 @@
                 postgres roy postgres
               '';
 
-              # allow remote connections to dev databases
               authentication = pkgs.lib.mkOverride 10 ''
                 local all postgres peer map=postgres
                 local all all peer
 
-                # Dev can be connected to via the LAN or Local
-                ${lib.concatStringsSep " " (
-                  map (db: "host ${db}_dev ${db}_devuser all scram-sha-256\n") opts.databases
-                )}
-                # Prod can be connected via local machine
-                ${lib.concatStringsSep " " (
+                # Prod can be connected via local machine and declared masks
+                ${lib.concatStringsSep "" (
                   map (db: "host ${db} ${db}_produser 127.0.0.1/32 scram-sha-256\n") opts.databases
                 )}
-                ${lib.concatStringsSep " " (
+                ${lib.concatStringsSep "" (
                   map (db: "host ${db} ${db}_produser ::1/128 scram-sha-256\n") opts.databases
+                )}
+                # configurable list of subnets allowed to connect (for example k3s pods subnet)
+                # will allow connection to all declared ips. fine for now
+                ${lib.concatStringsSep "" (
+                  map (
+                    db:
+                    lib.concatStringsSep "" (
+                      map (mask: "host ${db} ${db}_produser ${opts.ipMasks} scram-sha-256\n") opts.ipMasks
+                    )
+                  ) opts.databases
                 )}
               '';
             };
@@ -118,16 +133,9 @@
 
                     user_val="$db"_produser
                     pass_val=$(eval "echo \''${$pass_var:-}")
-                    dev_user_val="$db"_devuser
-                    dev_pass_val=$(eval "echo \''${$dev_pass_var:-}")
 
                     if [ -z "$pass_val" ]; then
                       echo "Missing password credentials for database '$db'" >&2
-                      exit 1
-                    fi
-
-                    if [ -z "$dev_pass_val" ]; then
-                      echo "Missing password credentials for database '$db'_dev" >&2
                       exit 1
                     fi
 
@@ -141,13 +149,6 @@
                       $psql_bin --port=${toString opts.port} -c "CREATE ROLE "$user_val" WITH LOGIN PASSWORD '$pass_val';"
                     fi
 
-                    if $psql_bin --port=${toString opts.port} -c "\du" | grep -ci "$dev_user_val"; then
-                      echo "$dev_user_val already exists, skipping creation. WARN: password may not be correct. Delete user and allow to be recreated for assurity"
-                    else
-                      echo "Creating $dev_user_val"
-                      $psql_bin --port=${toString opts.port} -c "CREATE ROLE "$dev_user_val" WITH LOGIN PASSWORD '$dev_pass_val';"
-                    fi
-
                     # Create databases if not exists
                     if $psql_bin --port=${toString opts.port} -c "\l" | grep -ci ""$db" "; then
                       echo "$db already exists, skipping creation."
@@ -156,16 +157,8 @@
                       $psql_bin --port=${toString opts.port} -c "CREATE DATABASE "$db" WITH OWNER "$user_val";"
                     fi
 
-                    if $psql_bin --port=${toString opts.port} -c "\l" | grep -ci "$db"_dev; then
-                      echo ""$db"_dev already exists, skipping creation."
-                    else
-                      echo "Creating database "$db"_dev"
-                      $psql_bin --port=${toString opts.port} -c "CREATE DATABASE "$db"_dev WITH OWNER "$dev_user_val";"
-                    fi
-
                     # Grant ownership (idempotency for weird states)
                     $psql_bin --port=${toString opts.port} -c "ALTER DATABASE "$db" OWNER TO "$user_val";"
-                    $psql_bin --port=${toString opts.port} -c "ALTER DATABASE "$db"_dev OWNER TO "$dev_user_val";"
 
                   done
                 '';
