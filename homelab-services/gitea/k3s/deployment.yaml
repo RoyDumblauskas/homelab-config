@@ -55,6 +55,9 @@ spec:
             - name: GITEA__repository__MAX_CREATION_LIMIT
               value: "0"
 
+            - name: GITEA__security__INSTALL_LOCK
+              value: true
+
           volumeMounts:
             - name: gitea-data
               mountPath: /var/lib/gitea
