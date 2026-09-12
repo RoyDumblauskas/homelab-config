@@ -114,7 +114,7 @@
     # Until then use a vm, as k3s is persisted
     extraFlags = [
       "--data-dir=/persist/var/lib/rancher/k3s"
-      "--cluster-cidr 10.42.0.0/20"
+      "--cluster-cidr=10.42.0.0/20"
     ];
   };
 

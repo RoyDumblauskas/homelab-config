@@ -60,7 +60,7 @@ spec:
 
           volumeMounts:
             - name: gitea-data
-              mountPath: /var/lib/gitea
+              mountPath: /data
 
       volumes:
         - name: gitea-data
