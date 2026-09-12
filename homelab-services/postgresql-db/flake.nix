@@ -90,19 +90,17 @@
 
                 # Prod can be connected via local machine and declared masks
                 ${lib.concatStringsSep "" (
-                  map (db: "host ${db} ${db}_produser 127.0.0.1/32 scram-sha-256\n") opts.databases
+                  map (db: "host ${db} ${db}_user 127.0.0.1/32 scram-sha-256\n") opts.databases
                 )}
                 ${lib.concatStringsSep "" (
-                  map (db: "host ${db} ${db}_produser ::1/128 scram-sha-256\n") opts.databases
+                  map (db: "host ${db} ${db}_user ::1/128 scram-sha-256\n") opts.databases
                 )}
                 # configurable list of subnets allowed to connect (for example k3s pods subnet)
                 # will allow connection to all declared ips. fine for now
                 ${lib.concatStringsSep "" (
                   map (
                     db:
-                    lib.concatStringsSep "" (
-                      map (mask: "host ${db} ${db}_produser ${mask} scram-sha-256\n") opts.ipMasks
-                    )
+                    lib.concatStringsSep "" (map (mask: "host ${db} ${db}_user ${mask} scram-sha-256\n") opts.ipMasks)
                   ) opts.databases
                 )}
               '';
@@ -129,9 +127,8 @@
                     db_upper="''${db^^}"
 
                     pass_var="PSQL_''${db_upper}_PASSWORD"
-                    dev_pass_var="PSQL_''${db_upper}_DEV_PASSWORD"
 
-                    user_val="$db"_produser
+                    user_val="$db"_user
                     pass_val=$(eval "echo \''${$pass_var:-}")
 
                     if [ -z "$pass_val" ]; then
