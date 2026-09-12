@@ -64,7 +64,7 @@
 
                   echo "Generating templated files"
                   gomplate=${pkgs.gomplate}/bin/gomplate
-                  printf '{"db_hostname"="%s","web_hostname"="%s"}' \
+                  printf '{"db_hostname":"%s","web_hostname":"%s"}' \
                     "${opts.database-hostname}" \
                     "${opts.default-nginx.hostname}" | $gomplate \
                     --input-dir=${k3sDir} \
