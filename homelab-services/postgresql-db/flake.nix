@@ -101,7 +101,7 @@
                   map (
                     db:
                     lib.concatStringsSep "" (
-                      map (mask: "host ${db} ${db}_produser ${opts.ipMasks} scram-sha-256\n") opts.ipMasks
+                      map (mask: "host ${db} ${db}_produser ${mask} scram-sha-256\n") opts.ipMasks
                     )
                   ) opts.databases
                 )}
