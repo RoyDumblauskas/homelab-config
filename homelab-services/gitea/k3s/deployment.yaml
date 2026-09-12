@@ -35,7 +35,7 @@ spec:
               value: postgres
 
             - name: GITEA__database__HOST
-              value: '{{ (datasource "dbhostname") }}'
+              value: '{{ (datasource "config").db_hostname }}'
 
             - name: GITEA__database__NAME
               value: '{{ (datasource "credentials").GITEA_DB_NAME }}'
@@ -51,6 +51,15 @@ spec:
 
             - name: GITEA__server__SSH_PORT
               value: "30222"
+
+            - name: GITEA__server__DOMAIN
+              value: '{{ (datasource "config").web_hostname }}'
+
+            - name: GITEA__server__SSH_DOMAIN
+              value: '{{ (datasource "config").web_hostname }}'
+
+            - name: GITEA__server__ROOT_URL
+              value: 'https://{{ (datasource "config").web_hostname }}/'
 
             - name: GITEA__repository__MAX_CREATION_LIMIT
               value: "0"

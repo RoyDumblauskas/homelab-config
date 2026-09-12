@@ -64,11 +64,13 @@
 
                   echo "Generating templated files"
                   gomplate=${pkgs.gomplate}/bin/gomplate
-                  printf '%s' "${opts.database-hostname}" | $gomplate \
+                  printf '{"db_hostname"="%s","web_hostname"="%s"}' \
+                    "${opts.database-hostname}" \
+                    "${opts.default-nginx.hostname}" | $gomplate \
                     --input-dir=${k3sDir} \
                     --output-dir=$kubernetes_config \
                     --datasource credentials=file://${opts.credentialsFile}?type=application/x-env \
-                    --datasource dbhostname=stdin:
+                    --datasource config=stdin:?type=application/json
 
                   echo "Applying k3s config"
                   kubectl=${pkgs.kubectl}/bin/kubectl
