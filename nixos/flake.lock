@@ -374,12 +374,12 @@
         "rev": "2ffdd630adbbe2004366b2d90ef29f62e7f670ca",
         "shallow": true,
         "type": "git",
-        "url": "ssh://git@github.com/RoyDumblauskas/server-semi-secrets"
+        "url": "ssh://git@roypository.com:30222/RoyDumblauskas/server-semi-secrets"
       },
       "original": {
         "shallow": true,
         "type": "git",
-        "url": "ssh://git@github.com/RoyDumblauskas/server-semi-secrets"
+        "url": "ssh://git@roypository.com:30222/RoyDumblauskas/server-semi-secrets"
       }
     },
     "root": {
