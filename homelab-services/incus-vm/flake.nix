@@ -3,14 +3,14 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
-    postgres-db.url = "path:../postgresql-db";
+    postgresql-db.url = "path:../postgresql-db";
   };
 
   outputs =
     {
       self,
       nixpkgs,
-      postgres-db,
+      postgresql-db,
     }@inputs:
     {
       nixosConfigurations = {
@@ -19,7 +19,10 @@
           system = "x86_64-linux";
           modules = [
             ./virtual.nix
-            postgres-db.nixosModules.postgres-db
+            postgresql-db.nixosModules.postgresql-db
+
+            # declare the vm output
+            "${inputs.nixpkgs}/nixos/modules/virtualisation/incus-virtual-machine.nix"
           ];
         };
       };
