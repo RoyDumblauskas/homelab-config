@@ -5,6 +5,17 @@
   ...
 }:
 {
+
+  # Allow login and remote control of VM
+  users.users.admin = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" ];
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFEQyjykrRpkgMFpNAR2G1rbofqbtcuLwIYzgqH85QCn roydumblauskas@gmail.com"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPERQEHVwrtsWOpu1BgT7b1WNe4ShCy4bXWoGWvYENBw roydumblauskas@gmail.com"
+    ];
+  };
+
   # ================================ #
   #            K3S SERVICE           #
   # ================================ #
