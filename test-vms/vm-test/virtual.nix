@@ -9,10 +9,22 @@
   # Allow login and remote control of VM
   users.users.admin = {
     isNormalUser = true;
+    hashedPassword = "$y$j9T$WI7E.NXw4qar1DXodrVWG/$gUErw1R6W8k1UFm49C5.vEc9MT5RcKW0BKitURNqbl/";
     extraGroups = [ "wheel" ];
+
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAcofS7u0BYzRBn0i4RuXPHWpnvk3nEbGo9B9ghsR4oL roydumblauskas@gmail.com"
     ];
+  };
+
+  # Don't allow password login
+  services.openssh = {
+    enable = true;
+
+    settings = {
+      PasswordAuthentication = false;
+      KbdInteractiveAuthentication = false;
+    };
   };
 
   # ================================ #
@@ -65,7 +77,7 @@
     enable = true;
     dataDir = "/var/lib/postgresql";
     port = 5432;
-    credentialsFile = ./secrets/ex-psql.yaml;
+    credentialsFile = config.sops.secrets."postgresql-credentials".path;
     databases = [
       "test"
     ];
