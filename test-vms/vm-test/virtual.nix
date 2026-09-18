@@ -41,12 +41,14 @@
 
     defaultSopsFormat = "yaml";
 
-    "postgresql-credentials" = {
-      sopsFile = ./secrets/psql.yaml;
-      key = "credentials";
-      format = "yaml";
-      owner = "postgres";
-      group = "postgres";
+    secrets = {
+      "postgresql-credentials" = {
+        sopsFile = ./secrets/psql.yaml;
+        key = "credentials";
+        format = "yaml";
+        owner = "postgres";
+        group = "postgres";
+      };
     };
 
   };
