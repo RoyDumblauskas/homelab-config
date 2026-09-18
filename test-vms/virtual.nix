@@ -11,8 +11,7 @@
     isNormalUser = true;
     extraGroups = [ "wheel" ];
     openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFEQyjykrRpkgMFpNAR2G1rbofqbtcuLwIYzgqH85QCn roydumblauskas@gmail.com"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPERQEHVwrtsWOpu1BgT7b1WNe4ShCy4bXWoGWvYENBw roydumblauskas@gmail.com"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAcofS7u0BYzRBn0i4RuXPHWpnvk3nEbGo9B9ghsR4oL roydumblauskas@gmail.com"
     ];
   };
 
