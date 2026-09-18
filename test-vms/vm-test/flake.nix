@@ -14,7 +14,7 @@
     }@inputs:
     {
       nixosConfigurations = {
-        virtual-env = nixpkgs.lib.nixosSystem {
+        vm = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
             ./virtual.nix
