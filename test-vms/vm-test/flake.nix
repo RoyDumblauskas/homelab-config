@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
-    postgresql-db.url = "path:../homelab-services/postgresql-db";
+    postgresql-db.url = "path:../../homelab-services/postgresql-db";
   };
 
   outputs =
