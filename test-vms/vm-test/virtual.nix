@@ -6,6 +6,12 @@
 }:
 {
 
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
+  nixpkgs.config.allowUnfree = true;
+
   # Allow login and remote control of VM
   users.users.admin = {
     isNormalUser = true;
@@ -26,6 +32,16 @@
       KbdInteractiveAuthentication = false;
     };
   };
+
+  # Packages
+  environment.systemPackages = with pkgs; [
+    curl
+    kitty
+    nginx
+    tmux
+    vim
+    wget
+  ];
 
   # ================================ #
   #               SOPS               #
@@ -50,8 +66,9 @@
         group = "postgres";
       };
     };
-
   };
+
+  systemd.user.services.mbsync.unitConfig.After = [ "sops-nix.service" ];
 
   # ================================ #
   #            K3S SERVICE           #

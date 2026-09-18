@@ -12,7 +12,6 @@
 
   home.packages = with pkgs; [
     age
-    awscli2
     dig
     discord
     ffmpeg_6
@@ -24,7 +23,6 @@
     incus
     jq
     kdePackages.gwenview
-    minio-client
     nodejs_22
     postman
     prismlauncher
