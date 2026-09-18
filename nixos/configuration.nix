@@ -22,7 +22,7 @@
       generateKey = true;
     };
 
-    # I prefer to use json format for the secrets
+    # I prefer to use json format for the secrets (no I don't)
     defaultSopsFormat = "json";
 
     # Define file and key for each secret

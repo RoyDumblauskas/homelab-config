@@ -16,6 +16,30 @@
   };
 
   # ================================ #
+  #               SOPS               #
+  # ================================ #
+
+  sops = {
+    # make sure that the age key is generated from the persisted host key
+    age = {
+      sshKeyPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
+      keyFile = "/persist/var/lib/sops-nix/key.txt";
+      generateKey = true;
+    };
+
+    defaultSopsFormat = "yaml";
+
+    "postgresql-credentials" = {
+      sopsFile = ./secrets/psql.yaml;
+      key = "credentials";
+      format = "yaml";
+      owner = "postgres";
+      group = "postgres";
+    };
+
+  };
+
+  # ================================ #
   #            K3S SERVICE           #
   # ================================ #
 
