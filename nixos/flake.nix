@@ -25,7 +25,7 @@
     # This is a path to the services I've declared.
     # It just happens to be stored in the same repository (relative),
     # but could well be a separate repository
-    # follow nixpkgs on all, otherwise each builds its own version
+    # follow nixpkgs on all, otherwise each builds its own version ("derivation" maybe, idk)
     nimh-static = {
       url = "path:../homelab-services/nimh-static";
       inputs.nixpkgs.follows = "nixpkgs";

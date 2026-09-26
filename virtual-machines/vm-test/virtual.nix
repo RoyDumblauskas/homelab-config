@@ -4,16 +4,13 @@
   meta,
   ...
 }:
-# Decrypt credentials to use in VM
-# This exposes them in the VM. Images should be considered 'confidential'
-# Though all secrets here should really only be able to access things inside the VM
-
 {
 
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
   ];
+
   nixpkgs.config.allowUnfree = true;
 
   # Allow login and remote control of VM
