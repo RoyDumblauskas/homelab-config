@@ -2,6 +2,7 @@
   config,
   pkgs,
   meta,
+  credentials,
   ...
 }:
 {
@@ -71,7 +72,7 @@
     enable = true;
     dataDir = "/var/lib/postgresql";
     port = 5432;
-    credentialsFile = "";
+    credentialsFile = credentials.psql;
     databases = [
       "test"
     ];
