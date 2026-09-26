@@ -4,6 +4,10 @@
   meta,
   ...
 }:
+# Decrypt credentials to use in VM
+# This exposes them in the VM. Images should be considered 'confidential'
+# Though all secrets here should really only be able to access things inside the VM
+
 {
 
   nix.settings.experimental-features = [
@@ -45,33 +49,6 @@
   ];
 
   # ================================ #
-  #               SOPS               #
-  # ================================ #
-
-  sops = {
-    # make sure that the age key is generated from the persisted host key
-    age = {
-      sshKeyPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
-      keyFile = "/persist/var/lib/sops-nix/key.txt";
-      generateKey = true;
-    };
-
-    defaultSopsFormat = "yaml";
-
-    secrets = {
-      "postgresql-credentials" = {
-        sopsFile = ./secrets/psql.yaml;
-        key = "credentials";
-        format = "yaml";
-        owner = "postgres";
-        group = "postgres";
-      };
-    };
-  };
-
-  systemd.user.services.mbsync.unitConfig.After = [ "sops-nix.service" ];
-
-  # ================================ #
   #            K3S SERVICE           #
   # ================================ #
 
@@ -97,7 +74,7 @@
     enable = true;
     dataDir = "/var/lib/postgresql";
     port = 5432;
-    credentialsFile = config.sops.secrets."postgresql-credentials".path;
+    credentialsFile = "";
     databases = [
       "test"
     ];
