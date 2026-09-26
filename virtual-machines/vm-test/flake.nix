@@ -16,11 +16,15 @@
       postgresql-db,
     }@inputs:
     let
+      system = "x86_64-linux";
+      pkgs = import nixpkgs {
+        inherit system;
+      };
       credentials = builtins.listToAttrs (
         map (filename: {
           name = builtins.replaceStrings [ ".env" ] [ "-env" ] filename;
-          value = nixpkgs.runCommand "sops-decrypt-${filename}" { } ''
-            ${nixpkgs.sops}/bin/sops -d ${./secrets}/${filename} > $out
+          value = pkgs.runCommand "sops-decrypt-${filename}" { } ''
+            ${pkgs.sops}/bin/sops -d ${./secrets}/${filename} > $out
           '';
         }) (builtins.attrNames (builtins.readDir ./secrets))
       );
@@ -28,7 +32,6 @@
     {
       nixosConfigurations = {
         vm = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
           specialArgs = {
             inherit credentials;
           };
