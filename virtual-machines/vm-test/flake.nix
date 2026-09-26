@@ -13,7 +13,6 @@
     {
       self,
       nixpkgs,
-      sops-nix,
       postgresql-db,
     }@inputs:
     {
