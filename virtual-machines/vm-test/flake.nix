@@ -32,6 +32,7 @@
     {
       nixosConfigurations = {
         vm = nixpkgs.lib.nixosSystem {
+          system = system;
           specialArgs = {
             inherit credentials;
           };
