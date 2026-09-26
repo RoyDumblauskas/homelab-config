@@ -16,7 +16,7 @@
       postgresql-db,
     }@inputs:
     let
-      credentialMap = builtins.listToAttrs (
+      credentials = builtins.listToAttrs (
         map (filename: {
           name = builtins.replaceStrings [ ".env" ] [ "-env" ] filename;
           value = nixpkgs.runCommand "sops-decrypt-${filename}" { } ''
@@ -30,7 +30,7 @@
         vm = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = {
-            credentials = credentialMap;
+            inherit credentials;
           };
           modules = [
             ./virtual.nix
