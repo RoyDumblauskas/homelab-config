@@ -25,12 +25,23 @@
     # This is a path to the services I've declared.
     # It just happens to be stored in the same repository (relative),
     # but could well be a separate repository
-    nimh-static.url = "path:../homelab-services/nimh-static";
-    # MINIO IS DEPRECATED, KEEPING CODE FOR REFERENCE. MOVE TO GARAGE/SEAWEEDFS
-    # minio-service.url = "path:../homelab-services/minio-service";
-    mc-service.url = "path:../homelab-services/mc-service";
-    postgresql-db.url = "path:../homelab-services/postgresql-db";
-    gitea.url = "path:../homelab-services/gitea";
+    # follow nixpkgs on all, otherwise each builds its own version
+    nimh-static = {
+      url = "path:../homelab-services/nimh-static";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    mc-service = {
+      url = "path:../homelab-services/mc-service";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    postgresql-db = {
+      url = "path:../homelab-services/postgresql-db";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    gitea = {
+      url = "path:../homelab-services/gitea";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
