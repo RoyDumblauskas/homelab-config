@@ -1,47 +1,61 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Configuration
-ALIAS="nixos/custom/vm"
-VM_NAME="vmname"
+# Usage:
+#   ./build-image.sh <alias> [vmname]
+#
+# Examples:
+#   ./build-image.sh nixos/custom/vm
+#   ./build-image.sh nixos/custom/my-vm my-vm
+
+if [[ $# -lt 1 || $# -gt 2 ]]; then
+    echo "Usage: $0 <alias> [vmname]"
+    echo
+    echo "  alias   Required Incus image alias"
+    echo "  vmname  NixOS configuration name (default: vm)"
+    exit 1
+fi
+
+ALIAS="$1"
+VMNAME="${2:-vm}"
 
 # Build the NixOS LXC metadata tarball
 TARBALL_DIR="$(nix build \
-  ".#nixosConfigurations.${VM_NAME}.config.system.build.metadata" \
-  --print-out-paths)"
+    ".#nixosConfigurations.${VMNAME}.config.system.build.metadata" \
+    --print-out-paths)"
 
-# Find the tarball using find -type f
+# Find the tarball
 TARBALL="$(find "$TARBALL_DIR" -type f -name '*.tar.xz' -print -quit)"
 
 if [[ -z "$TARBALL" ]]; then
-    echo "Error: Could not find a .tar.xz tarball in:"
-    echo "  $TARBALL_DIR"
+    echo "Could not find a .tar.xz tarball in: $TARBALL_DIR"
     exit 1
 fi
 
-echo "Found metadata tarball:"
-echo "  $TARBALL"
+echo "Metadata tarball: $TARBALL"
 
 # Build the QEMU disk image
-QCOW2="$(nix build \
-  ".#nixosConfigurations.${VM_NAME}.config.system.build.qemuImage" \
-  --print-out-paths)/nixos.qcow2"
+QCOW2_DIR="$(nix build \
+    ".#nixosConfigurations.${VMNAME}.config.system.build.qemuImage" \
+    --print-out-paths)"
+
+QCOW2="$QCOW2_DIR/nixos.qcow2"
 
 if [[ ! -f "$QCOW2" ]]; then
-    echo "Error: QEMU image not found:"
-    echo "  $QCOW2"
+    echo "QEMU image not found: $QCOW2"
     exit 1
 fi
 
-echo "Importing NixOS image into Incus..."
-echo "  Alias:   $ALIAS"
-echo "  Tarball: $TARBALL"
-echo "  Image:   $QCOW2"
+echo "Found QEMU image: $QCOW2"
+
+echo
+echo "Importing image into Incus..."
 
 incus image import \
     --alias "$ALIAS" \
     "$TARBALL" \
     "$QCOW2"
 
-echo "Successfully imported image as: $ALIAS"
+echo
+echo "Successfully imported image: $ALIAS"
 
