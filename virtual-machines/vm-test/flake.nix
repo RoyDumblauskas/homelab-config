@@ -26,7 +26,8 @@
           value =
             pkgs.runCommand "sops-decrypt-${filename}"
               {
-                SOPS_AGE_KEY_FILE = "~/.config/sops/age/keys.txt";
+                # Use special separate injectable key that can only decrypt these dummy secrets
+                SOPS_AGE_KEY_FILE = "~/.config/sops/age/virtual-key.txt";
               }
               ''
                 ${pkgs.sops}/bin/sops -d ${./secrets}/${filename} > $out
