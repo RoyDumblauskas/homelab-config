@@ -17,25 +17,29 @@
     }@inputs:
     let
       system = "x86_64-linux";
-      pkgs = import nixpkgs {
-        inherit system;
-      };
-      credentials = builtins.listToAttrs (
-        map (filename: {
-          name = builtins.replaceStrings [ ".env" ] [ "-env" ] filename;
-          value = pkgs.runCommand "sops-decrypt-${filename}" { } ''
-            ${pkgs.sops}/bin/sops -d ${./secrets}/${filename} > $out
-          '';
-        }) (builtins.attrNames (builtins.readDir ./secrets))
-      );
+      /*
+        pkgs = import nixpkgs {
+                inherit system;
+              };
+          credentials = builtins.listToAttrs (
+                  map (filename: {
+                    name = builtins.replaceStrings [ ".env" ] [ "-env" ] filename;
+                    value = pkgs.runCommand "sops-decrypt-${filename}" { } ''
+                      ${pkgs.sops}/bin/sops -d ${./secrets}/${filename} > $out
+                    '';
+                  }) (builtins.attrNames (builtins.readDir ./secrets))
+                );
+      */
     in
     {
       nixosConfigurations = {
         vm = nixpkgs.lib.nixosSystem {
           system = system;
-          specialArgs = {
-            inherit credentials;
-          };
+          /*
+            specialArgs = {
+              inherit credentials;
+            };
+          */
           modules = [
             ./virtual.nix
             postgresql-db.nixosModules.postgresql-db

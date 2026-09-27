@@ -72,7 +72,7 @@
     enable = true;
     dataDir = "/var/lib/postgresql";
     port = 5432;
-    credentialsFile = credentials.psql-env;
+    credentialsFile = ./secrets/plain.env;
     databases = [
       "test"
     ];
