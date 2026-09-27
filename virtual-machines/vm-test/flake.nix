@@ -23,9 +23,14 @@
       credentials = builtins.listToAttrs (
         map (filename: {
           name = builtins.replaceStrings [ ".env" ] [ "-env" ] filename;
-          value = pkgs.runCommand "sops-decrypt-${filename}" { } ''
-            ${pkgs.sops}/bin/sops -d ${./secrets}/${filename} > $out
-          '';
+          value =
+            pkgs.runCommand "sops-decrypt-${filename}"
+              {
+                SOPS_AGE_KEY_FILE = "~/.config/sops/age/keys.txt";
+              }
+              ''
+                ${pkgs.sops}/bin/sops -d ${./secrets}/${filename} > $out
+              '';
         }) (builtins.attrNames (builtins.readDir ./secrets))
       );
     in
