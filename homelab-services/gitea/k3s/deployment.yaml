@@ -35,7 +35,7 @@ spec:
               value: postgres
 
             - name: GITEA__ui__SHOW_USER_EMAIL
-              value: false
+              value: "false"
 
             - name: GITEA__database__HOST
               value: '{{ (datasource "config").db_hostname }}'
