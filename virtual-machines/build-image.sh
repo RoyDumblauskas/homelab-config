@@ -77,16 +77,32 @@ cleanup() {
     fi
     CLEANED_UP=1
 
-    # Restore the repository's original SOPS configuration.
+    # Restore the original SOPS configuration.
     cp "$SOPS_BACKUP" "$SOPS_CONFIG"
+
+    # Remove the temporary recipient from encrypted secrets.
+    # Do this while the original recipients are restored.
+    if [[ -d "$VM_DIR/secrets" ]]; then
+        shopt -s nullglob
+        local secret_files=("$VM_DIR"/secrets/*)
+        shopt -u nullglob
+
+        for secret in "${secret_files[@]}"; do
+            [[ -f "$secret" ]] || continue
+            echo "Restoring SOPS recipients: ${secret#"$SCRIPT_DIR"/}"
+            if ! sops updatekeys --yes "$secret"; then
+                echo "WARNING: Failed to restore recipients in $secret" >&2
+                status=1
+            fi
+        done
+    fi
+
     rm -f "$SOPS_BACKUP" "$AGE_TEMP"
 
-    # Remove the temporary private key, even if the build failed.
+    # Remove the temporary private key after recipient metadata is restored.
     sudo rm -f "$AGE_KEY"
-    sudo rmdir "$AGE_DIR" 2>/dev/null || true
 
     echo "Temporary age key removed."
-
     return "$status"
 }
 
