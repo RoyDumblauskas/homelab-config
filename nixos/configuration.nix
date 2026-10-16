@@ -207,9 +207,9 @@
   virtualisation.incus.enable = true;
 
   # allow sandboxes to see my temp keys
-  nix.settings.extra-sandbox-paths = [
-    "/run/sops-virtual-key.txt=/run/sops-virtual/virtual-key.txt"
-  ];
+  #  nix.settings.extra-sandbox-paths = [
+  #    "/run/sops-virtual-key.txt=/run/sops-virtual/virtual-key.txt"
+  #  ];
 
   networking = {
     hostName = meta.hostname;
@@ -279,6 +279,7 @@
       "/var/lib/nixos"
       "/var/db/sudo/lectured"
       "/var/lib/acme"
+      "/run/sops-virtual"
     ];
   };
 
