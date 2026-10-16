@@ -12,6 +12,7 @@
 
   home.packages = with pkgs; [
     age
+    age-keygen
     dig
     discord
     ffmpeg_6
@@ -40,6 +41,7 @@
     woeusb
     wofi
     xrandr
+    yq
     zip
   ];
 
