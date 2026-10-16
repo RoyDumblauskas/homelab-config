@@ -12,7 +12,6 @@
 
   home.packages = with pkgs; [
     age
-    age-keygen
     dig
     discord
     ffmpeg_6
