@@ -206,6 +206,11 @@
   # Init with `incus admin init --minimal`
   virtualisation.incus.enable = true;
 
+  # allow sandboxes to see my temp keys
+  nix.settings.extra-sandbox-paths = [
+    "/run/sops-virtual-key.txt=/run/sops-virtual/virtual-key.txt"
+  ];
+
   networking = {
     hostName = meta.hostname;
     hostId = meta.hostId;
