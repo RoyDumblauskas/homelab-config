@@ -1,3 +1,4 @@
 server-info.txt
 nixos/out
 nixos/error
+virtual-machines/*/results/
