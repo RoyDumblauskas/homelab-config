@@ -108,22 +108,24 @@ sudo install -o root -g nixbld -m 0440 \
 # Requires mikefarah/yq v4 and simple comma-separated age fields.
 export AGE_PUBLIC_KEY
 
-if ! yq -e \
-    '.creation_rules | any(.[]; has("age"))' \
-    "$SOPS_CONFIG" >/dev/null; then
-    echo "No creation_rules with an age field found in .sops.yaml" >&2
+# Confirm at least one creation rule contains an age key group.
+if ! yq -e '
+  [.creation_rules[]
+   | select(.key_groups != null)
+   | .key_groups[]
+   | select(.age != null)]
+  | length > 0
+' "$SOPS_CONFIG" >/dev/null; then
+    echo "No creation_rules with key_groups.age found in .sops.yaml" >&2
     exit 1
 fi
 
+# Add the temporary public key to every age key group.
 yq -i '
-    (.creation_rules[] | select(has("age")) | .age) |= (
-        split(",")
-        | map(trim)
-        | map(select(. != ""))
-        | . + [strenv(AGE_PUBLIC_KEY)]
-        | unique
-        | join(",")
-    )
+  (.creation_rules[].key_groups[] | select(.age != null).age) +=
+    [strenv(AGE_PUBLIC_KEY)]
+  |
+  (.creation_rules[].key_groups[] | select(.age != null).age) |= unique
 ' "$SOPS_CONFIG"
 
 echo "Updating SOPS recipients for secrets in $VM_FOLDER..."
