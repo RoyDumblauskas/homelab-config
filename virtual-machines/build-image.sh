@@ -63,6 +63,8 @@ fi
 
 SOPS_BACKUP="$(mktemp)"
 AGE_TEMP="$(mktemp)"
+rm -f "$AGE_TEMP"
+
 cp -p "$SOPS_CONFIG" "$SOPS_BACKUP"
 
 CLEANED_UP=0
