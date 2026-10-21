@@ -7,6 +7,10 @@
       url = "path:../../homelab-services/postgresql-db";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    gitea = {
+      url = "path:../../homelab-services/gitea";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -14,6 +18,7 @@
       self,
       nixpkgs,
       postgresql-db,
+      gitea,
     }@inputs:
     let
       system = "x86_64-linux";
@@ -45,6 +50,7 @@
           modules = [
             ./virtual.nix
             postgresql-db.nixosModules.postgresql-db
+            gitea.nixosModules.hl-gitea
 
             # declare the vm output
             "${inputs.nixpkgs}/nixos/modules/virtualisation/incus-virtual-machine.nix"

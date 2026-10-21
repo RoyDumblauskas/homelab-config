@@ -1,12 +1,28 @@
 {
   "nodes": {
+    "gitea": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "path": "../../homelab-services/gitea",
+        "type": "path"
+      },
+      "original": {
+        "path": "../../homelab-services/gitea",
+        "type": "path"
+      },
+      "parent": []
+    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1790340521,
-        "narHash": "sha256-cRrWlIjVRJ6BHDr9caUdXsZ3owzWIKYHpNmGPHBInIU=",
+        "lastModified": 1792503283,
+        "narHash": "sha256-vhe2jyvRCgufWPqDuDq1S3t3ypE+ka46IFutV02xKso=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "f5c082a40f7571c266e74e80ae2e68aadd8a9fc7",
+        "rev": "cd4ea8d57de16f4810bc5f14207bac45fbf19f67",
         "type": "github"
       },
       "original": {
@@ -34,6 +50,7 @@
     },
     "root": {
       "inputs": {
+        "gitea": "gitea",
         "nixpkgs": "nixpkgs",
         "postgresql-db": "postgresql-db"
       }
