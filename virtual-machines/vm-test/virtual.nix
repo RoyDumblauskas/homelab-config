@@ -35,6 +35,36 @@
     };
   };
 
+  # Networking
+  networking = {
+    hostName = "nixos-vm-test-00";
+    hostId = "9C7030FE";
+    defaultGateway = "192.168.8.1";
+    nameservers = [
+      "1.1.1.1"
+      "1.0.0.1"
+    ];
+    nftables.enable = true;
+
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [
+        22
+        80 # gitea routing not enabled, open firewall here
+        443 # gitea routing not enabled, open firewall here
+        30222 # gitea routing not enabled, open firewall here
+        6443 # k3s
+      ];
+    };
+
+    interfaces.eth0.ipv4.addresses = [
+      {
+        address = "192.168.8.180";
+        prefixLength = 24;
+      }
+    ];
+  };
+
   # Packages
   environment.systemPackages = with pkgs; [
     curl
@@ -61,6 +91,20 @@
       "--data-dir=/var/lib/rancher/k3s"
       "--cluster-cidr=10.42.0.0/20"
     ];
+  };
+
+  # ================================ #
+  #           GITEA SERVICE          #
+  # ================================ #
+
+  services.hl-gitea = {
+    enable = true;
+    credentialsFile = credentials.gitea-env;
+    database-hostname = "${config.ipAddrs.${meta.hostname}}:5432"; # whatever port I host psql on below
+
+    default-nginx = {
+      enable = false;
+    };
   };
 
   # ================================ #

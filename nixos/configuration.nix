@@ -225,8 +225,6 @@
       enable = true;
       allowedTCPPorts = [
         22
-        80
-        443
         6443 # k3s
       ];
 
@@ -326,6 +324,12 @@
         path = "/persist/etc/ssh/ssh_host_rsa_key";
       }
     ];
+
+    # Don't allow remote password login
+    settings = {
+      PasswordAuthentication = false;
+      KbdInteractiveAuthentication = false;
+    };
   };
 
   # INITIAL system version
