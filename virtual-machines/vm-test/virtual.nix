@@ -37,15 +37,7 @@
 
   # Networking
   networking = {
-    hostName = "nixos-vm-test-00";
-    hostId = "9C7030FE";
-    defaultGateway = "192.168.8.1";
-    nameservers = [
-      "1.1.1.1"
-      "1.0.0.1"
-    ];
     nftables.enable = true;
-
     firewall = {
       enable = true;
       allowedTCPPorts = [
@@ -56,13 +48,6 @@
         6443 # k3s
       ];
     };
-
-    interfaces.eth0.ipv4.addresses = [
-      {
-        address = "192.168.8.180";
-        prefixLength = 24;
-      }
-    ];
   };
 
   # Packages
