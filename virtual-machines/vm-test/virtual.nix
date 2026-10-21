@@ -118,7 +118,7 @@
     port = 5432;
     credentialsFile = credentials.psql-env;
     databases = [
-      "test"
+      "gitea"
     ];
     ipMasks = [
       "10.42.0.0/20" # k3s pod mask
