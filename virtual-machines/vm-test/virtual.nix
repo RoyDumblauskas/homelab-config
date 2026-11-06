@@ -73,7 +73,6 @@ in
   environment.systemPackages = with pkgs; [
     curl
     kitty
-    kubectl
     nginx
     tmux
     vim
