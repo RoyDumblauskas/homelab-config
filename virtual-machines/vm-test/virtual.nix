@@ -48,9 +48,6 @@ in
       enable = true;
       allowedTCPPorts = [
         22
-        80 # gitea routing not enabled, open firewall here
-        443 # gitea routing not enabled, open firewall here
-        30222 # gitea routing not enabled, open firewall here
         6443 # k3s
       ];
     };
@@ -110,7 +107,8 @@ in
     database-hostname = "${ipSubnet}.${ipAddr}:5432";
 
     default-nginx = {
-      enable = false;
+      enable = true;
+      hostname = "dummy.roypository.com";
     };
   };
 
