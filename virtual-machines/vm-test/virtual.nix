@@ -6,7 +6,7 @@
   ...
 }:
 let
-  ipSubnet = "192.168.8.";
+  ipSubnet = "192.168.8";
   ipAddr = "170";
   k3sMask = "10.42.16.0/20";
 in
