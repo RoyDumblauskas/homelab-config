@@ -77,9 +77,9 @@
     acceptTerms = true;
     defaults = {
       # use staging for testing
-      # server = "https://acme-staging-v02.api.letsencrypt.org/directory";
+      server = "https://acme-staging-v02.api.letsencrypt.org/directory";
       # use prod for deploy
-      server = "https://acme-v02.api.letsencrypt.org/directory";
+      # server = "https://acme-v02.api.letsencrypt.org/directory";
       email = "roydumblauskas@gmail.com";
       dnsProvider = "cloudflare";
       # When the service CHECKS to see if certs are near expiry (< 30 days)
@@ -214,7 +214,40 @@
 
   # Setup Incus daemon on boot
   # Init with `incus admin init --minimal`
-  virtualisation.incus.enable = true;
+  virtualisation.incus = {
+    enable = true;
+
+    preseed = {
+      profiles = [
+        {
+          devices = {
+            eth0 = {
+              name = "eth0";
+              nictype = "bridged";
+              parent = "br0";
+              type = "nic";
+            };
+            root = {
+              path = "/";
+              pool = "default";
+              size = "10GiB";
+              type = "disk";
+            };
+          };
+          name = "default";
+        }
+      ];
+      storage_pools = [
+        {
+          config = {
+            source = "/var/lib/incus/storage-pools/default";
+          };
+          driver = "dir";
+          name = "default";
+        }
+      ];
+    };
+  };
 
   # allow sandboxes to see my temp keys
   nix.settings.extra-sandbox-paths = [
@@ -222,6 +255,7 @@
   ];
 
   networking = {
+
     hostName = meta.hostname;
     hostId = meta.hostId;
     defaultGateway = "192.168.8.1";
@@ -237,12 +271,15 @@
         22
         6443 # k3s
       ];
-
-      # Trust all incusVMs (on this network interface)
-      trustedInterfaces = [ "incusbr0" ];
     };
 
-    interfaces.eth0.ipv4.addresses = [
+    useDHCP = false;
+
+    bridges.br0.interfaces = [
+      "eth0"
+    ];
+
+    interfaces.br0.ipv4.addresses = [
       {
         address = config.ipAddrs.${meta.hostname};
         prefixLength = 24;

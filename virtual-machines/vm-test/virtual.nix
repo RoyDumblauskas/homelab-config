@@ -5,6 +5,11 @@
   credentials,
   ...
 }:
+let
+  ipSubnet = "192.168.8.";
+  ipAddr = "170";
+  k3sMask = "10.42.16.0/20";
+in
 {
 
   nix.settings.experimental-features = [
@@ -17,11 +22,12 @@
   # Allow login and remote control of VM
   users.users.admin = {
     isNormalUser = true;
-    hashedPassword = "$y$j9T$WI7E.NXw4qar1DXodrVWG/$gUErw1R6W8k1UFm49C5.vEc9MT5RcKW0BKitURNqbl/";
+    hashedPassword = "$y$j9T$WI7E.NXw4qar1DXodrVWG/$gUErw1R6W8k1UFm49C5.vEc9MT5RcKW0BKitURNqbl/"; # tmp
     extraGroups = [ "wheel" ];
 
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAcofS7u0BYzRBn0i4RuXPHWpnvk3nEbGo9B9ghsR4oL roydumblauskas@gmail.com"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPERQEHVwrtsWOpu1BgT7b1WNe4ShCy4bXWoGWvYENBw roydumblauskas@gmail.com"
     ];
   };
 
@@ -48,6 +54,20 @@
         6443 # k3s
       ];
     };
+
+    defaultGateway = "${ipSubnet}.1";
+
+    nameservers = [
+      "1.1.1.1"
+      "1.0.0.1"
+    ];
+
+    interfaces.eth0.ipv4.addresses = [
+      {
+        address = "${ipSubnet}.${ipAddr}";
+        prefixLength = 24;
+      }
+    ];
   };
 
   # Packages
@@ -74,7 +94,7 @@
     # Until then use a vm, as k3s is persisted
     extraFlags = [
       "--data-dir=/var/lib/rancher/k3s"
-      "--cluster-cidr=10.42.0.0/20"
+      "--cluster-cidr=${k3sMask}"
     ];
   };
 
@@ -85,7 +105,7 @@
   services.hl-gitea = {
     enable = true;
     credentialsFile = credentials.gitea-env;
-    database-hostname = "192.168.8.180:5432";
+    database-hostname = "${ipSubnet}.${ipAddr}:5432";
 
     default-nginx = {
       enable = false;
@@ -106,7 +126,7 @@
       "gitea"
     ];
     ipMasks = [
-      "10.42.0.0/20" # k3s pod mask
+      k3sMask # k3s pod mask
     ];
   };
 
