@@ -62,6 +62,8 @@ in
       "1.0.0.1"
     ];
 
+    useDHCP = false;
+
     interfaces.eth0.ipv4.addresses = [
       {
         address = "${ipSubnet}.${ipAddr}";
