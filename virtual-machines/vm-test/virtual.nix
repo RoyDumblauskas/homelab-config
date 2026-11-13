@@ -134,7 +134,7 @@ in
 
     default-nginx = {
       enable = true;
-      hostname = "dummy.roypository.com";
+      hostname = "virtual.roypository.com";
     };
   };
 
