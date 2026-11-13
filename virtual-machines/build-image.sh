@@ -15,7 +15,7 @@ AGE_KEY="/run/sops-virtual/virtual-key.txt"
 
 while getopts ":f:a:n:" flag; do
   case $flag in
-    f) VM_FOLDER="$OPTARG" ;;
+    f) VM_FOLDER="./$OPTARG" ;;
     a) ALIAS="$OPTARG" ;;
     n) VM_NAME="$OPTARG" ;;
     \?) echo "Error: Invalid option -$OPTARG" >&2; exit 1 ;;
