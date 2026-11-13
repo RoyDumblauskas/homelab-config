@@ -43,18 +43,19 @@ if [[ -z "$ALIAS" ]]; then
 fi
 
 # Validate argument requirements
-if [[ -d "$VM_FOLDER" ]]; then
+if [[ ! -d "$VM_FOLDER" ]]; then
   echo "Error: directory $VM_FOLDER must exist" >&2
   exit 1
 fi
 
-if [[ -f "$VM_FOLDER/flake.nix" ]]; then
+if [[ ! -f "$VM_FOLDER/flake.nix" ]]; then
   echo "Error: no flake file found in $VM_FOLDER" >&2
   exit 1
 fi
 
-if [[ -f "$SOPS_CONFIG" ]]; then
+if [[ ! -f "$SOPS_CONFIG" ]]; then
   echo "Error: no sops config found" >&2
+  exit 1
 fi
 
 if sudo test -e "$AGE_KEY"; then
