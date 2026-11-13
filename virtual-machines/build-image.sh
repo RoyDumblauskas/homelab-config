@@ -11,7 +11,8 @@ VM_FOLDER=""
 ALIAS=""
 VM_NAME="vm"
 SOPS_CONFIG=".sops.yaml"
-AGE_KEY="/run/sops-virtual/virtual-key.txt"
+AGE_DIR="/run/sops-virtual"
+AGE_KEY="$AGE_DIR/virtual-key.txt"
 
 while getopts ":f:a:n:" flag; do
   case $flag in
