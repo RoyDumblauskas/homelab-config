@@ -83,7 +83,7 @@ cleanup() {
 
     for secret in "${secret_files[@]}"; do
       [[ -f "$secret" ]] || continue
-      echo "Restoring SOPS recipients: ${secret#"$SCRIPT_DIR"/}"
+      echo "Restoring SOPS recipients: ${secret#"$PWD"/}"
       if ! sops updatekeys --yes "$secret"; then
           echo "WARNING: Failed to restore recipients in $secret" >&2
           status=1
@@ -98,6 +98,8 @@ cleanup() {
 
   return 0
 }
+
+trap cleanup EXIT
 
 echo "Generating temporary age identity..."
 	
@@ -140,7 +142,7 @@ fi
 
 for secret in "${SECRET_FILES[@]}"; do
     [[ -f "$secret" ]] || continue
-    echo "Updating recipients: ${secret#"$SCRIPT_DIR"/}"
+    echo "Updating recipients: ${secret#"$PWD"/}"
     sops updatekeys --yes "$secret"
 done
 
