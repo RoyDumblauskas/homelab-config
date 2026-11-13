@@ -76,9 +76,9 @@ cp -p "$SOPS_CONFIG" "$SOPS_BACKUP"
 cleanup() {
   cp "$SOPS_BACKUP" "$SOPS_CONFIG"
 
-  if [[ -d "$VM_DIR/secrets" ]]; then
+  if [[ -d "$VM_FOLDER/secrets" ]]; then
     shopt -s nullglob
-    local secret_files=("$VM_DIR"/secrets/*)
+    local secret_files=("$VM_FOLDER"/secrets/*)
     shopt -u nullglob
 
     for secret in "${secret_files[@]}"; do
@@ -130,11 +130,11 @@ yq -y -i '
 echo "Updating SOPS recipients for secrets in $VM_FOLDER..."
 
 shopt -s nullglob
-SECRET_FILES=("$VM_DIR"/secrets/*)
+SECRET_FILES=("$VM_FOLDER"/secrets/*)
 shopt -u nullglob
 
 if [[ ${#SECRET_FILES[@]} -eq 0 ]]; then
-    echo "No secret files found in $VM_DIR/secrets" >&2
+    echo "No secret files found in $VM_FOLDER/secrets" >&2
     exit 1
 fi
 
