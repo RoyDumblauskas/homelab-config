@@ -149,7 +149,7 @@ done
 echo "Building VM metadata..."
 	
 TARBALL_DIR="$(nix build \
-    "./$VM_FOLDER#nixosConfigurations.${VMNAME}.config.system.build.metadata" \
+    "./$VM_FOLDER#nixosConfigurations.${VM_NAME}.config.system.build.metadata" \
     --print-out-paths)"
 
 TARBALL="$(find "$TARBALL_DIR" -type f -name '*.tar.xz' -print -quit)"
@@ -164,7 +164,7 @@ echo "Metadata tarball: $TARBALL"
 echo "Building QEMU disk image..."
 
 QCOW2_DIR="$(nix build \
-    "./$VM_FOLDER#nixosConfigurations.${VMNAME}.config.system.build.qemuImage" \
+    "./$VM_FOLDER#nixosConfigurations.${VM_NAME}.config.system.build.qemuImage" \
     --print-out-paths)"
 
 QCOW2="$QCOW2_DIR/nixos.qcow2"
