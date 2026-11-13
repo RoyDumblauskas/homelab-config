@@ -98,7 +98,7 @@ in
     };
 
     certs = {
-      "virtual.roypository.com" = {
+      "roypository.com" = {
         domain = "virtual.roypository.com";
         group = "nginx";
       };
