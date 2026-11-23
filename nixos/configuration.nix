@@ -37,16 +37,10 @@
 
     # Define file and key for each secret
     secrets = {
-      "cloudflare-api-email" = {
-        sopsFile = ./secrets/cloudflare.json;
-        key = "CF_API_EMAIL";
-        owner = "acme";
-        group = "acme";
-      };
-
-      "cloudflare-api-key" = {
-        sopsFile = ./secrets/cloudflare.json;
-        key = "CF_API_KEY";
+      "cloudflare" = {
+        sopsFile = ./secrets/cloudflare.yaml;
+        key = "credentials";
+        format = "yaml";
         owner = "acme";
         group = "acme";
       };
@@ -84,10 +78,7 @@
       dnsProvider = "cloudflare";
       # When the service CHECKS to see if certs are near expiry (< 30 days)
       renewInterval = "daily";
-      credentialFiles = {
-        CF_API_EMAIL_FILE = config.sops.secrets."cloudflare-api-email".path;
-        CF_API_KEY_FILE = config.sops.secrets."cloudflare-api-key".path;
-      };
+      environmentFile = config.sops.secrets."cloudflare".path;
     };
 
     certs = {
@@ -232,6 +223,12 @@
               pool = "default";
               size = "16GiB";
               type = "disk";
+            };
+
+            # increase default resources
+            config = {
+              "limits.cpu" = "4";
+              "limits.memory" = "4GiB";
             };
           };
           name = "default";
