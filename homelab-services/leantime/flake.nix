@@ -113,7 +113,7 @@
                   ];
 
                 locations."/" = {
-                  proxyPass = "http://127.0.0.1:30081";
+                  proxyPass = "http://127.0.0.1:30091";
 
                   extraConfig = ''
                     proxy_set_header Host $host;

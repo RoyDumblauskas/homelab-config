@@ -3,12 +3,16 @@ kind: Service
 metadata:
   name: leantime-service
   namespace: leantime
+
 spec:
-  type: ClusterIP
-  ports:
-    - port: 80
-      targetPort: 8080
-      protocol: TCP
-      name: http
   selector:
     app: leantime
+
+  type: NodePort
+
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http
+      nodePort: 30091
+      protocol: TCP
