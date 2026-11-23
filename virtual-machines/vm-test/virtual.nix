@@ -91,10 +91,7 @@ in
       dnsProvider = "cloudflare";
       # When the service CHECKS to see if certs are near expiry (< 30 days)
       renewInterval = "daily";
-      credentialFiles = {
-        CF_API_EMAIL_FILE = credentials.cloudflare-email-env;
-        CF_API_KEY_FILE = credentials.cloudflare-key-env;
-      };
+      environmentFile = credentials.cloudflare-env;
     };
 
     certs = {
