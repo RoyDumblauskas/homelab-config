@@ -224,13 +224,14 @@
               size = "16GiB";
               type = "disk";
             };
-
-            # increase default resources
-            config = {
-              "limits.cpu" = "4";
-              "limits.memory" = "4GiB";
-            };
           };
+
+          # increase default resources
+          config = {
+            "limits.cpu" = "4";
+            "limits.memory" = "4GiB";
+          };
+
           name = "default";
         }
       ];
