@@ -124,10 +124,11 @@ in
   #           GITEA SERVICE          #
   # ================================ #
 
-  services.hl-gitea = {
+  services.leantime = {
     enable = true;
-    credentialsFile = credentials.gitea-env;
-    database-hostname = "${ipSubnet}.${ipAddr}:5432";
+    credentialsFile = credentials.leantime-env;
+    database-host = "${ipSubnet}.${ipAddr}";
+    database-port = "5432";
 
     default-nginx = {
       enable = true;
@@ -146,7 +147,7 @@ in
     port = 5432;
     credentialsFile = credentials.psql-env;
     databases = [
-      "gitea"
+      "leantime"
     ];
     ipMasks = [
       k3sMask # k3s pod mask

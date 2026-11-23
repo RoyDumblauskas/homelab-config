@@ -1,0 +1,6 @@
+namespace: leantime
+resources:
+  - deployment.yaml
+  - namespace.yaml
+  - pvc.yaml
+  - service.yaml

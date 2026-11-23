@@ -39,7 +39,7 @@
               description = ''
                 File containing postgresql user credentials.
                 Only the Passwords. Names of Users just follow the pattern:
-                <DB_Name>_produser
+                <DB_Name>_user
 
                 Password Format:
                 PSQL_<DB>_PASSWORD=password

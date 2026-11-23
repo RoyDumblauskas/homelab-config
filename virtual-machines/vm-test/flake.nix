@@ -7,8 +7,8 @@
       url = "path:../../homelab-services/postgresql-db";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    gitea = {
-      url = "path:../../homelab-services/gitea";
+    leantime = {
+      url = "path:../../homelab-services/leantime";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -18,7 +18,7 @@
       self,
       nixpkgs,
       postgresql-db,
-      gitea,
+      leantime,
     }@inputs:
     let
       system = "x86_64-linux";
@@ -50,7 +50,7 @@
           modules = [
             ./virtual.nix
             postgresql-db.nixosModules.postgresql-db
-            gitea.nixosModules.hl-gitea
+            leantime.nixosModules.leantime
 
             # declare the vm output
             "${inputs.nixpkgs}/nixos/modules/virtualisation/incus-virtual-machine.nix"

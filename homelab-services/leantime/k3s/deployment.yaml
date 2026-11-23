@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: leantime
+  namespace: leantime
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: leantime
+
+  template:
+    metadata:
+      labels:
+        app: gitea
+
+    spec:
+      containers:
+        - name: leantime
+          image: leantime/leantime:3.16.0
+
+          volumeMounts:
+            - name: pubuserfiles
+              mountPath: "/var/www/html/public/userfiles"
+            - name: userfiles
+              mountPath: "/var/www/html/userfiles"
+
+          env:
+            - name: LEAN_DB_DEFAULT_CONNECTION
+              value: "pgsql"
+            - name: LEAN_DB_HOST
+              value: '{{ (datasource "config").db_host}}'
+            - name: LEAN_DB_PORT
+              value: '{{ (datasource "config").db_port}}'
+            - name: LEAN_SESSION_SECURE
+              value: "true"
+            - name: LEAN_DB_USER
+              value: '{{ (datasource "credentials").LEAN_DB_USER}}'
+            - name: LEAN_DB_PASSWORD
+              value: '{{ (datasource "credentials").LEAN_DB_PASSWORD}}'
+            - name: LEAN_DB_DATABASE
+              value: '{{ (datasource "credentials").LEAN_DB_DATABASE}}'
+            - name: LEAN_APP_URL
+              value: 'https://{{ (datasource "config").web_host}}'
+            - name: LEAN_SITENAME
+              value: "Leantime"
+            - name: LEAN_LANGUAGE
+              value: "en-US"
+            - name: LEAN_DEFAULT_TIMEZONE
+              value: "America/Chicago"
+
+            - name: LEAN_SESSION_PASSWORD
+              value: '{{ (datasource "credentials").LEAN_SESSION_PASSWORD}}'
+            - name: LEAN_SESSION_EXPIRATION
+              value: "240" # 4 hours
+
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+
+          # Liveness only checks that the web server answers: a database outage must not make
+          # Kubernetes restart every pod. Readiness uses /health (Leantime 3.10.3+), which also
+          # checks the database, so pods leave the Service while the DB is unreachable.
+          livenessProbe:
+            tcpSocket:
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+
+      volumes:
+        - name: pubuserfiles
+          persistentVolumeClaim:
+            claimName: leantime-publicuserfiles
+        - name: userfiles
+          persistentVolumeClaim:
+            claimName: leantime-userfiles
